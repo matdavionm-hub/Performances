@@ -58,6 +58,7 @@ button:focus-visible{outline:2px solid var(--s);outline-offset:2px}
 #tm{position:fixed;left:0;right:0;bottom:0;display:none;align-items:center;justify-content:space-between;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:#1B2240;border-top:1px solid var(--line);font-size:22px;font-weight:900}
 #tm button{min-width:64px;height:48px;margin-left:8px;border-radius:12px;background:#2B3560;font-size:15px;font-weight:700}
 .rir{display:flex;gap:6px}.rir button{flex:1;height:48px;border-radius:12px;background:var(--in);border:1.5px solid var(--line);font-weight:800}.rir .on{background:var(--rep);border-color:var(--rep);color:#12082A}
+textarea{width:100%;min-height:120px;background:var(--in);color:var(--tx);border:1.5px solid var(--line);border-radius:12px;padding:10px;font:13px monospace;margin-bottom:8px}
 </style>
 </head>
 <body>
@@ -112,7 +113,7 @@ const T={
 T.dp={c:'kg',l:'Lest utilisé',mx:1,up:(v,x)=>v?(x<6?[v,x+1]:[v+2,3]):(x<15?[v,x+1]:[10,3]),dn:(v,x)=>v?(x>3?[v,x-1]:[Math.max(0,v-2),6]):[v,Math.max(3,x-1)]};
 for(const d in P)P[d]=P[d].map(e=>/Force/.test(e.n)?e.id==='di'?{...e,t:'dp',x0:3,rest:300,note:'3 → 6 reps ; quand 3×6 devient facile : +2 kg et retour à 3 reps.'}:e.id==='tr'?{id:'tf',n:'Tractions · Force',t:'dp',sets:3,x0:6,v:0,rest:300,note:'Poids du corps jusqu’à 15 strictes, puis lestées : 3 → 6 reps, puis +2 kg.'}:{...e,rest:300}:e);
 /* Carte sauvegarde : rappel d'export si pas de fichier récent */
-const bk=()=>{const dj=S.bk?Math.floor((Date.now()-S.bk)/864e5):null,w=S.h.length&&(dj===null||dj>=7);return `<div class=card>${w?`<div class=note style="margin:0 0 10px;border-color:var(--kg)">⚠️ ${dj===null?'Tes données ne sont pas encore sauvegardées dans un fichier.':'Dernière sauvegarde en fichier : il y a '+dj+' jours.'} Exporte-les : le navigateur peut effacer son stockage.</div>`:''}<div class=mu>Tes données sont stockées dans ce navigateur uniquement.</div><button class=sec data-a=exp>⬇ Exporter</button><button class=sec data-a=imp>⬆ Importer</button></div>`};
+const bk=()=>{const dj=S.bk?Math.floor((Date.now()-S.bk)/864e5):null,w=S.h.length&&(dj===null||dj>=7);return `<div class=card>${w?`<div class=note style="margin:0 0 10px;border-color:var(--kg)">⚠️ ${dj===null?'Tes données ne sont pas encore sauvegardées dans un fichier.':'Dernière sauvegarde en fichier : il y a '+dj+' jours.'} Exporte-les : le navigateur peut effacer son stockage.</div>`:''}<div class=mu>Tes données sont stockées dans ce navigateur uniquement.</div><button class=sec data-a=exp>⬇ Exporter</button><button class=sec data-a=imp>⬆ Importer</button><button class=sec data-a=go data-t=sav>📋 Par texte</button></div>`};
 /* Paliers des figures : [nom, secondes à tenir en bonne forme pour passer au niveau suivant] */
 const L={pl:[['Tuck Planche',20],['Advanced Tuck Planche',15],['Straddle Planche',12],['Full Planche',10]],fl:[['Tuck Front Lever',20],['Advanced Tuck FL',15],['One Leg FL',12],['Straddle FL',10],['Full Front Lever',10]]};
 const F=[{k:'facile',l:'😎 Facile'},{k:'parfait',l:'✅ Validation parfaite'},{k:'dur',l:'😤 Dur mais validé'},{k:'echec',l:'💀 Échec / trop dur'}];
@@ -173,8 +174,9 @@ ses:()=>back('day')+`<h1>⚔️ ${DAYS[V.day]}</h1><p class=mu>Valide tes série
 res:()=>{const h=V.last;return `<h1>Séance terminée 🔥</h1><div class=card><div class=row><b>+${h.xp} XP</b><span class=mu>Niv. ${lv()} · ${rank()}</span></div></div>`
  +h.res.map(r=>`<div class=card><div class=row><h2>${r.n}</h2><span class="b ${r.a==='up'?'b-ok':r.a==='down'?'b-ko':'b-mu'}">${r.a==='up'?'▲ Progression':r.a==='down'?'▼ Décharge':'＝ Maintien'}</span></div><div class=mu>${r.msg}</div><div style="margin-top:8px">Prochaine fois : ${badge(r,r.next,r.nx)}</div></div>`).join('')
  +(h.mx?`<div class=card><h2>🏆 Test max</h2><div class=mu>Dips ${h.mx.d} · Tractions ${h.mx.t} · Pompes ${h.mx.p}${h.mx.rec.length?' — nouveau record !':''}</div></div>`:'')+bk()+`<button class=cta data-a=go data-t=home>Retour à l’accueil</button>`},
+sav:()=>back('home')+`<h1>Sauvegarde</h1><p class=mu>Fonctionne partout, même dans l’appli Android. Copie tes données dans une note ou un message à toi-même ; pour restaurer, colle-les ici.</p><div class=card><textarea id=ta placeholder="Colle ici tes données, puis appuie sur Restaurer"></textarea><button class=sec data-a=cpy>📋 Copier mes données</button><button class=sec data-a=pst>✅ Restaurer depuis le texte</button></div>`,
 hist:()=>back('home')+`<h1>Historique</h1>`+(S.h.length?[...S.h].reverse().map(h=>`<div class=card><div class=row><b>${DAYS[h.day]} · ${new Date(h.d).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}</b><span class=mu>+${h.xp} XP</span></div>${h.res.map(r=>`<div class="mu hr">${r.n} · ${r.dn}/${r.sets} · ${fmt(r,r.act,r.x)}${r.q!=null?' · RIR '+r.q:''}${r.rp!=null?' · RPE '+r.rp:''}${r.fm==='bad'?' · ⚠️ forme':''} ${r.a==='up'?'▲':r.a==='down'?'▼':'＝'} ${fmt(r,r.next,r.nx)}</div>`).join('')}</div>`).join(''):'<p class=mu>Aucune séance enregistrée pour l’instant. Lance ta première séance !</p>')
- +`<div class=card><div class=mu>Sauvegarde automatique dans ce navigateur. Exporte un fichier pour la garder en sécurité ou changer d’appareil.</div><button class=sec data-a=exp>⬇ Exporter</button><button class=sec data-a=imp>⬆ Importer</button><button class=sec data-a=rst>🗑 Tout effacer</button></div>`
+ +`<div class=card><div class=mu>Sauvegarde automatique dans ce navigateur. Exporte un fichier pour la garder en sécurité ou changer d’appareil.</div><button class=sec data-a=exp>⬇ Exporter</button><button class=sec data-a=imp>⬆ Importer</button><button class=sec data-a=go data-t=sav>📋 Par texte</button><button class=sec data-a=rst>🗑 Tout effacer</button></div>`
 };
 function render(){const y=scrollY;$('#app').innerHTML=VW[V.v]();scrollTo(0,y)}
 function nav(v){V.v=v;render();scrollTo(0,0)}
@@ -224,6 +226,8 @@ fin:()=>{const day=V.day,res=[];let xp=0;
  const h={d:new Date().toISOString(),day,xp,res,mx};S.h.push(h);S.xp+=xp;save();V.last=h;nav('res')},
 exp:()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));a.download='carnet-calisthenie.json';a.click();S.bk=Date.now();save();render()},
 imp:()=>$('#imp').click(),
+cpy:()=>{const j=JSON.stringify(S),t=$('#ta');t.value=j;t.focus();t.select();S.bk=Date.now();save();let ok=false;try{ok=document.execCommand('copy')}catch(e){};(ok?Promise.resolve():navigator.clipboard?navigator.clipboard.writeText(j):Promise.reject()).then(()=>alert('Données copiées. Colle-les dans une note.'),()=>alert('Copie manuelle : le texte est dans la zone, sélectionne-le et copie-le.'))},
+pst:()=>{try{const o=JSON.parse($('#ta').value.trim());if(!Array.isArray(o.h))throw 0;S=Object.assign(D(),o);save();alert('Sauvegarde restaurée.');nav('home')}catch(x){alert('Texte invalide : colle exactement les données copiées.')}},
 rst:()=>{if(confirm('Effacer tout l’historique et les progressions ?')){S=D();save();nav('home')}}
 };
 document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(b&&A[b.dataset.a])A[b.dataset.a](b.dataset)});
