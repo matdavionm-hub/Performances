@@ -77,6 +77,217 @@ input[type=time]{background:var(--in);color:var(--tx);border:1.5px solid var(--l
 :root[data-theme=light] .dys .on{color:#fff}
 textarea{width:100%;min-height:120px;background:var(--in);color:var(--tx);border:1.5px solid var(--line);border-radius:12px;padding:10px;font:13px monospace;margin-bottom:8px}
 svg text{fill:var(--mu);font-size:11px}
+/* ---- Style « Phantom » (rouge / noir / blanc, HUD de jeu) : activé dans Réglages > Style ---- */
+.recb{background:var(--kg);color:#1a1200;font:400 34px/1.1 Anton,Impact,'Arial Narrow',sans-serif;text-transform:uppercase;letter-spacing:.04em;text-align:center;padding:12px 0;transform:rotate(-3deg);margin:16px -8px;animation:slam .55s cubic-bezier(.2,1.6,.4,1)}
+@keyframes slam{0%{transform:rotate(-3deg) scale(2.4);opacity:0}100%{transform:rotate(-3deg) scale(1);opacity:1}}
+.wipe{position:fixed;top:0;left:-20%;width:140%;height:100%;background:#E60012;z-index:90;pointer-events:none;transform:translateX(-130%) skewX(-18deg);animation:wipe .42s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes wipe{0%{transform:translateX(-130%) skewX(-18deg)}100%{transform:translateX(130%) skewX(-18deg)}}
+@keyframes stripes{from{background-position:0 0,0 0}to{background-position:88px 0,0 0}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+:root[data-sk=ph]{--bg:#0A0A0A;--card:#141414;--in:#0D0D0D;--line:#3a3a3a;--tx:#fff;--mu:#a3a3a3;--kg:#FFD400;--s:#E60012;--rep:#fff;--ok:#2ECC71;--ko:#FF4D5A;--bt:#222;--tmbg:#111;--tmb:#2a2a2a}
+:root[data-sk=ph] body{background:repeating-linear-gradient(135deg,transparent 0 30px,rgba(230,0,18,.07) 30px 60px),radial-gradient(rgba(255,255,255,.07) 1px,transparent 1.6px) 0 0/9px 9px,#0A0A0A;background-attachment:fixed;animation:stripes 30s linear infinite}
+:root[data-sk=ph] h1,:root[data-sk=ph] h2,:root[data-sk=ph] .big,:root[data-sk=ph] .cta,:root[data-sk=ph] .sec,:root[data-sk=ph] .back,:root[data-sk=ph] .dys button,:root[data-sk=ph] .b,:root[data-sk=ph] .nl b{font-family:Anton,Impact,'Arial Narrow','Roboto Condensed',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.03em}
+:root[data-sk=ph] h1{font-size:40px;transform:skewX(-6deg);text-shadow:3px 3px 0 #E60012;margin:10px 0 6px;letter-spacing:.02em}
+:root[data-sk=ph] h2{font-size:21px;transform:skewX(-6deg);display:inline-block;border-bottom:3px solid #E60012}
+:root[data-sk=ph] .card{border:0;border-left:5px solid #E60012;border-radius:0;background:#141414;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%)}
+:root[data-sk=ph] .card.ban{border-left-color:#FFD400;background:#1d1a05}
+:root[data-sk=ph] .big{border:0;border-left:5px solid #E60012;border-radius:0;background:#141414;clip-path:polygon(0 0,100% 0,calc(100% - 16px) 100%,0 100%);padding-right:30px;transition:transform .18s cubic-bezier(.2,1.6,.4,1)}
+:root[data-sk=ph] .big.today{background:#fff;color:#0A0A0A;box-shadow:none}
+:root[data-sk=ph] .big.today .mu{color:#333}
+:root[data-sk=ph] .big:active,:root[data-sk=ph] .cta:active,:root[data-sk=ph] .sec:active{transform:translate(3px,3px) scale(.98)}
+:root[data-sk=ph] .cta{border-radius:0;background:#E60012;color:#fff;font-size:24px;clip-path:polygon(16px 0,100% 0,calc(100% - 16px) 100%,0 100%);animation:pulse 2.4s ease-in-out infinite}
+:root[data-sk=ph] .cta.warn{background:#FFD400;color:#000}
+:root[data-sk=ph] .sec,:root[data-sk=ph] .dys button,:root[data-sk=ph] .rir button,:root[data-sk=ph] .feels button,:root[data-sk=ph] .step button,:root[data-sk=ph] .wui{border-radius:0;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+:root[data-sk=ph] .sec.on,:root[data-sk=ph] .dys .on{background:#E60012;color:#fff;border-color:#E60012}
+:root[data-sk=ph] .rir .on{background:#fff;color:#0A0A0A;border-color:#fff}
+:root[data-sk=ph] .feels .on{color:#000}
+:root[data-sk=ph] .feels [data-k=facile].on,:root[data-sk=ph] .feels [data-k=echec].on{color:#fff}
+:root[data-sk=ph] .note{border-radius:0;border-left-color:#E60012;background:#0d0d0d}
+:root[data-sk=ph] .b{border-radius:0;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);border-width:0;background:#222;padding:5px 14px}
+:root[data-sk=ph] .b-kg{background:#FFD400;color:#000}
+:root[data-sk=ph] .b-s{background:#E60012;color:#fff}
+:root[data-sk=ph] .b-rep{background:#fff;color:#000}
+:root[data-sk=ph] .b-ok{background:#2ECC71;color:#000}
+:root[data-sk=ph] .b-ko{background:#FF4D5A;color:#000}
+:root[data-sk=ph] .xp,:root[data-sk=ph] .sc{border-radius:0;height:14px;position:relative;transform:skewX(-14deg);background:#222}
+:root[data-sk=ph] .xp i{background:linear-gradient(90deg,#E60012,#FFD400)}
+:root[data-sk=ph] .xp::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(5% - 3px),#0A0A0A calc(5% - 3px) 5%)}
+:root[data-sk=ph] .rd:before{background:#E60012;width:5px}
+:root[data-sk=ph] .nc{border-radius:0;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);border:0;background:#2a2a2a;color:#a3a3a3}
+:root[data-sk=ph] .nc.dn{background:#fff;color:#0A0A0A}
+:root[data-sk=ph] .nc.cu{background:#E60012;color:#fff;outline:0;animation:pulse 1.4s ease-in-out infinite}
+:root[data-sk=ph] #tm{background:#E60012;color:#fff;border-top:0}
+:root[data-sk=ph] #tm button{border-radius:0;background:#0A0A0A;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+:root[data-sk=ph] .hint{color:#FFD400}
+:root[data-sk=ph] input[type=time],:root[data-sk=ph] select.sel,:root[data-sk=ph] input.sel,:root[data-sk=ph] textarea{border-radius:0}
+
+@keyframes rise{from{background-position:0 0,0 0,0 0}to{background-position:0 0,96px 0,0 0}}
+@keyframes scan{from{background-position:0 0,0 0,0 0}to{background-position:0 0,0 72px,0 0}}
+@keyframes wob{0%,100%{transform:rotate(-.6deg)}50%{transform:rotate(.6deg) scale(1.015)}}
+@keyframes slamb{0%{transform:skewX(-8deg) scale(2.2);opacity:0}100%{transform:skewX(-8deg) scale(1);opacity:1}}
+
+/* ---- Style p3 ---- */
+:root[data-sk=p3]{--bg:#06122B;--card:#0B2048;--in:#071735;--line:#1F4C94;--tx:#EAF6FF;--mu:#8FB3DE;--kg:#FFD166;--s:#3FD9FF;--rep:#A9C4FF;--ok:#4DF0B0;--ko:#FF6B8A;--bt:#12306A;--tmbg:#0B2048;--tmb:#1F4C94}
+:root[data-sk=p3] body{background:linear-gradient(180deg,rgba(63,217,255,.10),transparent 38%),repeating-linear-gradient(115deg,transparent 0 46px,rgba(63,217,255,.05) 46px 48px),#06122B;background-attachment:fixed;animation:rise 24s linear infinite}
+:root[data-sk=p3] h1,:root[data-sk=p3] h2,:root[data-sk=p3] .big,:root[data-sk=p3] .cta,:root[data-sk=p3] .sec,:root[data-sk=p3] .back,:root[data-sk=p3] .dys button,:root[data-sk=p3] .b,:root[data-sk=p3] .nl b{font-family:Oswald,'Arial Narrow','Roboto Condensed',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.04em}
+:root[data-sk=p3] h1{font-size:38px;font-weight:700;transform:skewX(-8deg);color:#fff;text-shadow:0 0 18px rgba(63,217,255,.55);margin:10px 0 6px}
+:root[data-sk=p3] h2{font-size:20px;font-weight:600;color:#3FD9FF;border-left:4px solid #3FD9FF;padding-left:10px}
+:root[data-sk=p3] .card{border:1px solid #1F4C94;border-top:3px solid #3FD9FF;border-radius:0;background:linear-gradient(160deg,rgba(18,52,110,.92),rgba(8,24,54,.95));clip-path:polygon(0 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%)}
+:root[data-sk=p3] .card.ban{border-top-color:#FFD166}
+:root[data-sk=p3] .big{border:1px solid #1F4C94;border-left:6px solid #3FD9FF;border-radius:0;background:linear-gradient(90deg,#0F2D63,#081a3c);clip-path:polygon(0 0,calc(100% - 22px) 0,100% 100%,0 100%);padding-right:36px;transition:transform .18s ease,filter .18s}
+:root[data-sk=p3] .big.today{background:linear-gradient(90deg,#fff,#CFEFFF);color:#06122B;border-left-color:#3FD9FF}
+:root[data-sk=p3] .big.today .mu{color:#1c3a6b}
+:root[data-sk=p3] .big:active,:root[data-sk=p3] .cta:active,:root[data-sk=p3] .sec:active{transform:translateX(5px);filter:brightness(1.25)}
+:root[data-sk=p3] .cta{border-radius:0;background:linear-gradient(90deg,#3FD9FF,#7BE9FF);color:#04122B;font-size:24px;font-weight:700;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 100%,20px 100%);box-shadow:0 0 22px rgba(63,217,255,.45)}
+:root[data-sk=p3] .cta.warn{background:#FFD166;color:#1a1200}
+:root[data-sk=p3] .sec,:root[data-sk=p3] .dys button,:root[data-sk=p3] .rir button,:root[data-sk=p3] .feels button,:root[data-sk=p3] .step button{border-radius:0;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 100%,8px 100%)}
+:root[data-sk=p3] .sec.on,:root[data-sk=p3] .dys .on{background:#3FD9FF;color:#04122B;border-color:#3FD9FF}
+:root[data-sk=p3] .rir .on{background:#fff;color:#06122B;border-color:#fff}
+:root[data-sk=p3] .feels .on{color:#04122B}
+:root[data-sk=p3] .note{border-radius:0;border-left-color:#3FD9FF;background:rgba(7,23,53,.9)}
+:root[data-sk=p3] .b{border-radius:0;border-width:0;background:#12306A;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%);padding:5px 14px}
+:root[data-sk=p3] .b-kg{background:#FFD166;color:#1a1200}:root[data-sk=p3] .b-s{background:#3FD9FF;color:#04122B}:root[data-sk=p3] .b-rep{background:#A9C4FF;color:#06122B}:root[data-sk=p3] .b-ok{background:#4DF0B0;color:#04122B}:root[data-sk=p3] .b-ko{background:#FF6B8A;color:#1a0008}
+:root[data-sk=p3] .xp,:root[data-sk=p3] .sc{border-radius:0;height:12px;background:#0b1f45;transform:skewX(-20deg);border:1px solid #1F4C94}
+:root[data-sk=p3] .xp i{background:linear-gradient(90deg,#1b78d6,#3FD9FF);box-shadow:0 0 10px #3FD9FF}
+:root[data-sk=p3] .rd:before{background:#3FD9FF;width:3px}
+:root[data-sk=p3] .nc{border-radius:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border:0;background:#12306A;color:#8FB3DE}
+:root[data-sk=p3] .nc.dn{background:#fff;color:#06122B}
+:root[data-sk=p3] .nc.cu{background:#3FD9FF;color:#04122B;outline:0;animation:pulse 1.4s ease-in-out infinite}
+:root[data-sk=p3] #tm{background:#0F3A8A;color:#fff;border-top:2px solid #3FD9FF}
+:root[data-sk=p3] #tm button{border-radius:0;background:#06122B;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 100%,8px 100%)}
+:root[data-sk=p3] .hint{color:#3FD9FF}
+:root[data-sk=p3] .recb{background:#3FD9FF;color:#04122B;font-family:Oswald,Impact,sans-serif;font-weight:700;clip-path:polygon(0 0,100% 0,calc(100% - 22px) 100%,22px 100%);transform:skewX(-8deg);animation:slamb .5s cubic-bezier(.2,1.4,.4,1)}
+.wipe.p3{background:linear-gradient(90deg,#06122B 0 33%,#0F3A8A 33% 66%,#3FD9FF 66%);animation:wipe .45s cubic-bezier(.7,0,.3,1) forwards}
+
+/* ---- Style p4 ---- */
+:root[data-sk=p4]{--bg:#110E00;--card:#1E1805;--in:#120F02;--line:#7a6100;--tx:#FFF8DC;--mu:#D6C378;--kg:#FFD21F;--s:#FF8A00;--rep:#FFFFFF;--ok:#7CE35B;--ko:#FF5C5C;--bt:#2f2606;--tmbg:#1E1805;--tmb:#7a6100}
+:root[data-sk=p4] body{background:radial-gradient(rgba(255,210,31,.14) 1.4px,transparent 2px) 0 0/12px 12px,repeating-linear-gradient(0deg,rgba(255,210,31,.05) 0 2px,transparent 2px 6px),#110E00;background-attachment:fixed;animation:scan 14s linear infinite}
+:root[data-sk=p4] h1,:root[data-sk=p4] h2,:root[data-sk=p4] .big,:root[data-sk=p4] .cta,:root[data-sk=p4] .sec,:root[data-sk=p4] .back,:root[data-sk=p4] .dys button,:root[data-sk=p4] .b,:root[data-sk=p4] .nl b{font-family:'Lilita One',Impact,'Arial Black',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.04em}
+:root[data-sk=p4] h1{font-size:38px;color:#FFD21F;transform:rotate(-1.5deg);text-shadow:3px 3px 0 #000,5px 5px 0 #FF8A00;margin:12px 0 8px;letter-spacing:.03em}
+:root[data-sk=p4] h2{font-size:21px;color:#FFD21F;display:inline-block;background:#000;padding:2px 12px;transform:rotate(-1deg);border:2px solid #FFD21F;border-radius:6px}
+:root[data-sk=p4] .card{border:3px solid #FFD21F;border-radius:14px;background:#1E1805;box-shadow:5px 5px 0 #FF8A00}
+:root[data-sk=p4] .card.ban{background:#FFD21F;color:#000}:root[data-sk=p4] .card.ban .mu{color:#3a2d00}
+:root[data-sk=p4] .big{border:3px solid #FFD21F;border-radius:14px;background:#1E1805;box-shadow:5px 5px 0 #000,5px 5px 0 1px #FF8A00;transition:transform .15s cubic-bezier(.2,1.8,.4,1),box-shadow .15s}
+:root[data-sk=p4] .big:nth-of-type(odd){transform:rotate(-.5deg)}:root[data-sk=p4] .big:nth-of-type(even){transform:rotate(.5deg)}
+:root[data-sk=p4] .big.today{background:#FFD21F;color:#000;border-color:#000;box-shadow:5px 5px 0 #FF8A00}
+:root[data-sk=p4] .big.today .mu{color:#3a2d00}
+:root[data-sk=p4] .big:active,:root[data-sk=p4] .cta:active,:root[data-sk=p4] .sec:active{transform:translate(4px,4px) rotate(0);box-shadow:1px 1px 0 #FF8A00}
+:root[data-sk=p4] .cta{border-radius:14px;background:#FFD21F;color:#000;border:3px solid #000;font-size:24px;box-shadow:5px 5px 0 #FF8A00;animation:wob 2.2s ease-in-out infinite}
+:root[data-sk=p4] .cta.warn{background:#FF8A00}
+:root[data-sk=p4] .sec,:root[data-sk=p4] .dys button,:root[data-sk=p4] .rir button,:root[data-sk=p4] .feels button,:root[data-sk=p4] .step button{border-radius:10px;border:2px solid #FFD21F}
+:root[data-sk=p4] .sec.on,:root[data-sk=p4] .dys .on{background:#FFD21F;color:#000}
+:root[data-sk=p4] .rir .on{background:#fff;color:#000;border-color:#fff}
+:root[data-sk=p4] .feels .on{color:#000}
+:root[data-sk=p4] .note{border-radius:10px;border:2px dashed #FFD21F;background:#120F02}
+:root[data-sk=p4] .b{border-radius:999px;border:2px solid #000;padding:4px 14px}
+:root[data-sk=p4] .b-kg{background:#FFD21F;color:#000}:root[data-sk=p4] .b-s{background:#FF8A00;color:#000}:root[data-sk=p4] .b-rep{background:#fff;color:#000}:root[data-sk=p4] .b-ok{background:#7CE35B;color:#000}:root[data-sk=p4] .b-ko{background:#FF5C5C;color:#000}
+:root[data-sk=p4] .xp,:root[data-sk=p4] .sc{border-radius:999px;height:16px;background:#000;border:2px solid #FFD21F}
+:root[data-sk=p4] .xp i{background:repeating-linear-gradient(135deg,#FFD21F 0 10px,#FF8A00 10px 20px);border-radius:999px}
+:root[data-sk=p4] .rd:before{background:#FFD21F;width:5px}
+:root[data-sk=p4] .nc{border:3px solid #FFD21F;background:#1E1805;color:#FFD21F}
+:root[data-sk=p4] .nc.dn{background:#FFD21F;color:#000}
+:root[data-sk=p4] .nc.cu{background:#FF8A00;color:#000;outline:0;animation:wob 1.2s ease-in-out infinite}
+:root[data-sk=p4] #tm{background:#FFD21F;color:#000;border-top:3px solid #000}
+:root[data-sk=p4] #tm button{background:#000;color:#FFD21F;border-radius:8px}
+:root[data-sk=p4] .hint{color:#FF8A00}
+:root[data-sk=p4] .recb{background:#FF3B3B;color:#fff;border:4px solid #000;border-radius:12px;box-shadow:6px 6px 0 #FFD21F;font-family:'Lilita One',Impact,sans-serif;animation:slam .55s cubic-bezier(.2,1.6,.4,1)}
+.wipe.p4{background:repeating-linear-gradient(0deg,#FFD21F 0 6px,#111 6px 12px);animation:wipe .4s steps(8) forwards}
+
+/* ---- Style ut (boîtes de dialogue en pixels : noir, blanc, jaune, orange) ---- */
+:root[data-sk=ut]{--bg:#000;--card:#000;--in:#000;--line:#fff;--tx:#fff;--mu:#b5b5b5;--kg:#FFFF00;--s:#00A2E8;--rep:#fff;--ok:#7CFC00;--ko:#FF3030;--bt:#1a1a1a;--tmbg:#000;--tmb:#fff}
+:root[data-sk=ut] body{background:#000}
+:root[data-sk=ut] h1,:root[data-sk=ut] h2,:root[data-sk=ut] .big,:root[data-sk=ut] .cta,:root[data-sk=ut] .sec,:root[data-sk=ut] .back,:root[data-sk=ut] .dys button,:root[data-sk=ut] .b,:root[data-sk=ut] .nl b{font-family:VT323,'Courier New',monospace;font-weight:400;letter-spacing:.06em;text-transform:uppercase}
+:root[data-sk=ut] h1{font-size:46px;color:#fff;margin:10px 0 6px}
+:root[data-sk=ut] h1:before{content:'* ';color:#FFFF00}
+:root[data-sk=ut] h2{font-size:26px;color:#FFFF00}
+:root[data-sk=ut] .card,:root[data-sk=ut] .note{border:4px solid #fff;border-radius:0;background:#000;box-shadow:none}
+:root[data-sk=ut] .note:before{content:'* ';color:#FFFF00}
+:root[data-sk=ut] .card.ban{border-color:#FFFF00}
+:root[data-sk=ut] .big{border:4px solid #FF8A00;border-radius:0;background:#000;font-size:26px;transition:none}
+:root[data-sk=ut] .big .mu{font-family:system-ui,sans-serif;text-transform:none;letter-spacing:0;font-size:14px}
+:root[data-sk=ut] .big:hover,:root[data-sk=ut] .big:focus{border-color:#FFFF00;color:#FFFF00}
+:root[data-sk=ut] .big:active,:root[data-sk=ut] .cta:active,:root[data-sk=ut] .sec:active{border-color:#FFFF00;color:#FFFF00;background:#000}
+:root[data-sk=ut] .big{position:relative;padding-left:46px}
+:root[data-sk=ut] .big:before{content:'♥';color:#FF0000;position:absolute;left:14px;top:50%;margin-top:-14px;font-size:26px;animation:blink 1s steps(2) infinite}
+:root[data-sk=ut] .big.today{border-color:#FFFF00;background:#000;color:#FFFF00;box-shadow:none}
+:root[data-sk=ut] .big.today .mu{color:#d8d8d8}
+:root[data-sk=ut] .cta{border:4px solid #FFFF00;border-radius:0;background:#000;color:#FFFF00;font-size:30px;animation:none}
+:root[data-sk=ut] .cta:before{content:'♥ ';color:#FF0000}
+:root[data-sk=ut] .cta.warn{border-color:#FF8A00;color:#FF8A00}
+:root[data-sk=ut] .sec,:root[data-sk=ut] .dys button,:root[data-sk=ut] .rir button,:root[data-sk=ut] .feels button,:root[data-sk=ut] .step button{border:3px solid #FF8A00;border-radius:0;background:#000;color:#FF8A00;font-size:20px}
+:root[data-sk=ut] .sec.on,:root[data-sk=ut] .dys .on{border-color:#FFFF00;color:#FFFF00;background:#000}
+:root[data-sk=ut] .sec.on:before,:root[data-sk=ut] .dys .on:before{content:'♥ ';color:#FF0000}
+:root[data-sk=ut] .rir .on{border-color:#FFFF00;color:#FFFF00;background:#000}
+:root[data-sk=ut] .feels .on{border-color:#FFFF00;color:#FFFF00;background:#000}
+:root[data-sk=ut] .b{border-radius:0;border:2px solid #fff;background:#000;padding:3px 10px;font-size:18px}
+:root[data-sk=ut] .b-kg{color:#FFFF00;border-color:#FFFF00}:root[data-sk=ut] .b-s{color:#00A2E8;border-color:#00A2E8}:root[data-sk=ut] .b-rep{color:#fff}:root[data-sk=ut] .b-ok{color:#7CFC00;border-color:#7CFC00}:root[data-sk=ut] .b-ko{color:#FF3030;border-color:#FF3030}
+:root[data-sk=ut] .xp,:root[data-sk=ut] .sc{border-radius:0;height:20px;background:#C00000;border:3px solid #fff}
+:root[data-sk=ut] .xp i{background:#FFFF00;border-radius:0}
+:root[data-sk=ut] .rd:before{background:#fff;width:4px}
+:root[data-sk=ut] .nc{border-radius:0;border:3px solid #fff;background:#000;color:#fff;font-family:VT323,monospace}
+:root[data-sk=ut] .nc.dn{background:#fff;color:#000}
+:root[data-sk=ut] .nc.cu{border-color:#FFFF00;color:#FFFF00;outline:0;animation:blink 1s steps(2) infinite}
+:root[data-sk=ut] #tm{background:#000;color:#FFFF00;border-top:4px solid #fff}
+:root[data-sk=ut] #tm button{background:#000;color:#FF8A00;border:3px solid #FF8A00;border-radius:0}
+:root[data-sk=ut] .hint{color:#FFFF00}
+:root[data-sk=ut] input,:root[data-sk=ut] select,:root[data-sk=ut] textarea{border-radius:0;border:3px solid #fff;background:#000;color:#fff}
+:root[data-sk=ut] .recb{background:#000;color:#FFFF00;border:4px solid #FFFF00;border-radius:0;font-family:VT323,monospace;font-size:40px;transform:none;animation:blink .5s steps(2) 6}
+@keyframes blink{50%{opacity:.15}}
+.wipe.ut{background:#000;left:0;width:100%;transform:none;animation:utfl .5s steps(1) forwards}
+@keyframes utfl{0%{opacity:0}16%{opacity:1}33%{opacity:0}50%{opacity:1}66%{opacity:0}83%{opacity:1}100%{opacity:0}}
+
+/* ---- Style jo (manga pop : violet, magenta, cyan, or) ---- */
+:root[data-sk=jo]{--bg:#150A29;--card:#24103F;--in:#180B2D;--line:#7A2BD1;--tx:#FFF;--mu:#C9B3F0;--kg:#FFD23F;--s:#19E3FF;--rep:#FF8FD0;--ok:#5CFFB0;--ko:#FF4F7B;--bt:#341A5C;--tmbg:#24103F;--tmb:#7A2BD1}
+:root[data-sk=jo] body{background:repeating-conic-gradient(from 0deg at 50% -10%,rgba(255,46,147,.13) 0 5deg,transparent 5deg 10deg),radial-gradient(rgba(25,227,255,.10) 1.5px,transparent 2.2px) 0 0/10px 10px,linear-gradient(180deg,#2A0F52,#150A29 60%);background-attachment:fixed;animation:halft 16s linear infinite}
+:root[data-sk=jo] h1,:root[data-sk=jo] h2,:root[data-sk=jo] .big,:root[data-sk=jo] .cta,:root[data-sk=jo] .sec,:root[data-sk=jo] .back,:root[data-sk=jo] .dys button,:root[data-sk=jo] .b,:root[data-sk=jo] .nl b{font-family:Bangers,Impact,'Arial Narrow',sans-serif;font-weight:400;letter-spacing:.05em;text-transform:uppercase}
+:root[data-sk=jo] h1{font-size:44px;font-style:italic;position:relative;background:linear-gradient(180deg,#fff 20%,#FFD23F 60%,#FF2E93);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:1.5px #150A29;filter:drop-shadow(3px 3px 0 #FF2E93);transform:rotate(-2deg);margin:12px 0 8px}
+:root[data-sk=jo] h1:after{content:'ゴゴゴ';position:absolute;right:0;top:-8px;font-size:18px;-webkit-text-stroke:0;filter:none;background:none;color:#FF2E93;-webkit-text-fill-color:#FF2E93;animation:shk .35s linear infinite}
+:root[data-sk=jo] h2{font-size:25px;font-style:italic;color:#19E3FF;text-shadow:2px 2px 0 #7A2BD1}
+:root[data-sk=jo] .card{border:3px solid #FF2E93;border-radius:6px;background:linear-gradient(160deg,#2F1458,#1B0D33);box-shadow:5px 5px 0 #7A2BD1;transform:skewX(-1.5deg)}
+:root[data-sk=jo] .card>*{transform:skewX(1.5deg)}
+:root[data-sk=jo] .card.ban{border-color:#FFD23F;box-shadow:5px 5px 0 #FF9F1C}
+:root[data-sk=jo] .big{border:3px solid #19E3FF;border-radius:4px;background:linear-gradient(90deg,#3A1A6B,#24103F);box-shadow:5px 5px 0 #FF2E93;font-size:25px;font-style:italic;transform:skewX(-6deg);transition:transform .15s cubic-bezier(.2,1.8,.4,1)}
+:root[data-sk=jo] .big>*{transform:skewX(6deg)}
+:root[data-sk=jo] .big.today{background:linear-gradient(90deg,#FFD23F,#FF9F1C);color:#2A0F52;border-color:#fff}
+:root[data-sk=jo] .big.today .mu{color:#4a2570}
+:root[data-sk=jo] .big:active,:root[data-sk=jo] .cta:active,:root[data-sk=jo] .sec:active{transform:skewX(-6deg) translate(4px,4px);box-shadow:1px 1px 0 #FF2E93}
+:root[data-sk=jo] .cta{border:3px solid #fff;border-radius:4px;background:linear-gradient(90deg,#FF2E93,#FF8F2E);color:#fff;font-size:28px;font-style:italic;text-shadow:2px 2px 0 #150A29;box-shadow:5px 5px 0 #19E3FF;transform:skewX(-6deg);animation:pulse 2s ease-in-out infinite}
+:root[data-sk=jo] .cta.warn{background:linear-gradient(90deg,#FFD23F,#FF9F1C);color:#2A0F52;text-shadow:none}
+:root[data-sk=jo] .sec,:root[data-sk=jo] .dys button,:root[data-sk=jo] .rir button,:root[data-sk=jo] .feels button,:root[data-sk=jo] .step button{border:2px solid #19E3FF;border-radius:4px;background:#24103F;color:#fff;transform:skewX(-6deg)}
+:root[data-sk=jo] .sec.on,:root[data-sk=jo] .dys .on{background:#19E3FF;color:#150A29;border-color:#fff}
+:root[data-sk=jo] .rir .on{background:#FFD23F;color:#150A29;border-color:#fff}
+:root[data-sk=jo] .feels .on{color:#150A29}
+:root[data-sk=jo] .note{border-radius:4px;border:2px dashed #FF2E93;background:#180B2D}
+:root[data-sk=jo] .b{border-radius:3px;border:2px solid #150A29;transform:skewX(-8deg);padding:3px 12px}
+:root[data-sk=jo] .b-kg{background:#FFD23F;color:#150A29}:root[data-sk=jo] .b-s{background:#19E3FF;color:#150A29}:root[data-sk=jo] .b-rep{background:#FF8FD0;color:#150A29}:root[data-sk=jo] .b-ok{background:#5CFFB0;color:#150A29}:root[data-sk=jo] .b-ko{background:#FF4F7B;color:#150A29}
+:root[data-sk=jo] .xp,:root[data-sk=jo] .sc{border-radius:2px;height:16px;background:#150A29;border:2px solid #fff;transform:skewX(-20deg)}
+:root[data-sk=jo] .xp i{background:linear-gradient(90deg,#FF2E93,#FFD23F)}
+:root[data-sk=jo] .rd:before{background:#FF2E93;width:5px}
+:root[data-sk=jo] .nc{border:3px solid #19E3FF;background:#24103F;color:#fff;font-family:Bangers,Impact,sans-serif;transform:skewX(-8deg);border-radius:4px}
+:root[data-sk=jo] .nc.dn{background:#FFD23F;color:#150A29;border-color:#fff}
+:root[data-sk=jo] .nc.cu{background:#FF2E93;color:#fff;border-color:#fff;outline:0;animation:pulse 1.2s ease-in-out infinite}
+:root[data-sk=jo] #tm{background:linear-gradient(90deg,#FF2E93,#7A2BD1);color:#fff;border-top:3px solid #fff}
+:root[data-sk=jo] #tm button{background:#150A29;border-radius:4px;border:2px solid #19E3FF}
+:root[data-sk=jo] .hint{color:#FFD23F}
+:root[data-sk=jo] input,:root[data-sk=jo] select,:root[data-sk=jo] textarea{border-radius:4px;border:2px solid #19E3FF}
+:root[data-sk=jo] .recb{background:linear-gradient(90deg,#FF2E93,#FFD23F);color:#150A29;border:4px solid #fff;border-radius:4px;font-family:Bangers,Impact,sans-serif;font-size:42px;font-style:italic;box-shadow:6px 6px 0 #19E3FF}
+@keyframes halft{from{background-position:0 0,0 0,0 0}to{background-position:0 0,100px 0,0 0}}
+@keyframes shk{0%{transform:translate(0,0)}25%{transform:translate(2px,-1px)}50%{transform:translate(-1px,2px)}75%{transform:translate(-2px,0)}100%{transform:translate(0,0)}}
+.wipe.jo{background:linear-gradient(115deg,#FF2E93 0 40%,#FFD23F 40% 55%,#19E3FF 55% 70%,#7A2BD1 70%);animation:wipe .4s cubic-bezier(.7,0,.3,1) forwards}
+/* sélecteur de style */
+.b{white-space:normal;max-width:100%}
+:root[data-sk],:root[data-sk] body{overflow-x:hidden}
+.sec.on .mu,.dys .on .mu{color:inherit;opacity:.85}
+.thg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.thc{display:block;text-align:left;padding:8px;border:2px solid #3a3f5c;border-radius:12px;background:#0d1020;color:#fff;font:inherit;min-height:0;cursor:pointer;position:relative}
+.thc.on{border-color:#fff;box-shadow:0 0 0 2px #fff}
+.thc .sw{display:flex;height:34px;border-radius:7px;overflow:hidden;margin-bottom:6px}
+.thc .sw i{flex:1}
+.thc b{display:block;font-size:15px}
+.thc span{display:block;font-size:12px;color:#a9b0cf;line-height:1.25}
+.thc.on:after{content:'✓';position:absolute;right:8px;top:6px;background:#fff;color:#000;border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:13px;font-weight:800}
+@media (prefers-reduced-motion:reduce){:root[data-sk] *,:root[data-sk] body,.recb{animation:none!important}.wipe{display:none}}
+
 .tap{cursor:pointer}.hint{font-size:12px;color:var(--s);font-weight:700;margin-top:6px}
 .rd{position:relative;display:flex;flex-direction:column-reverse;padding:8px 0}
 .rd:before{content:'';position:absolute;left:50%;top:0;bottom:0;width:6px;margin-left:-3px;background:var(--line);border-radius:3px}
@@ -94,7 +305,7 @@ svg text{fill:var(--mu);font-size:11px}
 <div id="tm"><b id="tt"></b><span><button data-a="t+">+15 s</button><button data-a="tx">Fermer</button></span></div>
 <input type="file" id="imp" accept=".json,application/json" hidden>
 <script>
-const VER=2,KEY='calisthenie_v1',SKEY='calisthenie_se',PKEY='calisthenie_prev',DAYS={mardi:'Mardi',mercredi:'Mercredi',samedi:'Samedi',dimanche:'Dimanche'},DOW={mardi:2,mercredi:3,samedi:6,dimanche:0};
+const VER=2,KEY='calisthenie_v1',SKEY='calisthenie_se',PKEY='calisthenie_prev',DAYS={mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi · Jambes',samedi:'Samedi',dimanche:'Dimanche'},DOW={mardi:2,mercredi:3,jeudi:4,samedi:6,dimanche:0};
 const $=s=>document.querySelector(s);
 const D=()=>({h:[],p:{},xp:0,lv:{pl:0,fl:1},bk:0,bw:[],vr:{},pg:{},pf:{n:'Principal',l:{}},go:[],wv:{n:0,w:0,on:1,len:4},wb:[],ms:[],t:0,ver:VER});
 
@@ -112,6 +323,12 @@ const P={
   {id:'di',n:'Dips · EMOM',t:'emom',m:10,v:4},
   {id:'pw',n:'Pompes lestées',t:'dp',sets:3,x0:3,v:11,rest:300},
   {id:'sp',n:'Scapula Pull-up',t:'kg',sets:4,reps:8,v:5,rest:240,note:'Pause de 3 s en haut de chaque rep.'}],
+ jeudi:[
+  {id:'sd',n:'Squat profond · Tenue',t:'hold',sets:2,v:30,rest:45,note:'Accroupi au fond, talons au sol, dos droit, coudes qui poussent les genoux. Mobilité des chevilles et des hanches : tiens le dossier de la chaise si besoin.'},
+  {id:'sb',n:'Squat bulgare',t:'kg',sets:3,reps:8,v:0,rest:120,note:'Pied arrière sur une chaise. Reps par jambe : fais les deux côtés, note le côté le plus faible. Descente en 3 s, genou dans l’axe du pied. Le lest (sac à dos) monte tout seul quand c’est propre.'},
+  {id:'ic',n:'Pont ischio · talons sur chaise',t:'reps',sets:3,v:8,rest:120,note:'Dos au sol, talons sur l’assise de la chaise, jambes presque tendues : monte le bassin en poussant dans les talons, descends en 3 s. Quand 3 × 12 est facile, passe sur une seule jambe (reps par jambe). Protège les ischios et les genoux.'},
+  {id:'pf',n:'Pont fessier unilatéral',t:'reps',sets:3,v:10,rest:90,note:'Reps par jambe. Pause de 2 s en haut, bassin bien à l’horizontale.'},
+  {id:'ml',n:'Mollets unilatéraux',t:'reps',sets:3,v:15,rest:60,note:'Reps par jambe, une main sur le dossier de la chaise pour l’équilibre. Montée complète, pause 1 s en haut, descente en 3 s (sur le bord d’une marche si tu en as une : plus d’amplitude). Protège le tendon d’Achille.'}],
  samedi:[HB,
   {id:'tp',n:'Planche',lad:'pl',t:'hold',sets:5,v:8,rest:120},
   {id:'ng',n:'Front Lever · Negative hold',fig:1,t:'hold',sets:4,v:3,rest:120,note:'Full FL : tiens le plus longtemps en haut, puis redescends en contrôle.'},
@@ -137,12 +354,40 @@ const T={
 T.dp={c:'kg',l:'Lest utilisé',mx:1,up:(v,x)=>v?(x<6?[v,x+1]:[v+2,3]):(x<15?[v,x+1]:[10,3]),dn:(v,x)=>v?(x>3?[v,x-1]:[Math.max(0,v-2),6]):[v,Math.max(3,x-1)]};
 for(const d in P)P[d]=P[d].map(e=>/Force/.test(e.n)?e.id==='di'?{...e,t:'dp',x0:3,rest:300,note:'3 → 6 reps ; quand 3×6 devient facile : +2 kg et retour à 3 reps.'}:e.id==='tr'?{id:'tf',n:'Tractions · Force',t:'dp',sets:3,x0:6,v:0,rest:300,note:'Poids du corps jusqu’à 15 strictes, puis lestées : 3 → 6 reps, puis +2 kg.'}:{...e,rest:300}:e);
 /* Technique à contrôler par série, zones sollicitées (c = coudes, p = poignets, e = épaules) */
-const TK={tr:['amp','elan'],tf:['amp','elan'],di:['amp','elan'],po:['amp','elan'],sp:['amp','pause'],pw:['amp','elan']},TKL={amp:'Amplitude complète',elan:'Sans élan',pause:'Pause 3 s respectée'};
-const ZN={tr:['c','e'],tf:['c','e'],di:['c','e'],po:['p','e','c'],pw:['p','e','c'],pl:['p','e','c'],tp:['p','e','c'],fl:['e','c'],ng:['e','c'],sp:['e'],ah:['e']},ZL={c:'Coudes',p:'Poignets',e:'Épaules'};
+const TK={tr:['amp','elan'],tf:['amp','elan'],di:['amp','elan'],po:['amp','elan'],sp:['amp','pause'],pw:['amp','elan'],sb:['amp','elan'],ic:['amp','pause'],pf:['amp','pause'],ml:['amp','pause'],},TKL={amp:'Amplitude complète',elan:'Sans élan',pause:'Pause 3 s respectée'};
+const ZN={tr:['c','e'],tf:['c','e'],di:['c','e'],po:['p','e','c'],pw:['p','e','c'],pl:['p','e','c'],tp:['p','e','c'],fl:['e','c'],ng:['e','c'],sp:['e'],ah:['e'],sd:['k','h'],sb:['k','h'],ic:['k','h'],pf:['h'],ml:['k'],},ZL={c:'Coudes',p:'Poignets',e:'Épaules',k:'Genoux',h:'Hanches / bas du dos'};
 for(const d in P)P[d]=P[d].map(e=>({...e,tk:TK[e.id],zn:ZN[e.id]||[],bw:e.id==='di'||e.id==='tf'?1:0}));
 /* Programme de base (copie) + exercices disponibles ; le programme réellement utilisé (P) est reconstruit depuis S.pg (modifications de l'utilisateur) */
 const P0={};for(const d in P)P0[d]=P[d].map(e=>({...e}));
 const LIB=(()=>{const m={};for(const d in P0)P0[d].forEach(e=>{const k=e.id+'|'+e.n;if(!m[k])m[k]=e});return Object.values(m)})();
+
+/* ---- Séance selon le matériel : chaque exercice qui exige un équipement absent est remplacé par un équivalent proche ---- */
+const EQL=[['bar','Barre de traction','Tractions, suspensions, front lever'],['dip','Barres de dips ou 2 chaises solides','Dips'],['ring','Anneaux ou sangles de suspension','Rowing, traction, front lever'],['par','Parallettes ou poignées au sol','Pompes profondes'],['wt','Lest (gilet ou sac à dos chargé)','Pompes lestées'],['band','Élastiques de résistance','Remplacent un peu de lest'],['tab','Table solide ou barre basse','Rowing inversé'],['box','Chaise, banc ou marche','Pieds surélevés, dragon flag'],['wall','Mur libre','Équilibre sur les mains']];
+const EQP_={none:[],park:['bar','dip','par'],home:['band','box','tab','wall'],all:EQL.map(x=>x[0])};
+const eqSet=()=>new Set(Array.isArray(UI.eq)?UI.eq:[]);
+const EQLV=['Intensité proche','Un peu plus facile','Nettement plus facile'];
+function eqMk(e,code,n,t,sets,v,rest,note,zn,lvl){return{id:'q_'+code,n,t,sets,v,rest,note,zn,tk:['amp','elan'],bw:0,lvl,from:e.id,fromN:nm(e),acc:['ah','sp','hb'].includes(e.id)?1:0}}
+function eqSub(e,q){const h=k=>q.has(k),id=e.id,hang=h('bar')||h('ring'),m=(...a)=>eqMk(e,...a);
+ if(id==='ah'&&!h('bar'))return m('sup','Superman · extensions dorsales','reps',3,10,90,'Au sol : lève bras et jambes, serre le haut du dos 2 s.',['e'],0);
+ if(id==='sp'&&!h('bar'))return h('ring')?m('spr','Scapula pull-up aux anneaux','reps',4,8,150,'Pause de 3 s en haut de chaque rep.',['e'],0):m('spp','Scapula push-up','reps',4,12,90,'En position de pompe, bras tendus : écarte et rapproche les omoplates.',['e'],1);
+ if((id==='tr'||id==='tf')&&!h('bar'))return h('ring')?m('rwr','Rowing aux anneaux · pieds en avant','reps',4,8,150,'Plus ton corps est incliné, plus c’est dur. Pieds surélevés quand 4 × 10 devient facile.',['c','e'],1):h('tab')?m('rwt','Rowing inversé sous table','reps',4,8,150,'Corps gainé, poitrine vers le bord de la table. Pieds surélevés (chaise) quand c’est facile.',['c','e'],1):m('ytw','Tirage au sol Y-T-W','reps',4,10,90,'Aucun point d’accroche : travail du dos sans traction, bien moins intense.',['e'],2);
+ if(id==='di'&&!h('dip'))return h('par')?m('pdp','Pompes sur parallettes · grande amplitude','reps',4,8,150,'Descends le plus bas possible, coudes serrés : proche des dips pour les triceps.',['p','e','c'],1):h('wt')?m('pdl','Pompes diamant lestées','reps',4,8,150,'Sac à dos chargé sur le dos, mains en diamant.',['p','e','c'],1):m('pdi','Pompes diamant','reps',4,10,120,'Mains en diamant, coudes serrés, pieds surélevés si c’est facile.',['p','e','c'],1);
+ if(id==='pw'&&!h('wt')&&pwStage()%5===0){const u=pwStage()===5;return h('band')&&!u?m('pwb','Pompes avec élastique dans le dos','reps',3,8,240,'Passe l’élastique dans le dos et sous les mains : la résistance remplace le lest.',['p','e','c'],1):u?m('pwu','Pompes unilatérales strictes','reps',3,3,240,'Poids du corps, un seul bras (assiste-toi du bout des doigts au besoin).',['p','e','c'],1):m('pwa','Pompes archer','reps',3,5,240,'Reps par côté : le travail se concentre sur un bras.',['p','e','c'],1)}
+ if(['fl','ng','fr'].includes(id)&&!hang)return h('box')?m('dfn','Dragon flag négatif · banc','hold',4,3,150,'Allongé sur le banc, tiens-le derrière la tête, descends tout gainé en 3 s.',['e','c'],1):m('hbl','Hollow Body · hold long','hold',4,25,90,'Bas du dos plaqué, bras tendus derrière la tête.',['e'],2);
+ if(id==='sb'&&!h('box'))return m('fen','Fentes arrière','reps',3,8,120,'Reps par jambe : recule un pied, genou arrière près du sol, genou avant dans l’axe.',['k','h'],1);
+ if(id==='ic'&&!h('box'))return m('sld','Leg curl glissé (serviette)','reps',3,8,120,'Allongé sur le dos, talons sur une serviette sur sol lisse : tends les jambes en glissant, remonte lentement.',['k','h'],1);
+ if(id==='mu'&&!hang)return m('exp','Pompes explosives','reps',5,5,180,'Pousse fort : les mains décollent du sol.',['p','e','c'],1);
+ if(id==='hs'&&!h('wall'))return m('pik',h('box')?'Pike push-up pieds surélevés':'Pike push-up','reps',4,6,150,'Hanches en l’air, tête vers le sol entre les mains.',['p','e','c'],1);
+ if(id==='oa'&&!hang)return h('tab')?m('rwu','Rowing inversé un bras','reps',3,5,180,'Un bras, l’autre main aide du bout des doigts.',['c','e'],1):m('ytw','Tirage au sol Y-T-W','reps',4,10,90,'Aucun point d’accroche : travail du dos sans traction, bien moins intense.',['e'],2);
+ return null}
+const EQI=[['Normal','Les remplaçants gardent leurs séries de départ'],['Renforcé','1 série en plus sur chaque remplaçant, pour garder une charge de travail proche'],['Ultra dur','Vraiment dur : +2 séries sur les remplaçants, +1 sur les autres exercices, plus de reps, repos raccourcis, tempo lent et dernière série à 0 rep en réserve']];
+const ULT=' ULTRA : descente en 3 s, pause 1 s en bas, dernière série à 0 rep en réserve. Pieds surélevés ou lest dès que possible.';
+function eqBuild(day){const q=eqSet(),lv=Math.max(0,Math.min(2,+UI.eqi|0));return P[day].map(o=>{let r=eqSub(o,q);
+ if(r){if(lv===1&&r.lvl>=1&&HASSETS(r)){r.sets=Math.min(6,r.sets+1);r.note+=' (1 série en plus pour compenser.)'}
+  if(lv===2){r.id+='_u';r.n+=' · ultra';if(HASSETS(r)){r.sets=Math.min(7,r.sets+2);r.v=Math.round(r.v*(r.t==='hold'?1.4:1.25))}r.rest=Math.max(60,Math.round(r.rest*.75/5)*5);r.note+=ULT;r.lvl=Math.max(0,r.lvl-1);r.ult=1}}
+ else if(lv===2&&HASSETS(o)){r={...o,sets:Math.min(7,o.sets+1),rest:Math.max(60,Math.round((o.rest||90)*.8/5)*5),note:(o.note||'')+ULT,up:1}}
+ return{o,r}})}
+let EQP=null;
 const XT=[{id:'po',n:'Pompes surélevées · Force',t:'reps',sets:3,v:8,rest:300,zn:['p','e','c'],tk:['amp','elan']},
  {id:'pp',n:'Planche Push-up',t:'reps',sets:4,v:3,rest:180,zn:['p','e','c'],tk:['amp','elan'],note:'Après la Full Planche : pompes en planche, corps gainé.'},
  {id:'fr',n:'Front Lever Raises',t:'reps',sets:4,v:3,rest:150,zn:['e','c'],tk:['amp','elan'],note:'Après le Full Front Lever : montées contrôlées de la barre au front lever.'},
@@ -220,12 +465,16 @@ async function loadSnaps(){let l=[];try{l=(await idb.run('snap','readonly',s=>s.
 function replaceState(o,label){backup(label);S=norm(o);buildP();save();V.last=null}
 
 /* ---- Réglages d'affichage et de rappels (propres à l'appareil, hors sauvegarde) ---- */
-const UK='calisthenie_ui',UD=()=>({th:'dark',z:1,cl:0,rt:'18:00',rd:{mardi:1,mercredi:1,samedi:1,dimanche:1}});
+const UK='calisthenie_ui',UD=()=>({th:'dark',z:1,cl:0,sk:'classic',rt:'18:00',rd:{mardi:1,mercredi:1,jeudi:1,samedi:1,dimanche:1}});
 let UI=(()=>{try{const o=JSON.parse(localStorage.getItem(UK)||'{}');return{...UD(),...o,rd:{...UD().rd,...(o.rd||{})}}}catch(e){return UD()}})();
 const saveUI=()=>{try{localStorage.setItem(UK,JSON.stringify(UI))}catch(e){}};
-function applyUI(){document.body.classList.toggle('clean',!!+UI.cl);const th=UI.th==='auto'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):UI.th,h=document.documentElement;
- if(th==='light')h.dataset.theme='light';else delete h.dataset.theme;h.style.setProperty('--z',[1,1.15,1.3].includes(+UI.z)?+UI.z:1);
- const m=document.querySelector('meta[name=theme-color]');if(m)m.content=th==='light'?'#F3F5FB':'#0E1220'}
+const THM=[['classic','Classique','Sobre, clair ou sombre',['#0E1220','#4DD6E8','#F5B53D','#5BE3A0']],['ph','Phantom','Rouge, noir et blanc',['#0A0A0A','#E60012','#FFFFFF','#FFD400']],['p3','Reload','Bleu nuit et cyan',['#06122B','#0F3A8A','#3FD9FF','#FFFFFF']],['p4','Golden','Jaune pop, ombres dures',['#110E00','#FFD21F','#FF8A00','#FFFFFF']],['ut','Pixel','Boîtes noires, cœur rouge',['#000000','#FFFFFF','#FF8A00','#FFFF00']],['jo','Bizarre','Manga violet et magenta',['#150A29','#7A2BD1','#FF2E93','#19E3FF']]];
+const SKF={ph:'Anton',p3:'Oswald:wght@500;700',p4:'Lilita+One',ut:'VT323',jo:'Bangers'},SKM={ph:'#0A0A0A',p3:'#06122B',p4:'#110E00',ut:'#000000',jo:'#150A29'};
+function applyUI(){document.body.classList.toggle('clean',!!+UI.cl);const sk=SKF[UI.sk]?UI.sk:null,h=document.documentElement;if(sk)h.dataset.sk=sk;else delete h.dataset.sk;
+ const old=document.getElementById('fnt');if(sk&&(!old||old.dataset.k!==sk)){if(old)old.remove();const l=document.createElement('link');l.id='fnt';l.dataset.k=sk;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+SKF[sk]+'&display=swap';document.head.appendChild(l)}
+ const th=UI.th==='auto'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):UI.th;
+ if(th==='light'&&!sk)h.dataset.theme='light';else delete h.dataset.theme;h.style.setProperty('--z',[1,1.15,1.3].includes(+UI.z)?+UI.z:1);
+ const m=document.querySelector('meta[name=theme-color]');if(m)m.content=sk?SKM[sk]:th==='light'?'#F3F5FB':'#0E1220'}
 try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',()=>{if(UI.th==='auto')applyUI()})}catch(e){}
 
 /* ---- Séance en cours (sauvegardée pour pouvoir reprendre) ---- */
@@ -371,7 +620,7 @@ function tick(){const l=Math.ceil((tEnd-(tP||Date.now()))/1000),r=$('#rt'),b=r||
 function rest(s){tP=0;clearInterval(tI);tEnd=Date.now()+s*1000;tick();tI=setInterval(tick,250)}
 
 /* ---- Échauffement et questionnaire de forme ---- */
-const WU=d=>{const ids=P[d].map(e=>e.id),l=[['Cercles de poignets','2 × 10 dans chaque sens'],['Flexions / extensions de poignets','2 × 10, doigts bien écartés'],['Cercles d’épaules + rotations avec élastique ou bâton','2 × 10'],['Scap pulls en suspension','2 × 8, bras tendus']];
+const WU=d=>{const ids=P[d].map(e=>e.id);if(ids.includes('sb'))return[['Cercles de chevilles','2 × 10 dans chaque sens'],['Squats lents au poids du corps','2 × 10, descente en 3 s'],['Ponts fessiers','2 × 12'],['Mobilité des hanches (90/90 ou fente basse)','1 × 8 par côté'],['Montées sur pointes','1 × 15']];const l=[['Cercles de poignets','2 × 10 dans chaque sens'],['Flexions / extensions de poignets','2 × 10, doigts bien écartés'],['Cercles d’épaules + rotations avec élastique ou bâton','2 × 10'],['Scap pulls en suspension','2 × 8, bras tendus']];
  if(ids.some(i=>i==='pl'||i==='tp'||i==='po'||i==='pw'||i==='pp'||i==='hs'))l.push(['Appuis sur les poignets (doigts vers les genoux)','2 × 20 s, charge progressive']);
  if(ids.some(i=>i==='pl'||i==='tp'))l.push(['Planche lean légère','2 × 10 s à mi-intensité']);
  if(ids.some(i=>i==='fl'||i==='ng'))l.push(['Tuck front lever léger','2 × 5 s à mi-intensité']);
@@ -400,12 +649,12 @@ function vPre(g){const top=t=>`<div class=row><span class=mu>Avant la séance</s
  const p=SE.pre,q=(k,l,o)=>`<div class=lab>${l}</div><div class=rir>${o.map(([v,t])=>`<button class="${p[k]===v?'on':''}" data-a=pq data-k=${k} data-v=${v}>${t}</button>`).join('')}</div>`,
   pm=Object.keys(ZL).filter(k=>SE.pn[k]>=4),mxp=Math.max(0,...Object.values(SE.pn));
  return top('Comment tu te sens ?')+`<div class=card>${q('sl','Sommeil',[[0,'😴 Mauvais'],[1,'😐 Moyen'],[2,'😊 Bon']])}${q('en','Énergie',[[0,'🪫 Basse'],[1,'🔋 Moyenne'],[2,'⚡ Haute']])}${q('so','Courbatures',[[0,'😖 Fortes'],[1,'😕 Légères'],[2,'😌 Aucune']])}</div>
-<div class=card><h2>Douleurs / gênes</h2><div class=mu>0 = rien · 10 = maximum</div>${Object.keys(ZL).map(k=>`<div class=lab>${ZL[k]}</div><div class=step><button data-a=pn data-k=${k} data-s=-1>−</button><output>${SE.pn[k]}/10</output><button data-a=pn data-k=${k} data-s=1>+</button></div>`).join('')}${pm.length?`<div class="note ${mxp>=7?'d':'w'}">⚠️ ${pm.map(k=>ZL[k].toLowerCase()+' '+SE.pn[k]+'/10').join(' · ')} : pas de montée de difficulté sur les exercices qui sollicitent ces zones${mxp>=7?'. À 7/10 ou plus : saute-les ou allège beaucoup':''}.</div>`:''}</div>
+<div class=card><h2>Douleurs / gênes</h2><div class=mu>0 = rien · 10 = maximum</div>${Object.keys(ZL).filter(k=>P[V.day].some(e=>(e.zn||[]).includes(k))).map(k=>`<div class=lab>${ZL[k]}</div><div class=step><button data-a=pn data-k=${k} data-s=-1>−</button><output>${SE.pn[k]||0}/10</output><button data-a=pn data-k=${k} data-s=1>+</button></div>`).join('')}${pm.length?`<div class="note ${mxp>=7?'d':'w'}">⚠️ ${pm.map(k=>ZL[k].toLowerCase()+' '+SE.pn[k]+'/10').join(' · ')} : pas de montée de difficulté sur les exercices qui sollicitent ces zones${mxp>=7?'. À 7/10 ou plus : saute-les ou allège beaucoup':''}.</div>`:''}</div>
 ${scCard()}<button class=cta data-a=prego>Continuer →</button><div class="mu hlp" style="text-align:center">Réponses facultatives : sans réponse, la séance est normale.</div>`}
 
 /* ---- Rappels : une app web ne peut pas programmer de notification sans serveur ; on génère donc des événements de calendrier récurrents avec alarme ---- */
-function icsText(){const[hh,mm]=UI.rt.split(':').map(Number),now=new Date(),pad=n=>String(n).padStart(2,'0'),code={mardi:'TU',mercredi:'WE',samedi:'SA',dimanche:'SU'},st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',ev=[];
- for(const k of Object.keys(DAYS)){if(!UI.rd[k])continue;const d=new Date(now.getFullYear(),now.getMonth(),now.getDate());d.setDate(d.getDate()+((DOW[k]-d.getDay()+7)%7));
+function icsText(){const[hh,mm]=UI.rt.split(':').map(Number),now=new Date(),pad=n=>String(n).padStart(2,'0'),code={mardi:'TU',mercredi:'WE',jeudi:'TH',samedi:'SA',dimanche:'SU'},st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z',ev=[];
+ for(const k of Object.keys(DAYS)){if(!UI.rd[k]||!(k in DOW))continue;const d=new Date(now.getFullYear(),now.getMonth(),now.getDate());d.setDate(d.getDate()+((DOW[k]-d.getDay()+7)%7));
   ev.push(['BEGIN:VEVENT','UID:carnet-'+k+'@calisthenie','DTSTAMP:'+st,'DTSTART:'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'T'+pad(hh)+pad(mm)+'00','DURATION:PT1H','RRULE:FREQ=WEEKLY;BYDAY='+code[k],'SUMMARY:Séance calisthénie · '+DAYS[k],'DESCRIPTION:Ouvre ton carnet de séance.','BEGIN:VALARM','TRIGGER:PT0M','ACTION:DISPLAY','DESCRIPTION:Séance calisthénie','END:VALARM','END:VEVENT'].join('\r\n'))}
  return ev.length?'BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Carnet//FR\r\nCALSCALE:GREGORIAN\r\n'+ev.join('\r\n')+'\r\nEND:VCALENDAR\r\n':''}
 const remBan=()=>{const n=new Date(),to=Object.keys(DOW).find(k=>DOW[k]===n.getDay()),[hh,mm]=UI.rt.split(':').map(Number);
@@ -461,13 +710,15 @@ home:()=>{const td=new Date().getDay(),to=Object.keys(DOW).find(k=>DOW[k]===td),
 <div class="card tap" data-a=road data-k=lv><div class=row><b>Niv. ${lv()} · ${rank()}</b><span class=mu>${S.xp} XP</span></div><div class=xp><i style="width:${S.xp%300/3}%"></i></div>
 <div class="row mu" style="margin-top:12px"><span>Séances <b>${n}</b></span><span>7 derniers jours <b>${wk}</b></span><span>Records 🏆 <b>${prs}</b></span></div><div class=hint>Voir la route des trophées ›</div></div>
 ${RS?`<button class="big today" data-a=rsm>▶ Reprendre la séance<span class="mu keep">${DAYS[RS.day]} · exercice ${RS.SE.g.ei+1}</span></button>`:''}<h2>🏋️ Mes séances</h2>`+Object.keys(DAYS).map(k=>`<button class="big${k===to?' today':''}" data-a=day data-d=${k}>${DAYS[k]}<span class="mu keep">${P[k].length} exercices${k===to?' · aujourd’hui':''}</span></button>`).join('')+`<h2>📊 Mon suivi</h2><button class=big data-a=go data-t=stats>📊 Progression<span class=mu>Graphiques, records, 1RM estimé</span></button>`+`<button class=big data-a=go data-t=goals>🎯 Objectifs<span class=mu>${S.go.length?S.go.length+' objectif'+(S.go.length>1?'s':'')+' · '+goalsDone()+' atteint'+(goalsDone()>1?'s':''):'Jalons chiffrés et date estimée'}</span></button><h2>🛠 Configuration</h2><button class=big data-a=go data-t=pg>🛠 Programme et vague<span class=mu>Modifier les exercices, séries, repos · périodisation</span></button><button class=big data-a=go data-t=set>⚙️ Réglages<span class=mu>Thème, rappels, sauvegarde, historique, réinitialisation</span></button>`},
-day:()=>back('home')+`<h1>${DAYS[V.day]}</h1>${wvOn()?wvCard():''}<p class=mu>${P[V.day].length} exercices · ${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</p>
-<button class=big data-a=prog>📜 Programme du jour<span class=mu>Objectifs et variables à faire progresser</span></button>
-<button class=big data-a=ses>▶ Démarrer la séance<span class=mu>La séance normale : c’est ici que tu notes tes séries</span></button>
-<button class=big data-a=ses data-x=1>⚡ Version courte (express)<span class=mu>Si tu manques de temps (~30 min) : sans Hollow Body, Arch Hang ni Scapula Pull-up</span></button>
-<button class=big data-a=vars>🔀 Variantes<span class=mu>Changer de variante d’un exercice (plateau ou nouvelle vague)</span></button>
-<button class=big data-a=missv>😴 Séance manquée<span class=mu>Rattraper, version express ou sauter sans rien perdre</span></button>`,
-prog:()=>{const d=V.day;return back('home')+`<h1>${DAYS[d]}</h1>${V.ask&&RS?`<div class="card ban"><b>Une séance est déjà en pause (${DAYS[RS.day]})</b><div class="mu hlp" style="margin:4px 0 8px">Reprends-la, ou remplace-la par une nouvelle (la séance en pause sera perdue).</div><button class=cta data-a=rsm>▶ Reprendre la séance en pause</button><button class=sec data-a=ses data-ok=1 data-x=${V.ask.x}>Remplacer par une nouvelle</button><button class=sec data-a=ask0>Annuler</button></div>`:''}<button class=cta data-a=ses>▶ Lancer la séance</button><div style="margin:6px 0"><button class=sec data-a=ses data-x=1>⚡ Version courte</button><button class=sec data-a=vars>🔀 Variantes</button><button class=sec data-a=missv>😴 Séance manquée</button></div>${wvOn()?wvCard():''}${sugg()}<p class=hlp><span class="b b-kg">Lest</span> <span class="b b-s">Temps de maintien</span> <span class="b b-rep">Reps / sommets</span></p><p class="mu hlp">Les badges colorés sont les variables qui progressent. ▲ = gain depuis le programme de départ.</p>`
+eq:()=>{const q=eqSet(),iv=Math.max(0,Math.min(2,+UI.eqi|0)),tg=(on,a,l,sub)=>`<button class="sec${on?' on':''}" style="display:block;width:100%;text-align:left" data-a=${a.a} ${a.d||''}>${on?'☑':'☐'} ${l}${sub?`<span class=mu style="display:block;font-size:13px;font-weight:400">${sub}</span>`:''}</button>`;
+ return back('prog')+`<h1>Séance selon mon matériel</h1><p class="mu hlp">Coche ce que tu as sous la main. Chaque exercice qui en demande un que tu n’as pas est remplacé par un équivalent aussi proche que possible, avec la même logique de progression.</p>
+<div class=card><h2>1 · Où t’entraînes-tu ?</h2><div class=mu style="margin-bottom:6px">Raccourcis (tu pourras ajuster ensuite)</div><button class=sec data-a=eqpre data-v=none>🏠 Sans aucun matériel</button><button class=sec data-a=eqpre data-v=home>🛋 Maison basique</button><button class=sec data-a=eqpre data-v=park>🌳 Parc street workout</button><button class=sec data-a=eqpre data-v=all>🏟 Tout le matériel</button></div>
+<div class=card><h2>2 · Ton matériel</h2>${EQL.map(([k,l,sb])=>tg(q.has(k),{a:'eqt',d:'data-k='+k},l,sb)).join('')}</div>
+<div class=card><h2>3 · Intensité</h2><div class=mu style="margin-bottom:6px">Un remplaçant est parfois un peu plus facile. À quel point veux-tu que ce soit dur ?</div>${EQI.map(([n,d],i)=>tg(iv===i,{a:'eqo',d:'data-k=eqi data-v='+i},n,d)).join('')}</div>
+<button class=cta data-a=eqn>Voir ma séance adaptée ›</button>`},
+eqp:()=>{const d=V.day,L=eqBuild(d),n=L.filter(x=>x.r&&!x.r.up).length;
+ return back('eq')+`<h1>Ta séance adaptée</h1><p class="mu hlp">${DAYS[d]} · ${EQI[Math.max(0,Math.min(2,+UI.eqi|0))][0]} · ${n?n+' exercice'+(n>1?'s':'')+' remplacé'+(n>1?'s':''):'aucun remplacement nécessaire'}</p>`+L.map(({o,r})=>r?(r.up?`<div class=card><b>💪 ${nm(o)}</b><div class=mu style="margin:4px 0">${r.sets} × ${r.t==='hold'?'maintien':r.t==='dp'||r.t==='kg'?'charge':'reps'} · repos ${Math.round(r.rest/60*10)/10} min</div><div class="mu hlp">Mode ultra : 1 série en plus et repos raccourci.</div></div>`:`<div class="card"><div class=mu>🔄 ${r.fromN}</div><b>${r.n}</b><div class=mu style="margin:4px 0">${r.sets} × ${r.t==='hold'?r.v+' s':r.v+' reps'} · repos ${Math.round(r.rest/60*10)/10} min</div><div class="mu hlp">${r.note}</div><div><span class="b ${r.lvl>1?'b-ko':r.lvl?'b-kg':'b-ok'}">${EQLV[r.lvl]}</span></div></div>`):`<div class=card><b>✅ ${nm(o)}</b><div class=mu>Inchangé</div></div>`).join('')+`<div class="note hlp">Les exercices de remplacement ont leur propre progression : elle monte séance après séance, sans toucher à celle de tes exercices habituels. Les valeurs de départ sont prudentes : ajuste-les à la première séance.</div><button class=cta data-a=eqgo>▶ Lancer cette séance</button><button class=sec data-a=eq>◀ Modifier mon matériel</button>`},
+prog:()=>{const d=V.day;return back('home')+`<h1>${DAYS[d]}</h1>${V.ask&&RS?`<div class="card ban"><b>Une séance est déjà en pause (${DAYS[RS.day]})</b><div class="mu hlp" style="margin:4px 0 8px">Reprends-la, ou remplace-la par une nouvelle (la séance en pause sera perdue).</div><button class=cta data-a=rsm>▶ Reprendre la séance en pause</button><button class=sec data-a=ses data-ok=1 data-x=${V.ask.x}>Remplacer par une nouvelle</button><button class=sec data-a=ask0>Annuler</button></div>`:''}<button class=cta data-a=ses>▶ Lancer la séance</button><div style="margin:6px 0"><button class=sec data-a=ses data-x=1>⚡ Version courte</button><button class=sec data-a=eq>🎒 Selon mon matériel</button><button class=sec data-a=vars>🔀 Variantes</button><button class=sec data-a=missv>😴 Séance manquée</button></div>${wvOn()?wvCard():''}${V.day==='jeudi'?'<div class="note hlp">🦵 Séance jambes : il te faut seulement un sol et une chaise. Elle suit la phase de la vague (charge, décharge) mais ne la fait pas avancer. Les 4 autres séances comptent pour la vague.</div>':''}${sugg()}<p class=hlp><span class="b b-kg">Lest</span> <span class="b b-s">Temps de maintien</span> <span class="b b-rep">Reps / sommets</span></p><p class="mu hlp">Les badges colorés sont les variables qui progressent. ▲ = gain depuis le programme de départ.</p>`
  +P[d].map(e=>{const v=cur(d,e),x=curx(d,e),rb=restBase(d,e);return `<div class=card><div class=row><h2>${nm(e)}</h2>${badge(e,v,x)}</div><div class=mu>${desc(e,v,x)}${e.t!=='pyr'&&e.t!=='emom'?' · repos '+mmss(rb)+(rb!==(e.rest||90)?' (ajusté)':''):''}</div>${lt(d,e)}${e.t==='pyr'?`<div class=pyr>${seq(v).map(r=>`<span class="${r>=5?'hi':''}">${r}</span>`).join('')}</div><div class="mu hlp">Repos : 40 s en montée (1–4) et descente (4–1) · ${mmss(x)} en zone critique (dès 5 reps). Avant d’ajouter un sommet, ce repos baisse de 10 s à chaque progression (jusqu’à 1:00).</div>`:''}${e.note?`<div class="note${e.id==='pw'?' hlp':''}">${e.note}</div>`:''}${gl(e)}${e.t==='emom'?`<div class="note hlp">Progression : +2 min jusqu’à 12 min, puis +1 rep/min et retour à 10 min.</div>`:''}${e.rl?`<div class="note hlp">Repos automatique : il baisse de 10 s toutes les 2 séances réussies (plancher 60 %) et remonte si la séance est dure.</div>`:''}${e.id==='pw'?pwUI():''}${varHint(d,e)}${e.lad?`<div class=row style="margin-top:8px"><span class=mu>Niveau</span><span><button class=sec data-a=lvl data-k=${e.lad} data-s=-1>◀</button><button class=sec data-a=lvl data-k=${e.lad} data-s=1>▶</button></span></div>`:''}</div>`}).join('')},
 ses:()=>{const g=SE.g,d=V.day,E=SQ();if(g.ph==='pre'||g.ph==='wu')return vPre(g);
  const e=E[g.ei],r=SE.ex[e.id],i=g.si,n=e.t==='emom'?1:r.d.length,lst=i===n-1,nx=E[g.ei+1],hold=e.t==='hold',em=e.t==='emom',
@@ -490,7 +741,7 @@ ${g.msg?`<div class=note>${g.msg}</div>`:''}<button class=cta data-a=ok>${o.c?'�
  +(pj>=0?`<div class=card><div class=mu>Série ${pj+1} : effort pas renseigné</div><div class=lab>${hold?'Tu aurais pu tenir encore…':'RIR de cette série'}</div><div class=rir>${RO(hold).map(([v,l])=>`<button data-a=sqp data-j=${pj} data-v=${v}>${l}</button>`).join('')}</div></div>`:'')
  +(lst?(nx?`<div class=card><div class=mu>À suivre</div><h2>${nm(nx)}</h2><div class=mu>${desc(nx,cur(d,nx),curx(d,nx))}</div>${lt(d,nx)}</div>`:'')+`<button class="cta${wn?' warn':''}" data-a=nxt>${wn?'⚠️ Continuer sans répondre':nx?'Exercice suivant →':'🏁 Terminer la séance'}</button>`
  :`<div class=card><div class=mu>Prochaine série (${i+2}/${n})</div><b>${hold?(g.cur2||g.cur)+' s':tt(e,r,i+1)}</b>${beat(d,e,i+1,n)}</div><button class="cta${wn?' warn':''}" data-a=nxt>${wn?'⚠️ Continuer sans répondre':'▶ Série suivante'}</button>`)},
-res:()=>{const h=V.last;return `<h1>Séance terminée 🔥</h1><div class=card><div class=row><b>+${h.xp} XP</b><span class=mu>Niv. ${lv()} · ${rank()}</span></div>${h.sc!=null?`<div class=mu>Récupération du jour : ${h.sc}/100</div>`:''}${h.rd==='low'?'<div class=mu>🔋 Séance allégée</div>':''}${h.ex?'<div class=mu>⚡ Séance express</div>':''}${h.wk!=null?`<div class=mu>🌊 ${WVN[h.wk][0]}</div>`:''}</div>${h.ro?'<div class="card ban"><b>🌊 Vague terminée !</b><div class="mu hlp">Nouvelle vague : les cibles repartent un cran plus bas pour reconstruire plus haut. Pense à varier une variante (écran du jour).</div></div><div class=card><h2>📅 Bilan de la vague</h2>'+(S.wb.length?`<div class=mu>${S.wb[S.wb.length-1].n} séances · ${S.wb[S.wb.length-1].pr} record${S.wb[S.wb.length-1].pr>1?'s':''} · ${S.wb[S.wb.length-1].xp} XP</div>${mvRows(S.wb[S.wb.length-1].mv)}`:'')+'<button class=sec data-a=go data-t=bil>Tous les bilans</button><button class=sec data-a=exp>⬇ Sauvegarder maintenant (conseillé)</button></div>':''}${bkBan()}`
+res:()=>{const h=V.last;return `<h1>Séance terminée 🔥</h1><div class=card><div class=row><b>+${h.xp} XP</b><span class=mu>Niv. ${lv()} · ${rank()}</span></div>${h.res.some(r=>r.pr&&r.pr.length)?'<div class=recb>New record</div>':''}${h.sc!=null?`<div class=mu>Récupération du jour : ${h.sc}/100</div>`:''}${h.rd==='low'?'<div class=mu>🔋 Séance allégée</div>':''}${h.ex?'<div class=mu>⚡ Séance express</div>':''}${h.wk!=null?`<div class=mu>🌊 ${WVN[h.wk][0]}</div>`:''}</div>${h.ro?'<div class="card ban"><b>🌊 Vague terminée !</b><div class="mu hlp">Nouvelle vague : les cibles repartent un cran plus bas pour reconstruire plus haut. Pense à varier une variante (écran du jour).</div></div><div class=card><h2>📅 Bilan de la vague</h2>'+(S.wb.length?`<div class=mu>${S.wb[S.wb.length-1].n} séances · ${S.wb[S.wb.length-1].pr} record${S.wb[S.wb.length-1].pr>1?'s':''} · ${S.wb[S.wb.length-1].xp} XP</div>${mvRows(S.wb[S.wb.length-1].mv)}`:'')+'<button class=sec data-a=go data-t=bil>Tous les bilans</button><button class=sec data-a=exp>⬇ Sauvegarder maintenant (conseillé)</button></div>':''}${bkBan()}`
  +h.res.map(r=>`<div class=card><div class=row><h2>${r.n}</h2><span class="b ${r.a==='up'?'b-ok':r.a==='down'?'b-ko':'b-mu'}">${r.a==='up'?'▲ Progression':r.a==='down'?'▼ Décharge':'＝ Maintien'}</span></div>${r.pr&&r.pr.length?`<div style="margin:6px 0"><span class="b b-kg">🏅 Record : ${r.pr.join(' · ')}</span></div>`:''}<div class=mu>${r.msg}</div><div style="margin-top:8px">${r.ns?'Prochaine étape : <b>'+r.ns+'</b>':'Prochaine fois : '+badge(r,r.next,r.nx)}</div>${xt(h,r)}</div>`).join('')
  +`<button class=cta data-a=go data-t=home>Retour à l’accueil</button>`},
 vars:()=>back('prog')+`<h1>Variantes · ${DAYS[V.day]}</h1><p class="mu hlp">Une variante change légèrement l’exercice pour relancer la progression. Les cibles sont réduites quand tu en changes.</p>`+(P[V.day].filter(e=>VAR[e.id]).map(e=>`<div class=card><h2>${nm(e)}</h2>${varUI(V.day,e)}</div>`).join('')||'<div class=card><div class=mu>Aucun exercice de ce jour n’a de variante.</div></div>'),
@@ -527,10 +778,11 @@ sav:()=>back('home')+`<h1>Sauvegarde</h1><div class=card><h2>Copies automatiques
 <div class=card><h2>Par texte</h2><p class="mu hlp">Fonctionne partout, même dans l’appli Android. Copie tes données dans une note ; pour restaurer, colle-les ici.</p><textarea id=ta placeholder="Colle ici tes données, puis appuie sur Restaurer"></textarea><button class=sec data-a=cpy>📋 Copier mes données</button><button class=sec data-a=pst>✅ Restaurer depuis le texte</button></div>`,
 stats:()=>{const ss=series();return back('home')+`<h1>Progression</h1><button class=big data-a=go data-t=bil>📅 Bilans<span class=mu>Fin de vague et bilan annuel</span></button><p class="mu hlp">Performance, volume, volume-charge et 1RM estimé (formule d’Epley, poids de corps inclus pour tractions et dips quand il est renseigné).</p>${bwCard()}${balCard()}`+(S.bw.length>1?`<div class=card><h2>Poids de corps</h2>${chart(S.bw.map(b=>({d:b.d,v:b.kg})))}</div>`:'')+recCard()+(ss.length?ss.map(statCard).join(''):'<p class="mu hlp">Les graphiques apparaissent après tes premières séances.</p>')},
 set:()=>back('home')+`<h1>Réglages</h1>
-<div class=card><h2>Thème</h2><div class=dys>${[['dark','🌙 Sombre'],['light','☀️ Clair'],['auto','📱 Auto']].map(([k,l])=>`<button class="${UI.th===k?'on':''}" data-a=ui data-k=th data-v=${k}>${l}</button>`).join('')}</div></div>
+<div class=card><h2>🎨 Apparence</h2><div class=thg>${THM.map(([k,n,d,c])=>`<button class="thc${(UI.sk||'classic')===k?' on':''}" data-a=ui data-k=sk data-v=${k}><div class=sw>${c.map(x=>`<i style="background:${x}"></i>`).join('')}</div><b>${n}</b><span>${d}</span></button>`).join('')}</div>
+${SKF[UI.sk]?'<div class="mu hlp" style="margin-top:8px">Ce style est toujours sombre. Il s’applique à toute l’app, y compris pendant la séance.</div>':`<div class=lab style="margin-top:12px">Mode du style Classique</div><div class=dys>${[['dark','🌙 Sombre'],['light','☀️ Clair'],['auto','📱 Auto']].map(([k,l])=>`<button class="${UI.th===k?'on':''}" data-a=ui data-k=th data-v=${k}>${l}</button>`).join('')}</div>`}</div>
 <div class=card><h2>🧹 Affichage</h2><div class=dys>${[[0,'Complet'],[1,'Épuré']].map(([k,l])=>`<button class="${+UI.cl===k?'on':''}" data-a=ui data-k=cl data-v=${k}>${l}</button>`).join('')}</div><div class=mu>Épuré : masque les textes d’explication et les sous-titres. Les chiffres, les alertes et les conseils importants restent.</div></div>
 <div class=card><h2>Taille du texte</h2><div class=dys>${[[1,'Normal'],[1.15,'Grand'],[1.3,'Très grand']].map(([k,l])=>`<button class="${+UI.z===k?'on':''}" data-a=ui data-k=z data-v=${k}>${l}</button>`).join('')}</div></div>
-<div class=card><h2>⏰ Rappels de séance</h2><p class="mu hlp">Une page web ne peut pas envoyer de notification programmée à elle seule. Le plus fiable : ajouter des événements récurrents à ton calendrier, avec alarme. Ton téléphone te prévient ensuite, même app fermée.</p><div class=lab>Heure du rappel</div><input type=time id=rt value="${UI.rt}"><div class=lab style="margin-top:10px">Jours</div><div>${Object.keys(DAYS).map(k=>`<button class="sec${UI.rd[k]?' on':''}" data-a=rdt data-k=${k}>${DAYS[k]}</button>`).join('')}</div><button class=cta data-a=ics>📅 Ajouter au calendrier</button><div class="mu hlp">Un fichier .ics est téléchargé : ouvre-le pour l’ajouter à Google Agenda, Calendrier iPhone ou Outlook. Pour changer l’heure plus tard, supprime les anciens événements puis recommence.</div></div>
+<div class=card><h2>⏰ Rappels de séance</h2><p class="mu hlp">Une page web ne peut pas envoyer de notification programmée à elle seule. Le plus fiable : ajouter des événements récurrents à ton calendrier, avec alarme. Ton téléphone te prévient ensuite, même app fermée.</p><div class=lab>Heure du rappel</div><input type=time id=rt value="${UI.rt}"><div class=lab style="margin-top:10px">Jours</div><div>${Object.keys(DAYS).filter(k=>k in DOW).map(k=>`<button class="sec${UI.rd[k]?' on':''}" data-a=rdt data-k=${k}>${DAYS[k]}</button>`).join('')}</div><button class=cta data-a=ics>📅 Ajouter au calendrier</button><div class="mu hlp">Un fichier .ics est téléchargé : ouvre-le pour l’ajouter à Google Agenda, Calendrier iPhone ou Outlook. Pour changer l’heure plus tard, supprime les anciens événements puis recommence.</div></div>
 <button class=big data-a=go data-t=hist>📈 Historique<span class=mu>${S.h.length} séance${S.h.length>1?'s':''} enregistrée${S.h.length>1?'s':''}</span></button>
 ${bk()}
 <div class=card><h2>💾 Rappel de sauvegarde</h2><p class="mu hlp">L’app te prévient quand ta dernière sauvegarde en fichier date de plus de :</p><div class=dys>${[3,7,14,30].map(v=>`<button class="${(UI.bkd||7)===v?'on':''}" data-a=bkd data-v=${v}>${v} j</button>`).join('')}</div><div class=mu>${S.bk?'Dernière sauvegarde : '+dfr(S.bk)+' (il y a '+bkDays()+' j)':'Aucune sauvegarde en fichier pour l’instant.'}</div></div>
@@ -546,7 +798,8 @@ function render(){const y=scrollY;$('#app').innerHTML=VW[V.v]();scrollTo(0,y)}
 V.st=[];V.sk=0;
 function nav(v,bk){V.ask=null;V.rz=null;V.rze=0;if(v==='hist'&&V.v!=='hist')V.hn=30;if(!bk&&v!==V.v&&v!=='home'&&v!=='ses'&&V.v!=='ses'&&V.v!=='res'){V.st.push({v:V.v,y:scrollY,day:V.day,rt:V.rt});try{history.pushState(null,'')}catch(e){}}
  if(v==='home')V.st=[];
- V.v=v;render();scrollTo(0,0);if(v==='sav'){V.snaps=null;loadSnaps()}}
+ V.v=v;render();scrollTo(0,0);if(v==='sav'){V.snaps=null;loadSnaps()}wipe()}
+function wipe(){if(!SKF[UI.sk])return;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}const w=document.createElement('div');w.className='wipe '+UI.sk;document.body.appendChild(w);setTimeout(()=>w.remove(),500)}
 function popView(){const s=V.st.pop();if(!s)return false;V.v=s.v;V.day=s.day;V.rt=s.rt;if(s.v==='sav'){V.snaps=null;loadSnaps()}render();scrollTo(0,s.y);setTimeout(()=>scrollTo(0,s.y),60);return true}
 addEventListener('popstate',()=>{if(V.sk>0){V.sk--;return}if(V.v==='ses'||V.v==='res'){try{history.pushState(null,'')}catch(e){}return}popView()});
 
@@ -586,16 +839,23 @@ bkk:d=>{if(V.st.length){popView();V.sk++;try{history.back()}catch(e){V.sk--}}els
 go:d=>{if(V.v==='ses'&&!cf('Quitter sans enregistrer la séance ?'))return;nav(d.t)},
 day:d=>{V.day=d.d;nav('prog')},
 prog:()=>nav('prog'),
-ses:d=>{const day=V.day,xr=d&&d.x==='1';if(RS&&!(d&&d.ok==='1')){V.ask={x:d&&d.x==='1'?'1':'0'};render();scrollTo(0,0);return}RS=null;V.ask=null;
- SE={ex:{},g:{ei:0,si:0,ph:'pre'},pre:{sl:null,en:null,so:null},pn:{c:0,p:0,e:0},rd:'ok',wu:WU(day).map(()=>false),ids:xr?P[day].filter(e=>!['hb','ah','sp'].includes(e.id)).map(e=>e.id):null,expr:xr?1:0,wk:wvOn()?wvPh():null};
- if(SE.ids&&!SE.ids.length)SE.ids=null;
+ses:d=>{const day=V.day,xr=d&&d.x==='1';if(RS&&!(d&&d.ok==='1')){V.ask={x:d&&d.x==='1'?'1':'0'};render();scrollTo(0,0);return}RS=null;V.ask=null;buildP();const eq=!!(d&&d.eq==='1'&&EQP);if(eq)P[day]=EQP.map(e=>({...e}));
+ SE={ex:{},g:{ei:0,si:0,ph:'pre'},pre:{sl:null,en:null,so:null},pn:{c:0,p:0,e:0,k:0,h:0},rd:'ok',wu:WU(day).map(()=>false),ids:xr?P[day].filter(e=>!e.acc&&!['hb','ah','sp','sd','ml'].includes(e.id)).map(e=>e.id):null,expr:xr?1:0,wk:wvOn()?wvPh():null};
+ if(SE.ids&&!SE.ids.length)SE.ids=null;if(eq){SE.eq=1;SE.eqp=P[day].map(e=>({...e}))}
  P[day].forEach(e=>{const v=cur(day,e),x=curx(day,e),n=e.t==='pyr'?2*v-1:e.t==='emom'?x:e.sets;SE.ex[e.id]={d:Array(n).fill(false),a:v,f:null,tg:v,x,ax:x,q:null,p:null,fm:null,L:[],bv:v,bx:x,nc:0,pa:0}});
+ if(eq)P[day].forEach(e=>{if(e.up&&SE.ex[e.id])SE.ex[e.id].xs=1});
  if(SE.wk===3){SE.dl=1;P[day].forEach(e=>dlEx(e,SE.ex[e.id]))}
  SE.ib=imbalance();if(SE.ib.lag&&!SE.dl){const be=SQ().find(e=>GRP[SE.ib.lag].includes(e.id)&&['dp','reps','kg'].includes(e.t));if(be){const br=SE.ex[be.id];br.d.push(false);br.xs=1}}
  beep(1,.01);wake();sv();nav('ses')},
-rsm:()=>{SE=RS.SE;V.day=RS.day;RS=null;const g=SE.g;
- SE.pre=SE.pre||{sl:null,en:null,so:null};SE.pn=SE.pn||{c:0,p:0,e:0};SE.rd=SE.rd||'ok';SE.wu=SE.wu||[];for(const id in SE.ex){const r=SE.ex[id];if(r.bv==null){r.bv=r.tg;r.bx=r.x}r.nc=r.nc||0;r.pa=r.pa||0}
+rsm:()=>{SE=RS.SE;V.day=RS.day;RS=null;if(SE.eqp)P[V.day]=SE.eqp.map(e=>({...e}));const g=SE.g;
+ SE.pre=SE.pre||{sl:null,en:null,so:null};SE.pn=SE.pn||{c:0,p:0,e:0,k:0,h:0};SE.rd=SE.rd||'ok';SE.wu=SE.wu||[];for(const id in SE.ex){const r=SE.ex[id];if(r.bv==null){r.bv=r.tg;r.bx=r.x}r.nc=r.nc||0;r.pa=r.pa||0}
  wake();if(g.ph==='rest'){tEnd=g.rend;tP=g.tp||0;clearInterval(tI);if(!tP)tI=setInterval(tick,250)}if(g.ph==='eff'){clearInterval(eI);eI=setInterval(ef,200)}nav('ses')},
+eq:()=>nav('eq'),
+eqt:d=>{const q=eqSet();if(q.has(d.k))q.delete(d.k);else q.add(d.k);UI.eq=[...q];saveUI();render()},
+eqpre:d=>{UI.eq=[...(EQP_[d.v]||[])];saveUI();render()},
+eqo:d=>{UI[d.k]=Math.max(0,Math.min(2,+d.v|0));saveUI();render()},
+eqn:()=>nav('eqp'),
+eqgo:()=>{if(RS&&!cf('Une séance est en pause. La remplacer par celle-ci ? (la séance en pause sera perdue)'))return;EQP=eqBuild(V.day).map(x=>x.r||x.o);A.ses({ok:'1',eq:'1',x:'0'})},
 missv:()=>nav('miss'),
 vars:()=>nav('vars'),
 road:d=>{V.rt=d.k==='wv'?'wv':'lv';nav('road');setTimeout(()=>{const c=document.querySelector('.nc.cu');if(c)c.scrollIntoView({block:'center'})},30)},
@@ -616,7 +876,7 @@ pgy:d=>{const g=pgc(d.d);if(!g)return;g.x=g.x.filter(v=>v!==d.id);buildP();save(
 pga:d=>{const g=pgc(d.d);if(!g)return;const e=LIB[+d.i];if(!e||P[d.d].some(x=>x.id===e.id))return;g.a.push(e.id+'|'+e.n);buildP();save();render()},
 pg0:d=>{if(RS||SE)return alert('Termine ou annule la séance en cours avant de modifier le programme.');if(!cf('Remettre le programme de '+DAYS[d.d]+' par défaut ?'))return;backup('Avant réinitialisation du programme');delete S.pg[d.d];buildP();save();render()},
 pq:d=>{SE.pre[d.k]=SE.pre[d.k]===+d.v?null:+d.v;sv();render()},
-pn:d=>{SE.pn[d.k]=Math.max(0,Math.min(10,SE.pn[d.k]+ +d.s));sv();render()},
+pn:d=>{SE.pn[d.k]=Math.max(0,Math.min(10,(SE.pn[d.k]||0)+ +d.s));sv();render()},
 prego:()=>{SE.rd=rdy();SE.sc=rscore();if(SE.rd==='low'&&!SE.dl)P[V.day].forEach(e=>adjEx(e,SE.ex[e.id]));SE.g.ph='wu';sv();render();scrollTo(0,0)},
 wt:d=>{SE.wu[+d.i]=!SE.wu[+d.i];sv();render()},
 wugo:()=>{SE.g.ph='prep';sv();render();scrollTo(0,0)},
@@ -648,7 +908,7 @@ nxt:()=>{const g=SE.g,E=SQ(),e=E[g.ei],r=SE.ex[e.id],o=r.L[g.si];
  if(g.si<(e.t==='emom'?1:r.d.length)-1){g.si++;if(e.t==='hold'&&g.cur2)g.cur=g.cur2;startEff();return}
  if(g.ei<E.length-1){g.ei++;g.si=0;g.ph='prep';sv();nav('ses')}else A.done()},
 abt:()=>{if(cf('Terminer la séance ? Ce qui est déjà fait sera enregistré.'))A.done()},
-cancel:()=>{if(!cf('Annuler la séance ? Rien ne sera enregistré.'))return;clearInterval(eI);A.tx();SE=null;sv();try{WL&&WL.release()}catch(x){}nav('home')},
+cancel:()=>{if(!cf('Annuler la séance ? Rien ne sera enregistré.'))return;clearInterval(eI);A.tx();SE=null;buildP();sv();try{WL&&WL.release()}catch(x){}nav('home')},
 done:()=>{clearInterval(eI);A.tx();for(const e of P[V.day])drv(e);A.fin();if(V.v!=='res')nav('home');SE=null;sv();try{WL&&WL.release()}catch(x){}},
 lvl:d=>{const k=d.k,n=Math.max(0,Math.min(L[k].length-1,S.lv[k]+ +d.s));if(n!==S.lv[k]){setLv(k,n,+d.s>0);save()}render()},
 't+':()=>{if(SE&&SE.g){SE.g.rman=1;SE.g.rend=(tP?tEnd:Math.max(tEnd,Date.now()))+15000}if(tP){tEnd+=15000;tick();return}clearInterval(tI);tEnd=Math.max(tEnd,Date.now())+15000;tick();tI=setInterval(tick,250);if($('#rt'))render()},
@@ -697,10 +957,10 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
  if(!res.length)return alert('Valide au moins une série avant de terminer.');
  xp+=60;
  const wv0={n:S.wv.n,w:S.wv.w};let roll=0;
- if(wvOn()){S.wv.n++;if(S.wv.n>=wvLn()){S.wv.n=0;S.wv.w++;roll=1;for(const d in P)P[d].forEach(e=>{const k=d+'.'+e.id,v=cur(d,e),x=curx(d,e),[nv,nx]=T[e.t].dn(v,x);if(nv!==v)S.p[k]=nv;if(nx!==x)S.p[k+'.x']=nx})}}
+ if(wvOn()&&day!=='jeudi'){S.wv.n++;if(S.wv.n>=wvLn()){S.wv.n=0;S.wv.w++;roll=1;for(const d in P)P[d].forEach(e=>{const k=d+'.'+e.id,v=cur(d,e),x=curx(d,e),[nv,nx]=T[e.t].dn(v,x);if(nv!==v)S.p[k]=nv;if(nx!==x)S.p[k+'.x']=nx})}}
  const u={p:{},lv:{}};if(wv0.n!==S.wv.n||wv0.w!==S.wv.w)u.wv=[[wv0.n,wv0.w],[S.wv.n,S.wv.w]];if(roll)u.wb=1;for(const k of new Set([...Object.keys(p0),...Object.keys(S.p)]))if(p0[k]!==S.p[k])u.p[k]=[p0[k]??null,S.p[k]??null];
  for(const k in S.lv)if(lv0[k]!==S.lv[k])u.lv[k]=[lv0[k],S.lv[k]];
- const h={d:iso,day,xp,res,rd:SE.rd,sc:SE.sc??null,pn:{...SE.pn},wu:SE.wu.length?SE.wu.filter(Boolean).length+'/'+SE.wu.length:null,ex:SE.expr?1:0,wk:SE.wk??null,ro:roll,u};
+ const h={d:iso,day,xp,res,rd:SE.rd,sc:SE.sc??null,pn:{...SE.pn},wu:SE.wu.length?SE.wu.filter(Boolean).length+'/'+SE.wu.length:null,ex:SE.expr?1:0,eq:SE.eq?1:0,wk:SE.wk??null,ro:roll,u};
  S.h.push(h);compactH(S.h);if(roll)S.wb.push(mkBilan(S.wv.w-1));S.xp+=xp;buildP();save();backup('Après séance');V.last=h;nav('res')},
 delh:d=>{const i=+d.i,h=S.h[i];if(!h)return;
  if(!cf('Supprimer la séance du '+dfr(h.d)+' ?\n'+(h.u?'La progression qu’elle a déclenchée est annulée (sauf si une séance plus récente l’a déjà modifiée).':'Séance ancienne : sa progression ne peut pas être annulée automatiquement.')+'\nUne copie de secours est conservée.'))return;
