@@ -277,6 +277,10 @@ svg text{fill:var(--mu);font-size:11px}
 /* sélecteur de style */
 .b{white-space:normal;max-width:100%}
 :root[data-sk],:root[data-sk] body{overflow-x:hidden}
+#mp{position:fixed;right:10px;bottom:88px;z-index:60;display:none;gap:6px}#mp.on{display:flex}
+#mp button{width:46px;height:46px;border-radius:50%;background:var(--card);color:var(--tx);border:1.5px solid var(--line);font-size:19px;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.mtr{display:flex;align-items:center;gap:8px;margin:6px 0}.mtr button.pl{flex:1;text-align:left;min-height:46px;padding:0 12px;border-radius:12px;background:var(--bt);font-weight:700}.mtr button.pl.on{background:var(--s);color:#06121A}.mtr button.dl{width:46px;height:46px;border-radius:12px;background:var(--in);border:1.5px solid var(--line)}
+input[type=range]{width:100%;accent-color:var(--s);height:32px}
 .sec.on .mu,.dys .on .mu{color:inherit;opacity:.85}
 .thg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .thc{display:block;text-align:left;padding:8px;border:2px solid #3a3f5c;border-radius:12px;background:#0d1020;color:#fff;font:inherit;min-height:0;cursor:pointer;position:relative}
@@ -286,6 +290,91 @@ svg text{fill:var(--mu);font-size:11px}
 .thc b{display:block;font-size:15px}
 .thc span{display:block;font-size:12px;color:#a9b0cf;line-height:1.25}
 .thc.on:after{content:'✓';position:absolute;right:8px;top:6px;background:#fff;color:#000;border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:13px;font-weight:800}
+
+/* ====== V2 : interfaces plus proches des menus de la série ====== */
+@keyframes drift{from{transform:translate(0,0) rotate(0)}to{transform:translate(-3%,2%) rotate(1.6deg)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rn{display:inline-block;padding:0 .08em;margin:0 .01em;line-height:1.05}
+/* --- Persona 5 : rouge vif, formes noires déchirées, titres en lettres découpées --- */
+:root[data-sk=ph]{--bg:#D6001C}
+:root[data-sk=ph] body{background:#D6001C;animation:none}
+:root[data-sk=ph] body:before{content:'';position:fixed;inset:-10%;z-index:-1;pointer-events:none;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 800' preserveAspectRatio='xMidYMid slice'%3E%3Cpolygon fill='%23000' points='0,470 70,520 40,570 130,600 95,660 190,690 150,800 0,800'/%3E%3Cpolygon fill='%23000' points='400,0 400,220 335,170 360,115 295,95 325,45 265,0'/%3E%3Cpolygon fill='%23fff' points='0,455 78,508 52,560 150,590 118,650 205,682 168,800 150,800 190,690 95,660 130,600 40,570 70,520'/%3E%3Cpolygon fill='%23000' opacity='.35' points='120,0 200,0 170,60 215,120 150,100 130,150 100,70'/%3E%3C/svg%3E") center/cover no-repeat;animation:drift 26s ease-in-out infinite alternate}
+:root[data-sk=ph] #app>.mu,:root[data-sk=ph] #app>p,:root[data-sk=ph] #app>.lab,:root[data-sk=ph] .back{color:#fff}
+:root[data-sk=ph] h1{font-size:40px;transform:rotate(-2deg);text-shadow:none;margin:14px 0 10px;line-height:1.25}
+:root[data-sk=ph] h2{font-size:20px;border:0;transform:rotate(-1.5deg);text-shadow:none;margin:14px 0 8px}
+:root[data-sk=ph] .rn.r0{background:#fff;color:#000;transform:rotate(-4deg)}
+:root[data-sk=ph] .rn.r1{background:#000;color:#fff;transform:rotate(3deg) translateY(2px)}
+:root[data-sk=ph] .rn.r2{background:#fff;color:#D6001C;transform:rotate(2deg) translateY(-2px)}
+:root[data-sk=ph] .rn.r3{background:#000;color:#FFD400;transform:rotate(-3deg)}
+:root[data-sk=ph] .card{border-left:6px solid #fff;background:#000;transform:rotate(-.4deg);clip-path:polygon(0 0,100% 0,100% calc(100% - 22px),calc(100% - 10px) calc(100% - 12px),calc(100% - 22px) 100%,0 100%)}
+:root[data-sk=ph] .card.ban{border-left-color:#FFD400;background:#000}
+:root[data-sk=ph] .big{position:relative;border-left:6px solid #fff;background:#000;transform:rotate(.4deg);clip-path:polygon(0 0,100% 0,calc(100% - 22px) 50%,100% 100%,0 100%);padding-right:44px}
+:root[data-sk=ph] .big:nth-of-type(even){transform:rotate(-.4deg)}
+:root[data-sk=ph] .big.today{background:#fff;color:#000;border-left-color:#000;transform:rotate(-1deg) scale(1.02)}
+:root[data-sk=ph] .big.today:after{content:'★';position:absolute;right:30px;top:50%;margin-top:-16px;font-size:28px;color:#D6001C}
+:root[data-sk=ph] .cta{background:#FFD400;color:#000;border:3px solid #000;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 50%,calc(100% - 20px) 100%,0 100%,14px 50%)}
+:root[data-sk=ph] .sec,:root[data-sk=ph] .dys button{background:#000;color:#fff}
+:root[data-sk=ph] .sec.on,:root[data-sk=ph] .dys .on{background:#fff;color:#000;border-color:#fff}
+:root[data-sk=ph] .note{border-left-color:#fff;background:#000}
+:root[data-sk=ph] .xp,:root[data-sk=ph] .sc{background:#000;border:2px solid #fff}
+:root[data-sk=ph] .rd:before{background:#fff}
+:root[data-sk=ph] .nc.cu{background:#FFD400;color:#000}
+:root[data-sk=ph] #tm{background:#000;color:#fff;border-top:3px solid #fff}
+:root[data-sk=ph] .recb{background:#FFD400;color:#000;border:4px solid #000;box-shadow:8px 8px 0 #fff;clip-path:polygon(0 0,100% 6%,98% 100%,2% 94%)}
+.wipe.ph{background:linear-gradient(105deg,#000 0 30%,#fff 30% 34%,#D6001C 34% 68%,#000 68%);animation:wipe .4s cubic-bezier(.7,0,.3,1) forwards}
+/* --- Persona 3 Reload : bleu nuit, horloge, étiquettes obliques lumineuses --- */
+:root[data-sk=p3] body:before{content:'';position:fixed;right:-38vmax;top:-38vmax;width:96vmax;height:96vmax;border-radius:50%;z-index:-1;pointer-events:none;background:repeating-conic-gradient(rgba(63,217,255,.55) 0 .5deg,transparent .5deg 6deg);-webkit-mask:radial-gradient(circle,transparent 60%,#000 61%,#000 64%,transparent 65%);mask:radial-gradient(circle,transparent 60%,#000 61%,#000 64%,transparent 65%);animation:spin 160s linear infinite}
+:root[data-sk=p3] body:after{content:'';position:fixed;left:-20vmax;bottom:-20vmax;width:56vmax;height:56vmax;border-radius:50%;z-index:-1;pointer-events:none;border:2px solid rgba(63,217,255,.25);box-shadow:0 0 0 18px rgba(63,217,255,.06),0 0 0 19px rgba(63,217,255,.25)}
+:root[data-sk=p3] h1{display:inline-block;max-width:100%;padding:2px 22px 2px 10px;background:#3FD9FF;color:#04122B;text-shadow:none;transform:skewX(-12deg);box-shadow:7px 7px 0 #0F3A8A;margin:14px 0 12px;font-size:34px}
+:root[data-sk=p3] h2{color:#fff;text-shadow:none;border-left:0;padding-left:0;display:inline-block;background:linear-gradient(100deg,#1b78d6 0 92%,transparent 92%);padding:1px 20px 1px 10px;transform:skewX(-12deg)}
+:root[data-sk=p3] .big{position:relative;background:linear-gradient(100deg,rgba(15,58,138,.92),rgba(8,26,60,.85));border-left:8px solid #3FD9FF}
+:root[data-sk=p3] .big.today{background:linear-gradient(100deg,#fff,#7BE9FF);box-shadow:0 0 24px rgba(63,217,255,.6);transform:translateX(6px)}
+:root[data-sk=p3] .big.today:after{content:'▶';position:absolute;right:34px;top:50%;margin-top:-14px;font-size:24px;color:#0F3A8A}
+.wipe.p3{background:linear-gradient(105deg,#06122B 0 25%,#1b78d6 25% 55%,#3FD9FF 55% 62%,#fff 62% 64%,#06122B 64%)}
+/* --- Persona 4 Golden : jaune éclatant, noir, orange, écran de télé --- */
+:root[data-sk=p4]{--bg:#FFD21F}
+:root[data-sk=p4] body{background:radial-gradient(rgba(0,0,0,.16) 1.6px,transparent 2.2px) 0 0/12px 12px,repeating-linear-gradient(0deg,rgba(0,0,0,.07) 0 2px,transparent 2px 6px),#FFD21F;animation:scan 14s linear infinite}
+:root[data-sk=p4] #app>.mu,:root[data-sk=p4] #app>p,:root[data-sk=p4] #app>.lab,:root[data-sk=p4] .back{color:#1a1200}
+:root[data-sk=p4] h1{color:#000;text-shadow:3px 3px 0 #fff,6px 6px 0 #FF4B2B;transform:rotate(-2deg);font-size:42px}
+:root[data-sk=p4] h2{background:#000;color:#FFD21F;border:3px solid #fff;box-shadow:4px 4px 0 #FF4B2B}
+:root[data-sk=p4] .card{border:4px solid #000;background:#000;box-shadow:6px 6px 0 #FF4B2B}
+:root[data-sk=p4] .card.ban{background:#fff;color:#000}
+:root[data-sk=p4] .big{position:relative;border:4px solid #000;background:#000;color:#fff;box-shadow:6px 6px 0 #FF4B2B}
+:root[data-sk=p4] .big.today{background:#fff;color:#000;border-color:#000;transform:rotate(-1deg) scale(1.02)}
+:root[data-sk=p4] .big.today:after{content:'◀';position:absolute;right:20px;top:50%;margin-top:-14px;font-size:26px;color:#FF4B2B}
+:root[data-sk=p4] .cta{background:#FF4B2B;color:#fff;border:4px solid #000;box-shadow:6px 6px 0 #000;text-shadow:2px 2px 0 #000}
+:root[data-sk=p4] .sec,:root[data-sk=p4] .dys button{background:#000;color:#FFD21F;border:3px solid #000}
+:root[data-sk=p4] .sec.on,:root[data-sk=p4] .dys .on{background:#fff;color:#000}
+:root[data-sk=p4] .note{background:#000;border:3px dashed #FFD21F}
+:root[data-sk=p4] .xp,:root[data-sk=p4] .sc{border-color:#000}
+:root[data-sk=p4] .rd:before{background:#000}
+:root[data-sk=p4] .nc{border-color:#000;background:#000}
+:root[data-sk=p4] #tm{background:#000;color:#FFD21F}
+.wipe.p4{background:repeating-linear-gradient(0deg,#FFD21F 0 6px,#000 6px 12px)}
+
+/* --- Persona : transitions à 3 volets, bulles de dialogue, détails d'interface --- */
+.wipe.ph,.wipe.p3,.wipe.p4{background:none;transform:none;left:0;width:100%;animation:none;overflow:hidden}
+.wipe i{position:absolute;top:0;bottom:0;left:-15%;width:130%;transform:translateX(-125%) skewX(-18deg);animation:shard .62s cubic-bezier(.6,0,.3,1) forwards}
+.wipe i:nth-child(2){animation-delay:.07s}.wipe i:nth-child(3){animation-delay:.14s}
+@keyframes shard{0%{transform:translateX(-125%) skewX(-18deg)}42%,58%{transform:translateX(0) skewX(-18deg)}100%{transform:translateX(125%) skewX(-18deg)}}
+.wipe.ph i:nth-child(1){background:#D6001C}.wipe.ph i:nth-child(2){background:#000}.wipe.ph i:nth-child(3){background:#fff}
+.wipe.p3 i:nth-child(1){background:#0F3A8A}.wipe.p3 i:nth-child(2){background:#1b78d6}.wipe.p3 i:nth-child(3){background:#3FD9FF}
+.wipe.p4 i:nth-child(1){background:#FF4B2B}.wipe.p4 i:nth-child(2){background:#000}.wipe.p4 i:nth-child(3){background:#FFD21F}
+:root[data-sk=ph] .rn.r1{font-family:'Playfair Display',Georgia,serif;font-weight:900;text-transform:none}
+:root[data-sk=ph] .note{background:#fff;color:#000;border:3px solid #000;border-left:3px solid #000;box-shadow:5px 5px 0 #000;transform:rotate(-1deg);position:relative;--mu:#333;--tx:#000;margin-bottom:18px}
+:root[data-sk=ph] .note:after{content:'';position:absolute;left:26px;bottom:-14px;border-style:solid;border-width:14px 9px 0 9px;border-color:#fff transparent transparent transparent}
+:root[data-sk=ph] .note.w{background:#FFD400}:root[data-sk=ph] .note.w:after{border-top-color:#FFD400}
+:root[data-sk=ph] .note.d{background:#fff;color:#D6001C}
+:root[data-sk=ph] .cta:after{content:' »'}
+:root[data-sk=p3] #app:before{content:'XII';position:fixed;right:-6px;bottom:24px;font:700 190px Oswald,Impact,sans-serif;color:rgba(63,217,255,.07);pointer-events:none;z-index:-1;letter-spacing:-.04em}
+:root[data-sk=p3] .card{position:relative;border:1px solid rgba(160,230,255,.45)}
+:root[data-sk=p3] .card:before{content:'';position:absolute;left:-1px;top:-1px;width:18px;height:18px;border-left:3px solid #fff;border-top:3px solid #fff;pointer-events:none}
+:root[data-sk=p3] .card:after{content:'';position:absolute;left:-1px;bottom:-1px;width:18px;height:18px;border-left:3px solid #3FD9FF;border-bottom:3px solid #3FD9FF;pointer-events:none}
+:root[data-sk=p4] body:after{content:'';position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.09;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:stat .35s steps(3) infinite}
+@keyframes stat{0%{background-position:0 0}33%{background-position:-40px 20px}66%{background-position:30px -50px}100%{background-position:0 0}}
+:root[data-sk=p4] .cta:before{content:'★ '}
+:root[data-sk=p4] h2{transform:rotate(-1.5deg) skewX(-6deg)}
+@media (prefers-reduced-motion:reduce){:root[data-sk] *::before,:root[data-sk] *::after{animation:none!important}}
 @media (prefers-reduced-motion:reduce){:root[data-sk] *,:root[data-sk] body,.recb{animation:none!important}.wipe{display:none}}
 
 .tap{cursor:pointer}.hint{font-size:12px;color:var(--s);font-weight:700;margin-top:6px}
@@ -469,7 +558,7 @@ const UK='calisthenie_ui',UD=()=>({th:'dark',z:1,cl:0,sk:'classic',rt:'18:00',rd
 let UI=(()=>{try{const o=JSON.parse(localStorage.getItem(UK)||'{}');return{...UD(),...o,rd:{...UD().rd,...(o.rd||{})}}}catch(e){return UD()}})();
 const saveUI=()=>{try{localStorage.setItem(UK,JSON.stringify(UI))}catch(e){}};
 const THM=[['classic','Classique','Sobre, clair ou sombre',['#0E1220','#4DD6E8','#F5B53D','#5BE3A0']],['ph','Phantom','Rouge, noir et blanc',['#0A0A0A','#E60012','#FFFFFF','#FFD400']],['p3','Reload','Bleu nuit et cyan',['#06122B','#0F3A8A','#3FD9FF','#FFFFFF']],['p4','Golden','Jaune pop, ombres dures',['#110E00','#FFD21F','#FF8A00','#FFFFFF']],['ut','Pixel','Boîtes noires, cœur rouge',['#000000','#FFFFFF','#FF8A00','#FFFF00']],['jo','Bizarre','Manga violet et magenta',['#150A29','#7A2BD1','#FF2E93','#19E3FF']]];
-const SKF={ph:'Anton',p3:'Oswald:wght@500;700',p4:'Lilita+One',ut:'VT323',jo:'Bangers'},SKM={ph:'#0A0A0A',p3:'#06122B',p4:'#110E00',ut:'#000000',jo:'#150A29'};
+const SKF={ph:'Anton&family=Playfair+Display:wght@900',p3:'Oswald:wght@500;700',p4:'Lilita+One',ut:'VT323',jo:'Bangers'},SKM={ph:'#D6001C',p3:'#06122B',p4:'#FFD21F',ut:'#000000',jo:'#150A29'};
 function applyUI(){document.body.classList.toggle('clean',!!+UI.cl);const sk=SKF[UI.sk]?UI.sk:null,h=document.documentElement;if(sk)h.dataset.sk=sk;else delete h.dataset.sk;
  const old=document.getElementById('fnt');if(sk&&(!old||old.dataset.k!==sk)){if(old)old.remove();const l=document.createElement('link');l.id='fnt';l.dataset.k=sk;l.rel='stylesheet';l.href='https://fonts.googleapis.com/css2?family='+SKF[sk]+'&display=swap';document.head.appendChild(l)}
  const th=UI.th==='auto'?(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'):UI.th;
@@ -709,7 +798,18 @@ home:()=>{const td=new Date().getDay(),to=Object.keys(DOW).find(k=>DOW[k]===td),
  return `<h1>Carnet de séance</h1><p class="mu hlp">Calisthénie · surcharge progressive</p>${bkBan()}${remBan()}${wvOn()?wvCard():''}${sugg()}
 <div class="card tap" data-a=road data-k=lv><div class=row><b>Niv. ${lv()} · ${rank()}</b><span class=mu>${S.xp} XP</span></div><div class=xp><i style="width:${S.xp%300/3}%"></i></div>
 <div class="row mu" style="margin-top:12px"><span>Séances <b>${n}</b></span><span>7 derniers jours <b>${wk}</b></span><span>Records 🏆 <b>${prs}</b></span></div><div class=hint>Voir la route des trophées ›</div></div>
-${RS?`<button class="big today" data-a=rsm>▶ Reprendre la séance<span class="mu keep">${DAYS[RS.day]} · exercice ${RS.SE.g.ei+1}</span></button>`:''}<h2>🏋️ Mes séances</h2>`+Object.keys(DAYS).map(k=>`<button class="big${k===to?' today':''}" data-a=day data-d=${k}>${DAYS[k]}<span class="mu keep">${P[k].length} exercices${k===to?' · aujourd’hui':''}</span></button>`).join('')+`<h2>📊 Mon suivi</h2><button class=big data-a=go data-t=stats>📊 Progression<span class=mu>Graphiques, records, 1RM estimé</span></button>`+`<button class=big data-a=go data-t=goals>🎯 Objectifs<span class=mu>${S.go.length?S.go.length+' objectif'+(S.go.length>1?'s':'')+' · '+goalsDone()+' atteint'+(goalsDone()>1?'s':''):'Jalons chiffrés et date estimée'}</span></button><h2>🛠 Configuration</h2><button class=big data-a=go data-t=pg>🛠 Programme et vague<span class=mu>Modifier les exercices, séries, repos · périodisation</span></button><button class=big data-a=go data-t=set>⚙️ Réglages<span class=mu>Thème, rappels, sauvegarde, historique, réinitialisation</span></button>`},
+${RS?`<button class="big today" data-a=rsm>▶ Reprendre la séance<span class="mu keep">${DAYS[RS.day]} · exercice ${RS.SE.g.ei+1}</span></button>`:''}<h2>🏋️ Mes séances</h2>`+Object.keys(DAYS).map(k=>`<button class="big${k===to?' today':''}" data-a=day data-d=${k}>${DAYS[k]}<span class="mu keep">${P[k].length} exercices${k===to?' · aujourd’hui':''}${S.ms.some(m=>m.day===k&&new Date(m.d).toDateString()===new Date().toDateString())?' · sautée aujourd’hui':''}</span></button>`).join('')+`<h2>📊 Mon suivi</h2><button class=big data-a=go data-t=stats>📊 Progression<span class=mu>Graphiques, records, 1RM estimé</span></button>`+`<button class=big data-a=go data-t=goals>🎯 Objectifs<span class=mu>${S.go.length?S.go.length+' objectif'+(S.go.length>1?'s':'')+' · '+goalsDone()+' atteint'+(goalsDone()>1?'s':''):'Jalons chiffrés et date estimée'}</span></button><h2>🛠 Configuration</h2><button class=big data-a=go data-t=pg>🛠 Programme et vague<span class=mu>Modifier les exercices, séries, repos · périodisation</span></button><button class=big data-a=mus>🎵 Ambiance<span class=mu>Musique de fond de l’app, une piste par style</span></button><button class=big data-a=go data-t=set>⚙️ Réglages<span class=mu>Thème, rappels, sauvegarde, historique, réinitialisation</span></button>`},
+mus:()=>{const l=muList(),cur=l.find(x=>x.id===MP.id),row=t=>`<div class=mtr><button class="pl${MP.id===t.id&&MP.on?' on':''}" data-a=muP data-id=${t.id}>${MP.id===t.id&&MP.on?'⏸':'▶'} ${esc(t.n)}${t.g?' <span class=mu style="font-weight:400">· générée</span>':''}</button>${t.g?'':`<button class=dl data-a=muD data-id=${t.id} aria-label="Retirer">🗑</button>`}</div>`;
+ return back('home')+`<h1>Ambiance</h1><p class="mu hlp">Une musique d’ambiance pour l’app, comme le menu d’un jeu. Tes fichiers restent sur cet appareil (ils ne sont ni envoyés ni inclus dans l’export).</p>
+<div class=card><h2>Lecteur</h2><div class=mu style="margin-bottom:8px">${cur?(MP.on?'En lecture : ':'En pause : ')+esc(cur.n):'Aucune piste choisie'}</div><div style="display:flex;gap:8px"><button class=sec data-a=muV>⏮</button><button class=sec data-a=muT>${MP.on?'⏸ Pause':'▶ Lecture'}</button><button class=sec data-a=muN>⏭</button></div>
+<div class=lab>Volume</div><input type=range id=muv min=0 max=100 value="${Math.round(MU.vol*100)}">
+<div class="mu hlp">Sur iPhone, le volume se règle avec les boutons de l’appareil pour les fichiers.</div>
+<button class="sec${MU.auto?' on':''}" style="display:block;width:100%;text-align:left;margin-top:8px" data-a=muO data-k=auto>${MU.auto?'☑':'☐'} Lancer la musique à l’ouverture de l’app<span class=mu style="display:block;font-size:13px;font-weight:400">Elle démarre au premier toucher (le navigateur interdit le son automatique)</span></button>
+<button class="sec${MU.ns?' on':''}" style="display:block;width:100%;text-align:left" data-a=muO data-k=ns>${MU.ns?'☑':'☐'} Couper pendant les séances<span class=mu style="display:block;font-size:13px;font-weight:400">Elle reprend toute seule à la fin ou si tu annules</span></button>
+<button class="sec${MU.sh?' on':''}" style="display:block;width:100%;text-align:left" data-a=muO data-k=sh>${MU.sh?'☑':'☐'} Ordre aléatoire</button></div>
+<div class=card><h2>Une musique par style</h2><div class="mu hlp">Choisis la piste qui se lance quand tu actives un style (Phantom, Reload…).</div>${THM.map(([k,n])=>`<div class=lab>${n}</div><select class=sel id=mut_${k}><option value="">— aucune —</option>${l.map(t=>`<option value="${t.id}"${MU.th[k]===t.id?' selected':''}>${esc(t.n)}</option>`).join('')}</select>`).join('')}</div>
+<div class=card><h2>Ma playlist</h2>${MU.f.length?MU.f.map(row).join(''):'<div class="mu hlp">Aucun fichier ajouté pour l’instant.</div>'}<button class=cta data-a=muA>➕ Ajouter des musiques</button><div class="mu hlp">Formats courants : mp3, m4a, ogg, wav. Je ne peux pas fournir de vraies chansons (droits d’auteur) : ajoute les tiennes.</div></div>
+<div class=card><h2>Boucles de l’app</h2>${GENL.map(row).join('')}<div class="mu hlp">Trois boucles simples créées par l’app, sans fichier. Elles tournent sans fin. Sur certains téléphones elles peuvent s’arrêter quand l’écran se verrouille.</div></div>`},
 eq:()=>{const q=eqSet(),iv=Math.max(0,Math.min(2,+UI.eqi|0)),tg=(on,a,l,sub)=>`<button class="sec${on?' on':''}" style="display:block;width:100%;text-align:left" data-a=${a.a} ${a.d||''}>${on?'☑':'☐'} ${l}${sub?`<span class=mu style="display:block;font-size:13px;font-weight:400">${sub}</span>`:''}</button>`;
  return back('prog')+`<h1>Séance selon mon matériel</h1><p class="mu hlp">Coche ce que tu as sous la main. Chaque exercice qui en demande un que tu n’as pas est remplacé par un équivalent aussi proche que possible, avec la même logique de progression.</p>
 <div class=card><h2>1 · Où t’entraînes-tu ?</h2><div class=mu style="margin-bottom:6px">Raccourcis (tu pourras ajuster ensuite)</div><button class=sec data-a=eqpre data-v=none>🏠 Sans aucun matériel</button><button class=sec data-a=eqpre data-v=home>🛋 Maison basique</button><button class=sec data-a=eqpre data-v=park>🌳 Parc street workout</button><button class=sec data-a=eqpre data-v=all>🏟 Tout le matériel</button></div>
@@ -718,7 +818,7 @@ eq:()=>{const q=eqSet(),iv=Math.max(0,Math.min(2,+UI.eqi|0)),tg=(on,a,l,sub)=>`<
 <button class=cta data-a=eqn>Voir ma séance adaptée ›</button>`},
 eqp:()=>{const d=V.day,L=eqBuild(d),n=L.filter(x=>x.r&&!x.r.up).length;
  return back('eq')+`<h1>Ta séance adaptée</h1><p class="mu hlp">${DAYS[d]} · ${EQI[Math.max(0,Math.min(2,+UI.eqi|0))][0]} · ${n?n+' exercice'+(n>1?'s':'')+' remplacé'+(n>1?'s':''):'aucun remplacement nécessaire'}</p>`+L.map(({o,r})=>r?(r.up?`<div class=card><b>💪 ${nm(o)}</b><div class=mu style="margin:4px 0">${r.sets} × ${r.t==='hold'?'maintien':r.t==='dp'||r.t==='kg'?'charge':'reps'} · repos ${Math.round(r.rest/60*10)/10} min</div><div class="mu hlp">Mode ultra : 1 série en plus et repos raccourci.</div></div>`:`<div class="card"><div class=mu>🔄 ${r.fromN}</div><b>${r.n}</b><div class=mu style="margin:4px 0">${r.sets} × ${r.t==='hold'?r.v+' s':r.v+' reps'} · repos ${Math.round(r.rest/60*10)/10} min</div><div class="mu hlp">${r.note}</div><div><span class="b ${r.lvl>1?'b-ko':r.lvl?'b-kg':'b-ok'}">${EQLV[r.lvl]}</span></div></div>`):`<div class=card><b>✅ ${nm(o)}</b><div class=mu>Inchangé</div></div>`).join('')+`<div class="note hlp">Les exercices de remplacement ont leur propre progression : elle monte séance après séance, sans toucher à celle de tes exercices habituels. Les valeurs de départ sont prudentes : ajuste-les à la première séance.</div><button class=cta data-a=eqgo>▶ Lancer cette séance</button><button class=sec data-a=eq>◀ Modifier mon matériel</button>`},
-prog:()=>{const d=V.day;return back('home')+`<h1>${DAYS[d]}</h1>${V.ask&&RS?`<div class="card ban"><b>Une séance est déjà en pause (${DAYS[RS.day]})</b><div class="mu hlp" style="margin:4px 0 8px">Reprends-la, ou remplace-la par une nouvelle (la séance en pause sera perdue).</div><button class=cta data-a=rsm>▶ Reprendre la séance en pause</button><button class=sec data-a=ses data-ok=1 data-x=${V.ask.x}>Remplacer par une nouvelle</button><button class=sec data-a=ask0>Annuler</button></div>`:''}<button class=cta data-a=ses>▶ Lancer la séance</button><div style="margin:6px 0"><button class=sec data-a=ses data-x=1>⚡ Version courte</button><button class=sec data-a=eq>🎒 Selon mon matériel</button><button class=sec data-a=vars>🔀 Variantes</button><button class=sec data-a=missv>😴 Séance manquée</button></div>${wvOn()?wvCard():''}${V.day==='jeudi'?'<div class="note hlp">🦵 Séance jambes : il te faut seulement un sol et une chaise. Elle suit la phase de la vague (charge, décharge) mais ne la fait pas avancer. Les 4 autres séances comptent pour la vague.</div>':''}${sugg()}<p class=hlp><span class="b b-kg">Lest</span> <span class="b b-s">Temps de maintien</span> <span class="b b-rep">Reps / sommets</span></p><p class="mu hlp">Les badges colorés sont les variables qui progressent. ▲ = gain depuis le programme de départ.</p>`
+prog:()=>{const d=V.day;return back('home')+`<h1>${DAYS[d]}</h1>${V.ask&&RS?`<div class="card ban"><b>Une séance est déjà en pause (${DAYS[RS.day]})</b><div class="mu hlp" style="margin:4px 0 8px">Reprends-la, ou remplace-la par une nouvelle (la séance en pause sera perdue).</div><button class=cta data-a=rsm>▶ Reprendre la séance en pause</button><button class=sec data-a=ses data-ok=1 data-x=${V.ask.x}>Remplacer par une nouvelle</button><button class=sec data-a=ask0>Annuler</button></div>`:''}<button class=cta data-a=ses>▶ Lancer la séance</button><div style="margin:6px 0"><button class=sec data-a=ses data-x=1>⚡ Version courte</button><button class=sec data-a=eq>🎒 Selon mon matériel</button><button class=sec data-a=vars>🔀 Variantes</button><button class=sec data-a=msk>⏭ Sauter la séance</button></div>${wvOn()?wvCard():''}${V.day==='jeudi'?'<div class="note hlp">🦵 Séance jambes : il te faut seulement un sol et une chaise. Elle suit la phase de la vague (charge, décharge) mais ne la fait pas avancer. Les 4 autres séances comptent pour la vague.</div>':''}${sugg()}<p class=hlp><span class="b b-kg">Lest</span> <span class="b b-s">Temps de maintien</span> <span class="b b-rep">Reps / sommets</span></p><p class="mu hlp">Les badges colorés sont les variables qui progressent. ▲ = gain depuis le programme de départ.</p>`
  +P[d].map(e=>{const v=cur(d,e),x=curx(d,e),rb=restBase(d,e);return `<div class=card><div class=row><h2>${nm(e)}</h2>${badge(e,v,x)}</div><div class=mu>${desc(e,v,x)}${e.t!=='pyr'&&e.t!=='emom'?' · repos '+mmss(rb)+(rb!==(e.rest||90)?' (ajusté)':''):''}</div>${lt(d,e)}${e.t==='pyr'?`<div class=pyr>${seq(v).map(r=>`<span class="${r>=5?'hi':''}">${r}</span>`).join('')}</div><div class="mu hlp">Repos : 40 s en montée (1–4) et descente (4–1) · ${mmss(x)} en zone critique (dès 5 reps). Avant d’ajouter un sommet, ce repos baisse de 10 s à chaque progression (jusqu’à 1:00).</div>`:''}${e.note?`<div class="note${e.id==='pw'?' hlp':''}">${e.note}</div>`:''}${gl(e)}${e.t==='emom'?`<div class="note hlp">Progression : +2 min jusqu’à 12 min, puis +1 rep/min et retour à 10 min.</div>`:''}${e.rl?`<div class="note hlp">Repos automatique : il baisse de 10 s toutes les 2 séances réussies (plancher 60 %) et remonte si la séance est dure.</div>`:''}${e.id==='pw'?pwUI():''}${varHint(d,e)}${e.lad?`<div class=row style="margin-top:8px"><span class=mu>Niveau</span><span><button class=sec data-a=lvl data-k=${e.lad} data-s=-1>◀</button><button class=sec data-a=lvl data-k=${e.lad} data-s=1>▶</button></span></div>`:''}</div>`}).join('')},
 ses:()=>{const g=SE.g,d=V.day,E=SQ();if(g.ph==='pre'||g.ph==='wu')return vPre(g);
  const e=E[g.ei],r=SE.ex[e.id],i=g.si,n=e.t==='emom'?1:r.d.length,lst=i===n-1,nx=E[g.ei+1],hold=e.t==='hold',em=e.t==='emom',
@@ -763,10 +863,6 @@ bil:()=>{const t=V.bt||'wv',tb=`<div class=dys><button class="${t==='wv'?'on':''
 <div class=card><h2>Année ${y}</h2><div class="row mu"><span>Séances <b>${hs.length}</b></span><span>≈ <b>${rd1(hs.length/wks)}</b>/sem.</span><span>Records <b>${prOf(hs)}</b></span></div><div class="row mu" style="margin-top:8px"><span>Vagues terminées <b>${S.wb.filter(b=>new Date(b.d).getFullYear()===y).length}</b></span><span>Manquées <b>${S.ms.filter(m=>new Date(m.d).getFullYear()===y).length}</b></span><span>XP <b>${hs.reduce((s,h)=>s+(h.xp||0),0)}</b></span></div>${bw.length>1?`<div class=mu style="margin-top:8px">Poids de corps : ${bw[0].kg} → ${bw[bw.length-1].kg} kg</div>`:''}</div>
 <div class=card><h2>Évolution</h2><div class=mu>${pv.length?'Meilleures performances vs '+(y-1):'Début d’année vs meilleure perf. de l’année'}</div>${mvRows(mv.slice(0,10))}</div>`},
 goals:goalsView,
-miss:()=>{const ds=daysSince(),rec=S.ms.filter(m=>Date.now()-new Date(m.d)<14*864e5).length;return back('prog')+`<h1>Séance manquée · ${DAYS[V.day]}</h1><div class=card><div class="mu hlp">Pas de panique : la vague avance au nombre de séances faites, pas au calendrier. Rater une séance ne casse rien et ne fait rien perdre.</div>${ds>=10?'<div class="note w">Plus de 10 jours sans séance : la prochaine sera automatiquement allégée (reprise en douceur, pas de progression).</div>':''}${rec>=2?'<div class="note w">Plusieurs séances manquées ces 2 dernières semaines : mieux vaut une séance express régulière qu’une grosse séance rare.</div>':''}</div>
-<button class=big data-a=ses>▶ La faire maintenant<span class=mu>Rattrapage : séance complète</span></button>
-<button class=big data-a=ses data-x=1>⚡ Version express<span class=mu>L’essentiel seulement</span></button>
-<button class=big data-a=msk>⏭ La sauter<span class=mu>Rien n’est rattrapé, la progression reste intacte</span></button>`},
 pg:()=>{const lock=RS||SE,sm=(a,d,id,s,l)=>`<button class=sec data-a=${a} data-d=${d} data-id=${id} data-s=${s}>${l}</button>`;
  return back('home')+`<h1>Programme et vague</h1>${wvOn()?wvCard():''}<div class=card><h2>🌊 Périodisation en vague</h2><div class="mu hlp">Par défaut 4 semaines de 4 séances : accumulation (RIR 3) → intensification (RIR 2) → pic (RIR 1) → décharge (−40 % de volume, sans progression). La semaine avance au nombre de séances faites. En fin de vague, les cibles repartent un cran plus bas et l’app te propose de changer une variante.</div><button class="sec${wvOn()?' on':''}" data-a=wvt>${wvOn()?'Activée':'Désactivée'}</button>${wvOn()?`<div class=lab>Durée de la vague (décharge incluse)</div><div class=dys>${[3,4,5,6].map(l=>`<button class="${wvL()===l?'on':''}" data-a=wvl data-v=${l}>${l} sem.</button>`).join('')}</div><div class="mu hlp">4 semaines : réglage de départ. 5 à 6 semaines : montée plus progressive, conseillée si tu récupères plus lentement (âge, blessure, fatigue) ou en cas de gros volume. 3 semaines : cycles courts et intenses.</div>`:''}${wvOn()?'<button class=sec data-a=wvd>🛌 Décharge maintenant</button><button class=sec data-a=wv0>↺ Recommencer la vague</button>':''}</div><div class=card><h2>📚 Mes programmes</h2><div class=mu>Programme actif : <b>${esc(S.pf.n)}</b>.<span class=hlp> Crée des variantes de ton programme (bloc force, bloc figures…) et change quand tu veux : ta progression est conservée par exercice, rien n’est perdu.</span></div>${Object.keys(S.pf.l).map((k,i)=>`<div class="row hr"><span>${esc(k)}</span><span><button class=sec data-a=pfgo data-i=${i}>Activer</button><button class=sec data-a=pfdel data-i=${i}>🗑</button></span></div>`).join('')}<div class=lab>Nouveau programme</div><input id=pfn class=sel maxlength=30 placeholder="Nom (ex. Bloc figures)"><button class=sec data-a=pfnew data-m=copy>Copier le programme actuel</button><button class=sec data-a=pfnew data-m=def>Partir du programme de base</button></div>${lock?'<div class="note w">Une séance est en cours ou en pause : termine-la ou annule-la avant de modifier le programme.</div>':''}`
  +Object.keys(DAYS).map(d=>{const g=S.pg[d]||{},rm=P0[d].filter(e=>(g.x||[]).includes(e.id)),ad=LIB.filter(e=>!P0[d].some(x=>x.id===e.id)&&!P[d].some(x=>x.id===e.id));
@@ -793,16 +889,60 @@ ${bk()}
 hist:()=>back('home')+`<h1>Historique</h1>`+(S.ms.length?`<div class=card><div class=mu>😴 ${S.ms.length} séance${S.ms.length>1?'s':''} manquée${S.ms.length>1?'s':''} · dernière : ${DAYS[S.ms[S.ms.length-1].day]} (${dfr(S.ms[S.ms.length-1].d)})</div></div>`:'')+(S.h.length?S.h.map((h,i)=>[h,i]).reverse().slice(0,V.hn||30).map(([h,i])=>`<div class=card><div class=row><b>${DAYS[h.day]} · ${dfr(h.d)}</b><span class=mu>+${h.xp} XP</span></div>${h.sc!=null?`<div class=mu>Récupération ${h.sc}/100</div>`:''}${h.rd==='low'?'<div class=mu>🔋 Séance allégée</div>':''}${h.ex?'<div class=mu>⚡ Séance express</div>':''}${h.wk!=null?`<div class=mu>🌊 ${WVN[h.wk][0]}</div>`:''}${h.pn&&Math.max(h.pn.c,h.pn.p,h.pn.e)>0?`<div class=mu>Douleurs : coudes ${h.pn.c} · poignets ${h.pn.p} · épaules ${h.pn.e}</div>`:''}${h.wu?`<div class=mu>Échauffement ${h.wu}</div>`:''}${h.res.map(r=>`<div class="mu hr">${r.n} · ${r.dn}/${r.sets} · ${fmt(r,r.act,r.x)}${r.q!=null?' · RIR '+r.q:''}${r.rp!=null?' · RPE '+r.rp:''}${r.fm==='bad'?' · ⚠️ forme':''}${r.nc?' · ⚠️ technique':''}${r.pr&&r.pr.length?' · 🏅':''} ${r.a==='up'?'▲':r.a==='down'?'▼':'＝'} ${r.ns?r.ns:fmt(r,r.next,r.nx)}${xt(h,r)}</div>`).join('')}<button class=sec data-a=delh data-i=${i}>🗑 Supprimer cette séance</button></div>`).join('')+(S.h.length>(V.hn||30)?`<button class=big data-a=hmore>Afficher des séances plus anciennes<span class=mu>${S.h.length-(V.hn||30)} restante${S.h.length-(V.hn||30)>1?'s':''}</span></button>`:''):'<p class=mu>Aucune séance enregistrée pour l’instant. Lance ta première séance !</p>')
 
 };
-function render(){const y=scrollY;$('#app').innerHTML=VW[V.v]();scrollTo(0,y)}
+function ransom(){document.querySelectorAll('#app h1,#app h2').forEach(h=>{if(h.dataset.r)return;h.dataset.r=1;const t=h.textContent;h.setAttribute('aria-label',t);h.textContent='';let i=0;for(const c of t){if(c===' '){h.appendChild(document.createTextNode(' '));continue}const s=document.createElement('span');s.className='rn r'+(i++%4);s.setAttribute('aria-hidden','true');s.textContent=c;h.appendChild(s)}})}
+function render(){const y=scrollY;$('#app').innerHTML=VW[V.v]();if(UI.sk==='ph')ransom();scrollTo(0,y)}
 /* navigation avec pile : « Retour » revient à l'écran précédent, à la même position de défilement (le bouton retour du téléphone fait pareil) */
 V.st=[];V.sk=0;
 function nav(v,bk){V.ask=null;V.rz=null;V.rze=0;if(v==='hist'&&V.v!=='hist')V.hn=30;if(!bk&&v!==V.v&&v!=='home'&&v!=='ses'&&V.v!=='ses'&&V.v!=='res'){V.st.push({v:V.v,y:scrollY,day:V.day,rt:V.rt});try{history.pushState(null,'')}catch(e){}}
  if(v==='home')V.st=[];
+ if(MP.rs&&v!=='ses'){MP.rs=0;muToggle()}
  V.v=v;render();scrollTo(0,0);if(v==='sav'){V.snaps=null;loadSnaps()}wipe()}
-function wipe(){if(!SKF[UI.sk])return;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}const w=document.createElement('div');w.className='wipe '+UI.sk;document.body.appendChild(w);setTimeout(()=>w.remove(),500)}
+function wipe(){if(!SKF[UI.sk])return;try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}const w=document.createElement('div');w.className='wipe '+UI.sk;if(['ph','p3','p4'].includes(UI.sk))w.innerHTML='<i></i><i></i><i></i>';document.body.appendChild(w);setTimeout(()=>w.remove(),900)}
 function popView(){const s=V.st.pop();if(!s)return false;V.v=s.v;V.day=s.day;V.rt=s.rt;if(s.v==='sav'){V.snaps=null;loadSnaps()}render();scrollTo(0,s.y);setTimeout(()=>scrollTo(0,s.y),60);return true}
 addEventListener('popstate',()=>{if(V.sk>0){V.sk--;return}if(V.v==='ses'||V.v==='res'){try{history.pushState(null,'')}catch(e){}return}popView()});
 
+/* ---- Musique de fond : playlist perso (fichiers stockés sur cet appareil) + 3 boucles générées par l'app ---- */
+const MK='calisthenie_mus',GENL=[{id:'g1',n:'Pulse · énergie',g:1},{id:'g2',n:'Chill · récupération',g:1},{id:'g3',n:'Arcade · chiptune',g:1}];
+let MU=(()=>{try{const o=JSON.parse(localStorage.getItem(MK)||'{}');return{f:(Array.isArray(o.f)?o.f:[]).filter(t=>t&&typeof t.id==='string'&&typeof t.n==='string').slice(0,60).map(t=>({id:t.id.slice(0,24),n:t.n.slice(0,80)})),vol:o.vol>=0&&o.vol<=1?+o.vol:.6,auto:+o.auto?1:0,sh:+o.sh?1:0,ns:o.ns===0?0:1,last:typeof o.last==='string'?o.last.slice(0,24):'',th:(o.th&&typeof o.th==='object'?Object.fromEntries(Object.entries(o.th).filter(([k,v])=>typeof v==='string'&&/^[a-z0-9]{1,4}$/.test(k)).map(([k,v])=>[k,v.slice(0,24)]).slice(0,8)):{})}}catch(e){return{f:[],vol:.6,auto:0,sh:0,ns:1,last:'',th:{}}}})();
+const muSave=()=>{try{localStorage.setItem(MK,JSON.stringify(MU))}catch(e){}};
+const muList=()=>[...GENL,...MU.f];
+let MP={id:null,on:0,au:null,url:null,gi:0};
+function muCtx(){if(!muCtx.c){const C=window.AudioContext||window.webkitAudioContext;muCtx.c=new C();muCtx.g=muCtx.c.createGain();muCtx.g.connect(muCtx.c.destination);const n=muCtx.c.createBuffer(1,4410,44100),d=n.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;muCtx.nb=n}muCtx.g.gain.value=MU.vol*.6;return muCtx.c}
+function gnote(f,t,d,ty,v){const c=muCtx.c,o=c.createOscillator(),g=c.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(muCtx.g);o.start(t);o.stop(t+d+.05)}
+function gkick(t){const c=muCtx.c,o=c.createOscillator(),g=c.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(40,t+.12);g.gain.setValueAtTime(.9,t);g.gain.exponentialRampToValueAtTime(.0001,t+.25);o.connect(g);g.connect(muCtx.g);o.start(t);o.stop(t+.3)}
+function ghat(t,v){const c=muCtx.c,s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=muCtx.nb;f.type='highpass';f.frequency.value=7000;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.05);s.connect(f);f.connect(g);g.connect(muCtx.g);s.start(t)}
+const MID=m=>440*Math.pow(2,(m-69)/12);
+const GEN={
+ g1:{bpm:124,s(i,t){const b=i%16,bar=Math.floor(i/16)%4,root=[45,45,41,43][bar];if(b%4===0)gkick(t);if(b%4===2)ghat(t,.25);if([0,3,6,8,11,14].includes(b))gnote(MID(root+((b===6||b===14)?12:0)),t,.18,'sawtooth',.16);if(b%8===4)gnote(MID(root+24),t,.3,'square',.04)}},
+ g2:{bpm:76,s(i,t){const b=i%16,bar=Math.floor(i/16)%4,ch=[[57,60,64,67],[53,57,60,64],[60,64,67,71],[55,59,62,65]][bar];if(b===0)ch.forEach(m=>gnote(MID(m),t,2.6,'triangle',.07));if(b%4===0&&b!==8)gkick(t);if(b===4||b===12)ghat(t,.12);if(b%2===0)gnote(MID(ch[(b/2)%4]+12),t,.5,'sine',.05)}},
+ g3:{bpm:140,s(i,t){const b=i%16,bar=Math.floor(i/16)%4,ch=[[57,60,64],[53,57,60],[60,64,67],[55,59,62]][bar];gnote(MID(ch[b%3]+12),t,.12,'square',.06);if(b%4===0)gnote(MID(ch[0]-12),t,.3,'triangle',.18);if(b%8===4)ghat(t,.2);if(b===0)gkick(t)}}
+};
+function genStart(id){const c=muCtx(),g=GEN[id];if(!g)return;try{c.resume&&c.resume()}catch(e){}let i=0,nt=c.currentTime+.05;const sd=60/g.bpm/4;clearInterval(MP.gi);MP.gi=setInterval(()=>{while(nt<c.currentTime+.25){g.s(i++,nt);nt+=sd}},60)}
+function genStop(){clearInterval(MP.gi);MP.gi=0;try{muCtx.c&&muCtx.c.suspend()}catch(e){}}
+function muStop(){if(MP.au)try{MP.au.pause()}catch(e){}genStop();MP.on=0}
+async function muPlay(id){const t=muList().find(x=>x.id===id);if(!t)return;muStop();MP.id=id;MP.on=1;MU.last=id;muSave();
+ if(t.g)genStart(id);
+ else{let b=null;try{b=await kvGet('mus:'+id)}catch(e){}
+  if(!b){MP.on=0;alert('Fichier introuvable : il a peut-être été effacé du navigateur. Retire-le de la liste et ajoute-le à nouveau.');muUI();return}
+  const a=MP.au||(MP.au=new Audio());a.onended=()=>muNext(1);a.onerror=()=>{MP.on=0;alert('Ce fichier audio ne peut pas être lu sur cet appareil.');muUI()};
+  if(MP.url)URL.revokeObjectURL(MP.url);MP.url=URL.createObjectURL(b);a.src=MP.url;a.volume=MU.vol;
+  try{await a.play()}catch(e){MP.on=0}}
+ muMeta(t);muUI()}
+function muToggle(){if(MP.on){muStop();muUI();return}
+ if(MP.id&&muList().some(x=>x.id===MP.id)){const t=muList().find(x=>x.id===MP.id);if(t.g){MP.on=1;genStart(t.id);muUI()}else if(MP.au&&MP.au.src){MP.on=1;MP.au.play().catch(()=>{MP.on=0;muUI()});muUI()}else muPlay(MP.id);return}
+ const l=muList();muPlay((MU.f[0]||l[0]).id)}
+function muNext(d){const l=muList();if(!l.length)return;let i=l.findIndex(x=>x.id===MP.id);if(MU.sh&&l.length>1){let j;do{j=Math.floor(Math.random()*l.length)}while(j===i);i=j}else i=((i<0?0:i)+(d||1)+l.length)%l.length;muPlay(l[i].id)}
+function muMeta(t){try{if('mediaSession'in navigator){navigator.mediaSession.metadata=new MediaMetadata({title:t.n,artist:'Carnet de séance'});navigator.mediaSession.setActionHandler('play',muToggle);navigator.mediaSession.setActionHandler('pause',muToggle);navigator.mediaSession.setActionHandler('nexttrack',()=>muNext(1));navigator.mediaSession.setActionHandler('previoustrack',()=>muNext(-1))}}catch(e){}}
+function muUI(){let m=$('#mp');if(!m){m=document.createElement('div');m.id='mp';m.innerHTML='<button data-a=muT aria-label="Lecture / pause">⏯</button><button data-a=muN aria-label="Piste suivante">⏭</button>';document.body.appendChild(m)}
+ m.classList.toggle('on',MP.id!==null);const b=m.firstChild;b.textContent=MP.on?'⏸':'▶';if(V.v==='mus')render()}
+document.addEventListener('input',e=>{if(e.target.id==='muv'){MU.vol=Math.max(0,Math.min(1,e.target.value/100));if(MP.au)MP.au.volume=MU.vol;if(muCtx.g)muCtx.g.gain.value=MU.vol*.6;muSave()}});
+const muOk=id=>!!id&&muList().some(x=>x.id===id);
+/* musique d'ambiance : une piste peut être associée à chaque style ; le démarrage automatique attend le premier toucher (le navigateur interdit de lancer du son tout seul) */
+function muTheme(){const id=MU.th[UI.sk||'classic'];if(muOk(id)&&MP.id!==id&&(MP.on||MU.auto))muPlay(id)}
+function muBoot(){if(!MU.auto||MP.on||MP.id)return;const id=[MU.th[UI.sk||'classic'],MU.last].find(muOk);if(id)muPlay(id)}
+function muSess(){if(MU.ns&&MP.on){MP.rs=1;muStop();muUI()}}
+document.addEventListener('click',()=>setTimeout(muBoot,0),{once:true,capture:true});
+document.addEventListener('change',e=>{if(/^mut_/.test(e.target.id||'')){const k=e.target.id.slice(4);if(e.target.value)MU.th[k]=e.target.value;else delete MU.th[k];muSave()}});
 /* ---- Actions ---- */
 /* Confirmations et messages dans l'app (les fenêtres du navigateur peuvent être bloquées sur téléphone : le bouton semblait alors ne rien faire) */
 let CFOK=0,CFD=0,CFP=null;
@@ -846,21 +986,32 @@ ses:d=>{const day=V.day,xr=d&&d.x==='1';if(RS&&!(d&&d.ok==='1')){V.ask={x:d&&d.x
  if(eq)P[day].forEach(e=>{if(e.up&&SE.ex[e.id])SE.ex[e.id].xs=1});
  if(SE.wk===3){SE.dl=1;P[day].forEach(e=>dlEx(e,SE.ex[e.id]))}
  SE.ib=imbalance();if(SE.ib.lag&&!SE.dl){const be=SQ().find(e=>GRP[SE.ib.lag].includes(e.id)&&['dp','reps','kg'].includes(e.t));if(be){const br=SE.ex[be.id];br.d.push(false);br.xs=1}}
- beep(1,.01);wake();sv();nav('ses')},
+ beep(1,.01);wake();sv();nav('ses');muSess()},
 rsm:()=>{SE=RS.SE;V.day=RS.day;RS=null;if(SE.eqp)P[V.day]=SE.eqp.map(e=>({...e}));const g=SE.g;
  SE.pre=SE.pre||{sl:null,en:null,so:null};SE.pn=SE.pn||{c:0,p:0,e:0,k:0,h:0};SE.rd=SE.rd||'ok';SE.wu=SE.wu||[];for(const id in SE.ex){const r=SE.ex[id];if(r.bv==null){r.bv=r.tg;r.bx=r.x}r.nc=r.nc||0;r.pa=r.pa||0}
- wake();if(g.ph==='rest'){tEnd=g.rend;tP=g.tp||0;clearInterval(tI);if(!tP)tI=setInterval(tick,250)}if(g.ph==='eff'){clearInterval(eI);eI=setInterval(ef,200)}nav('ses')},
+ wake();if(g.ph==='rest'){tEnd=g.rend;tP=g.tp||0;clearInterval(tI);if(!tP)tI=setInterval(tick,250)}if(g.ph==='eff'){clearInterval(eI);eI=setInterval(ef,200)}nav('ses');muSess()},
 eq:()=>nav('eq'),
 eqt:d=>{const q=eqSet();if(q.has(d.k))q.delete(d.k);else q.add(d.k);UI.eq=[...q];saveUI();render()},
 eqpre:d=>{UI.eq=[...(EQP_[d.v]||[])];saveUI();render()},
 eqo:d=>{UI[d.k]=Math.max(0,Math.min(2,+d.v|0));saveUI();render()},
 eqn:()=>nav('eqp'),
 eqgo:()=>{if(RS&&!cf('Une séance est en pause. La remplacer par celle-ci ? (la séance en pause sera perdue)'))return;EQP=eqBuild(V.day).map(x=>x.r||x.o);A.ses({ok:'1',eq:'1',x:'0'})},
-missv:()=>nav('miss'),
+mus:()=>nav('mus'),
+muT:()=>muToggle(),muN:()=>muNext(1),muV:()=>muNext(-1),
+muP:d=>{if(MP.id===d.id&&MP.on){muStop();muUI()}else muPlay(d.id)},
+muO:d=>{MU[d.k]=MU[d.k]?0:1;muSave();render()},
+muD:d=>{const t=MU.f.find(x=>x.id===d.id);if(!t||!cf('Retirer « '+t.n+' » de la playlist ?'))return;if(MP.id===t.id){muStop();MP.id=null}MU.f=MU.f.filter(x=>x.id!==t.id);for(const k in MU.th)if(MU.th[k]===t.id)delete MU.th[k];if(MU.last===t.id)MU.last='';muSave();kvDel('mus:'+t.id);muUI();render()},
+muA:()=>{const i=document.createElement('input');i.type='file';i.accept='audio/*';i.multiple=true;i.onchange=async()=>{let n=0;try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+  for(const f of [...i.files]){if(MU.f.length>=60){alert('60 musiques maximum.');break}if(f.size>80*1048576){alert('« '+f.name+' » dépasse 80 Mo : fichier ignoré.');continue}
+   const id='m'+Date.now().toString(36)+n++;const ok=await kvSet('mus:'+id,f);if(!ok){alert('Espace de stockage insuffisant : « '+f.name+' » n’a pas été ajouté.');break}
+   MU.f.push({id,n:f.name.replace(/\.[^.]+$/,'').slice(0,80)})}
+  muSave();if(n)toast(n+' musique'+(n>1?'s':'')+' ajoutée'+(n>1?'s':'')+'.');render()};i.click()},
 vars:()=>nav('vars'),
 road:d=>{V.rt=d.k==='wv'?'wv':'lv';nav('road');setTimeout(()=>{const c=document.querySelector('.nc.cu');if(c)c.scrollIntoView({block:'center'})},30)},
 rt:d=>{V.rt=d.v;render();setTimeout(()=>{const c=document.querySelector('.nc.cu');if(c)c.scrollIntoView({block:'center'})},30)},
-msk:()=>{S.ms.push({d:new Date().toISOString(),day:V.day});save();nav('home')},
+msk:()=>{const td=new Date().toDateString();if(S.ms.some(m=>m.day===V.day&&new Date(m.d).toDateString()===td)){toast('Cette séance est déjà marquée comme sautée aujourd’hui.');return}
+ const ds=daysSince(),rec=S.ms.filter(m=>Date.now()-new Date(m.d)<14*864e5).length+1;S.ms.push({d:new Date().toISOString(),day:V.day});save();nav('home');
+ toast('⏭ Séance de '+DAYS[V.day].split(' · ')[0].toLowerCase()+' sautée. Ta progression et ta vague n’ont pas bougé : la prochaine séance reprend normalement.'+(ds>=10?'\nPlus de 10 jours sans séance : la prochaine sera automatiquement allégée.':'')+(rec>=3?'\nPlusieurs séances manquées ces 2 dernières semaines : mieux vaut une version courte régulière qu’une grosse séance rare.':''))},
 wvt:()=>{S.wv.on=wvOn()?0:1;save();render()},
 wvd:()=>{if(!cf('Passer directement en semaine de décharge ?'))return;backup('Avant décharge anticipée');S.wv.n=Math.max(S.wv.n,(wvL()-1)*SPW);save();render()},
 wv0:()=>{if(!cf('Recommencer la vague à la semaine 1 ? Les cibles ne changent pas.'))return;S.wv.n=0;save();render()},
@@ -881,7 +1032,9 @@ prego:()=>{SE.rd=rdy();SE.sc=rscore();if(SE.rd==='low'&&!SE.dl)P[V.day].forEach(
 wt:d=>{SE.wu[+d.i]=!SE.wu[+d.i];sv();render()},
 wugo:()=>{SE.g.ph='prep';sv();render();scrollTo(0,0)},
 go1:()=>{const g=SE.g,e=SQ()[g.ei];g.cur=SE.ex[e.id].tg;g.si=0;startEff()},
-skip:()=>{const g=SE.g;if(g.ei<SQ().length-1){g.ei++;g.si=0;g.ph='prep';sv();nav('ses')}else A.done()},
+skip:()=>{const g=SE.g;if(g.ei<SQ().length-1){g.ei++;g.si=0;g.ph='prep';sv();nav('ses');return}
+ if(!Object.values(SE.ex).some(r=>r.L&&r.L.some(Boolean))){if(!cf('Tu as passé tous les exercices sans valider une seule série. Quitter la séance sans rien enregistrer ?'))return;clearInterval(eI);A.tx();SE=null;buildP();sv();try{WL&&WL.release()}catch(x){}nav('home');toast('Séance abandonnée : rien n’a été enregistré.');return}
+ A.done()},
 stop:()=>{const{g,e,r}=cs(),i=g.si,n=g.pz||Date.now();clearInterval(eI);
  const o={a:r.tg,ax:r.x,fm:null,q:null,p:null,c:0};
  if(e.t==='hold')o.a=Math.max(0,Math.floor((n-g.t0)/1000));
@@ -970,7 +1123,7 @@ delh:d=>{const i=+d.i,h=S.h[i];if(!h)return;
  if(u.wv){const[o,n]=u.wv;if(S.wv.n===n[0]&&S.wv.w===n[1]){S.wv.n=o[0];S.wv.w=o[1];if(u.wb)S.wb.pop()}}
  S.xp=Math.max(0,S.xp-(h.xp||0));S.h.splice(i,1);buildP();save();render()},
 sm:d=>{V.sm[d.k]=d.m;render()},
-ui:d=>{UI[d.k]=d.k==='z'||d.k==='cl'?+d.v:d.v;saveUI();applyUI();render()},
+ui:d=>{UI[d.k]=d.k==='z'||d.k==='cl'?+d.v:d.v;saveUI();applyUI();render();if(d.k==='sk')muTheme()},
 rdt:d=>{UI.rd[d.k]=UI.rd[d.k]?0:1;saveUI();render()},
 ics:()=>{const t=icsText();if(!t)return alert('Choisis au moins un jour.');
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/calendar'}));a.download='rappels-seances.ics';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)},

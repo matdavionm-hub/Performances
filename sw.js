@@ -1,7 +1,7 @@
 /* Service worker : l'app fonctionne hors-ligne. Les fichiers sont servis depuis le cache
    et mis à jour en arrière-plan : après un changement d'index.html, la nouvelle version
    apparaît au 2e lancement. Change CACHE (v1 → v2…) pour forcer le renouvellement. */
-const CACHE = 'carnet-v32';
+const CACHE = 'carnet-v41';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
