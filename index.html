@@ -396,7 +396,7 @@ input[type=range]{width:100%;accent-color:var(--s);height:32px}
 <script>
 const VER=2,KEY='calisthenie_v1',SKEY='calisthenie_se',PKEY='calisthenie_prev',DAYS={mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi · Jambes',samedi:'Samedi',dimanche:'Dimanche'},DOW={mardi:2,mercredi:3,jeudi:4,samedi:6,dimanche:0};
 const $=s=>document.querySelector(s);
-const D=()=>({h:[],p:{},xp:0,lv:{pl:0,fl:1},bk:0,bw:[],vr:{},pg:{},pf:{n:'Principal',l:{}},go:[],wv:{n:0,w:0,on:0,len:4,wm:1},cal:{},wb:[],ms:[],t:0,ver:VER});
+const D=()=>({h:[],p:{},xp:0,lv:{pl:0,fl:1},bk:0,bw:[],vr:{},pg:{},pf:{n:'Principal',l:{}},go:[],wv:{n:0,w:0,on:0,len:4,wm:1},cal:{},lm:35,hd:{t:15,l:{}},wb:[],ms:[],t:0,ver:VER});
 
 /* ---- Programme (v = variable qui progresse ; rl = le repos de base baisse peu à peu ; zn = zones sollicitées ; bw = poids de corps ajouté au calcul du 1RM) ---- */
 const HB={id:'hb',n:'Hollow Body',t:'hold',sets:3,v:45,rl:1};
@@ -441,8 +441,8 @@ const T={
  emom:{c:'rep',l:'Reps par minute réalisées',mx:1,up:(v,x)=>x<12?[v,x+2]:[v+1,10],dn:(v,x)=>x>10?[v,x-2]:[Math.max(2,v-1),12]}
 };
 /* Séances Force : double progression (reps puis charge) + repos 5 min. v = charge (kg, 0 = poids du corps), x = reps par série */
-T.dp={c:'kg',l:'Lest utilisé',mx:1,up:(v,x)=>v?(x<5?[v,x+1]:[v+2,3]):(x<15?[v,x+1]:[10,3]),dn:(v,x)=>v?(x>3?[v,x-1]:[Math.max(0,v-2),6]):[v,Math.max(3,x-1)]};
-for(const d in P)P[d]=P[d].map(e=>/Force/.test(e.n)?e.id==='di'?{...e,t:'dp',x0:3,rest:300,note:'Chaque série proche de l’échec (RIR 1–2). Fourchette 3 → 6 reps : dès que tu fais 5–6 reps sur toutes les séries, +2 kg et retour à 3–4 reps.'}:e.id==='tr'?{id:'tf',n:'Tractions · Force',t:'dp',sets:3,x0:6,v:0,rest:300,note:'Poids du corps jusqu’à 15 strictes, puis lestées : fourchette 3 → 6 reps proche de l’échec, dès 5–6 reps : +2 kg.'}:{...e,rest:300}:e);
+T.dp={c:'kg',l:'Lest utilisé',mx:1,up:(v,x)=>v?(x<5||v+2>(S.lm||35)?[v,x+1]:[v+2,3]):(x<15?[v,x+1]:[10,3]),dn:(v,x)=>v?(x>3?[v,x-1]:[Math.max(0,v-2),6]):[v,Math.max(3,x-1)]};
+for(const d in P)P[d]=P[d].map(e=>/Force/.test(e.n)?e.id==='di'?{...e,t:'dp',x0:3,rest:300,note:'Chaque série proche de l’échec (RIR 1–2). Fourchette 3 → 6 reps : dès que tu fais 5–6 reps sur toutes les séries, +2 kg et retour à 3–4 reps.'}:e.id==='tr'?{id:'tf',n:'Tractions · Force',t:'dp',sets:3,x0:6,v:0,rest:300,note:'Poids du corps : fourchette de 4 reps, tu vises le haut sur toutes les séries proche de l’échec ; dès que tu le fais avec 1–2 reps en réserve, la fourchette monte de +1. À 15 strictes, lest : fourchette 3 → 6 reps, dès 5–6 reps : +2 kg.'}:{...e,rest:300}:e);
 /* Technique à contrôler par série, zones sollicitées (c = coudes, p = poignets, e = épaules) */
 const TK={tr:['amp','elan'],tf:['amp','elan'],di:['amp','elan'],da:['amp','elan'],po:['amp','elan'],sp:['amp','pause'],pw:['amp','elan'],sb:['amp','elan'],ic:['amp','pause'],pf:['amp','pause'],ml:['amp','pause'],},TKL={amp:'Amplitude complète',elan:'Sans élan',pause:'Pause 3 s respectée'};
 const ZN={tr:['c','e'],tf:['c','e'],di:['c','e'],da:['c','e'],po:['p','e','c'],pw:['p','e','c'],pl:['p','e','c'],tp:['p','e','c'],fl:['e','c'],ng:['e','c'],sp:['e'],ah:['e'],sd:['k','h'],sb:['k','h'],ic:['k','h'],pf:['h'],ml:['k'],},ZL={c:'Coudes',p:'Poignets',e:'Épaules',k:'Genoux',h:'Hanches / bas du dos'};
@@ -462,7 +462,7 @@ function eqSub(e,q){const h=k=>q.has(k),id=e.id,hang=h('bar')||h('ring'),m=(...a
  if(id==='sp'&&!h('bar'))return h('ring')?m('spr','Scapula pull-up aux anneaux','reps',4,8,150,'Pause de 3 s en haut de chaque rep.',['e'],0):m('spp','Scapula push-up','reps',4,12,90,'En position de pompe, bras tendus : écarte et rapproche les omoplates.',['e'],1);
  if((id==='tr'||id==='tf')&&!h('bar'))return h('ring')?m('rwr','Rowing aux anneaux · pieds en avant','reps',4,8,150,'Plus ton corps est incliné, plus c’est dur. Pieds surélevés quand 4 × 10 devient facile.',['c','e'],1):h('tab')?m('rwt','Rowing inversé sous table','reps',4,8,150,'Corps gainé, poitrine vers le bord de la table. Pieds surélevés (chaise) quand c’est facile.',['c','e'],1):m('ytw','Tirage au sol Y-T-W','reps',4,10,90,'Aucun point d’accroche : travail du dos sans traction, bien moins intense.',['e'],2);
  if(id==='di'&&!h('dip'))return h('par')?m('pdp','Pompes sur parallettes · grande amplitude','reps',4,8,150,'Descends le plus bas possible, coudes serrés : proche des dips pour les triceps.',['p','e','c'],1):h('wt')?m('pdl','Pompes diamant lestées','reps',4,8,150,'Sac à dos chargé sur le dos, mains en diamant.',['p','e','c'],1):m('pdi','Pompes diamant','reps',4,10,120,'Mains en diamant, coudes serrés, pieds surélevés si c’est facile.',['p','e','c'],1);
- if(id==='pw'&&!h('wt')&&pwStage()%5===0){const u=pwStage()===5;return h('band')&&!u?m('pwb','Pompes avec élastique dans le dos','reps',3,8,240,'Passe l’élastique dans le dos et sous les mains : la résistance remplace le lest.',['p','e','c'],1):u?m('pwu','Pompes unilatérales strictes','reps',3,3,240,'Poids du corps, un seul bras (assiste-toi du bout des doigts au besoin).',['p','e','c'],1):m('pwa','Pompes archer','reps',3,5,240,'Reps par côté : le travail se concentre sur un bras.',['p','e','c'],1)}
+ if(id==='pw'&&!h('wt')){const s=pwStage();return h('band')?m('pwb','Pompes avec élastique dans le dos','reps',3,8,240,'Passe l’élastique dans le dos et sous les mains : la résistance remplace le lest.',['p','e','c'],1):s===0?m('pwa','Pompes pseudo planche','reps',3,6,240,'Sans lest : mains à hauteur des hanches, corps penché vers l’avant. Échauffe les poignets.',['p','e','c'],1):s===1?m('pwa','Pompes diamant · pieds surélevés','reps',3,8,240,'Sans lest : mains en diamant, pieds surélevés pour compenser.',['p','e','c'],1):s===2?m('pwa','Pompes archer','reps',3,6,240,'Sans lest : un bras travaille, l’autre est tendu sur le côté (deux côtés, saisis le plus faible).',['p','e','c'],1):m('pwu','Pompes pseudo planche · pieds surélevés','reps',3,5,240,'Sans lest : mains à hauteur des hanches, pieds surélevés, corps penché vers l’avant.',['p','e','c'],1)}
  if(['fl','ng','fr'].includes(id)&&!hang)return h('box')?m('dfn','Dragon flag négatif · banc','hold',4,3,150,'Allongé sur le banc, tiens-le derrière la tête, descends tout gainé en 3 s.',['e','c'],1):m('hbl','Hollow Body · hold long','hold',4,25,90,'Bas du dos plaqué, bras tendus derrière la tête.',['e'],2);
  if(id==='sb'&&!h('box'))return m('fen','Fentes arrière','reps',3,8,120,'Reps par jambe : recule un pied, genou arrière près du sol, genou avant dans l’axe.',['k','h'],1);
  if(id==='ic'&&!h('box'))return m('sld','Leg curl glissé (serviette)','reps',3,8,120,'Allongé sur le dos, talons sur une serviette sur sol lisse : tends les jambes en glissant, remonte lentement.',['k','h'],1);
@@ -486,15 +486,14 @@ const XT=[{id:'po',n:'Pompes surélevées · Force',t:'reps',sets:3,v:8,rest:300
  {id:'ls',n:'L-sit',t:'hold',sets:4,v:10,rest:90,zn:['p','e']},
  {id:'oa',n:'One Arm Pull-up · Négatives',t:'hold',sets:4,v:3,rest:180,zn:['c','e'],note:'Temps de la descente contrôlée, un bras.'}].map(e=>({...e,bw:0}));
 XT.forEach(e=>LIB.push(e));
-/* Parcours pompes : étape 1 pompes lestées (objectif 35 kg) → étape 2 pompes archer puis unilatérales au poids du corps → étape 3 unilatérales lestées (objectif 35 kg) */
-const PWG=35;
-const STG=[{n:'Pompes lestées',t:'dp',v0:11,note:'Étape 1 : objectif 3 × 6 reps propres avec 35 kg de lest (3 → 6 reps, puis +2 kg). Astuce : pars d’un lest impair (9, 11, 13…) pour tomber pile sur 35 kg.'},
- {n:'Pompes archer',t:'reps',goal:8,v0:5,note:'Étape 2, sans lest : reps par côté (fais les deux côtés, saisis le côté le plus faible). Objectif 8 reps.'},
- {n:'Pompes archer · bras d’appui presque tendu',t:'reps',goal:8,v0:5,note:'Le bras d’appui est de plus en plus tendu : tu fais presque tout le travail avec un seul bras. Objectif 8 reps.'},
- {n:'Pompes unilatérales assistées',t:'reps',goal:8,v0:4,note:'Un bras travaille, l’autre main touche le sol du bout des doigts : réduis l’aide peu à peu. Objectif 8 reps.'},
- {n:'Pompes unilatérales strictes',t:'reps',goal:5,v0:3,note:'Poids du corps, un seul bras. Objectif 5 reps propres par côté.'},
- {n:'Pompes unilatérales lestées',t:'dp',v0:2,note:'Étape 3 : on rajoute du lest sur l’unilatéral (3 → 6 reps, puis +2 kg). Objectif final : 35 kg.'}];
-const pwStage=()=>Math.min(STG.length-1,Math.max(0,S.p['pw.st']|0));
+/* Parcours pompes : étape 1 pompes lestées (objectif 35 kg) → étapes 2 à 5 pseudo planche puis tuck planche, sans lest → étape 6 pseudo planche lestée (objectif 20 kg) */
+const PWG=35,pwGl=g=>Math.min(g.goal||PWG,S.lm||35);
+const STG=[{n:'Pompes lestées',t:'dp',v0:11,note:'Étape 1 : objectif 3 × 6 reps propres avec 35 kg de lest (fourchette 3 → 6 reps, +2 kg dès 5–6 reps). Astuce : pars d’un lest impair (9, 11, 13…) pour tomber pile sur 35 kg.'},
+ {n:'Pompes diamant lestées',t:'dp',v0:8,goal:45,note:'Étape 2 : mains rapprochées en diamant, lest sur le dos. Coudes près du corps. Fourchette 3 → 6 reps, +2 kg dès 5–6 reps. Objectif : 45 kg.'},
+ {n:'Pompes archer lestées',t:'dp',v0:4,goal:40,note:'Étape 3 : un bras travaille, l’autre est tendu sur le côté, lest sur le dos. Fais les deux côtés et saisis le côté le plus faible. Fourchette 3 → 6 reps. Objectif : 40 kg.'},
+ {n:'Pompes pseudo planche lestées',t:'dp',v0:2,goal:40,note:'Étape 4 : mains à hauteur des hanches, corps penché vers l’avant, lest sur le dos. Échauffe bien les poignets. Fourchette 3 → 6 reps. Objectif : 40 kg.'},
+ {n:'Planche push-up lestée · boss final',t:'dp',v0:2,goal:30,boss:1,note:'BOSS FINAL, débloqué quand tu tiens la Full Planche : pompes en planche, corps gainé, lest sur le dos. Fourchette 3 → 6 reps, +2 kg dès 5–6 reps. Objectif : 30 kg.'}];
+const pwStage=()=>S.p['pw.s2']!=null?Math.min(STG.length-1,Math.max(0,S.p['pw.s2']|0)):[0,1,1,1,1,3][Math.min(5,Math.max(0,S.p['pw.st']|0))];
 const pwEntry=()=>{const g=STG[pwStage()];return g.t==='dp'?{n:g.n,t:'dp',sets:3,x0:3,v:g.v0,rest:300,note:g.note}:{n:g.n,t:'reps',sets:3,v:g.v0,rest:300,note:g.note,x0:undefined}};
 const HASSETS=e=>['hold','reps','kg','dp'].includes(e.t),SPW=4;
 /* Vague : 4 semaines de 4 séances (nom, RIR visé, explication) */
@@ -502,7 +501,7 @@ const WVN=[['Accumulation',3,'Volume normal, exécution propre : garde environ 3
 const FMT={force:'Force',obj:'Objectif',pyr:'Pyramide',emom:'EMOM'};
 function fmtApply(e,f){const b=e.n.split(' · ')[0],o={...e,n:b+' · '+FMT[f]};
  if(f==='force'){Object.assign(o,{t:'dp',sets:e.sets||3,x0:3,v:0,rest:300,note:'Force : chaque série proche de l’échec (RIR 1–2), fourchette 3 → 6 reps ; dès 5–6 reps sur toutes les séries : +2 kg.'})}
- else if(f==='obj'){Object.assign(o,{t:'dp',sets:e.sets||3,x0:6,v:0,rest:300,note:'Objectif : tu montes en reps au poids du corps jusqu’à 15 strictes, puis le lest démarre.'})}
+ else if(f==='obj'){Object.assign(o,{t:'dp',sets:e.sets||3,x0:6,v:0,rest:300,note:'Objectif : fourchette de 4 reps, tu vises le haut sur toutes les séries proche de l’échec ; dès que tu le fais avec 1–2 reps en réserve, la fourchette monte de +1. À 15 strictes, le lest démarre.'})}
  else if(f==='pyr'){Object.assign(o,{t:'pyr',v:6});delete o.sets}
  else{Object.assign(o,{t:'emom',m:10,v:6});delete o.sets}
  return o}
@@ -541,6 +540,7 @@ function norm(o){const d=D();if(!o||typeof o!=='object'||Array.isArray(o))return
  if(pf.l&&typeof pf.l==='object')for(const k of Object.keys(pf.l).slice(0,12)){if(['__proto__','constructor','prototype'].includes(k)||k===s.pf.n)continue;s.pf.l[k]=cleanPg(pf.l[k])}
  s.go=(Array.isArray(o.go)?o.go:[]).filter(g=>g&&typeof g.n==='string'&&(g.kind==='lad'?['pl','fl'].includes(g.k):typeof g.ex==='string'&&['reps','load','hold','rm'].includes(g.m)&&+g.tg>0)).slice(0,40).map(g=>g.kind==='lad'?{id:String(g.id||'').slice(0,12),n:g.n.slice(0,60),kind:'lad',k:g.k,d:String(g.d||'')}:{id:String(g.id||'').slice(0,12),n:g.n.slice(0,60),ex:g.ex.slice(0,8),m:g.m,tg:+g.tg,d:String(g.d||'')});
  const w=o.wv&&typeof o.wv==='object'?o.wv:{};const wl=[3,4,5,6].includes(+w.len)?+w.len:4;s.wv={n:Math.max(0,Math.min(wl*SPW-1,+w.n|0)),w:Math.max(0,+w.w|0),on:w.wm&&!(w.on===0||w.on===false)?1:0,len:wl,wm:1};
+ s.lm=Math.max(5,Math.min(300,+o.lm|0||35));s.hd={t:15,l:{}};if(o.hd&&typeof o.hd==='object'){s.hd.t=Math.max(1,Math.min(99,+o.hd.t|0||15));const ks=Object.keys(o.hd.l&&typeof o.hd.l==='object'?o.hd.l:{}).filter(k=>/^\d{4}-\d{2}-\d{2}$/.test(k)).sort().slice(-400);for(const k of ks){const v=+o.hd.l[k];if(v>0&&isFinite(v))s.hd.l[k]=Math.min(999,Math.round(v))}}
  s.cal={};if(o.cal&&typeof o.cal==='object')for(const k of Object.keys(o.cal).slice(0,80)){const c=o.cal[k];if(['__proto__','constructor','prototype'].includes(k)||!c||typeof c!=='object')continue;s.cal[k]={rm:Math.max(0,Math.min(500,+c.rm||0)),kg:Math.max(0,Math.min(500,+c.kg||0)),fmt:String(c.fmt||'').slice(0,60),d:String(c.d||'').slice(0,30)}}
  s.wb=(Array.isArray(o.wb)?o.wb:[]).filter(b=>b&&typeof b.d==='string'&&isFinite(b.n)).slice(-120).map(b=>({w:+b.w||0,d:b.d,n:+b.n||0,pr:+b.pr||0,xp:+b.xp||0,mv:(Array.isArray(b.mv)?b.mv:[]).filter(m=>m&&typeof m.n==='string'&&isFinite(m.from)&&isFinite(m.to)).slice(0,5).map(m=>({n:m.n,from:+m.from,to:+m.to,p:+m.p||0}))}));
  s.ms=(Array.isArray(o.ms)?o.ms:[]).filter(m=>m&&typeof m.d==='string'&&P0[m.day]).map(m=>({d:m.d,day:m.day})).slice(-200);
@@ -606,9 +606,10 @@ const beat=(d,e,i,n)=>{const s=lastSets(d,e);return s&&s[i]&&(e.t!=='pyr'||s.len
 const effv=o=>{const a=[o.q,o.p==null?null:10-o.p].filter(v=>v!=null);return a.length?Math.min(...a):null};
 const topSet=(e,r,i)=>e.t!=='pyr'||seq(r.tg,r.st||1)[i]>=r.tg-(r.st||1);
 /* test de niveau : proposé la 1re fois qu'un exercice apparaît (rep max / temps max, charge max, format conseillé) */
+const isOA=e=>e.id==='po'&&e.t==='emom'&&!!V.day&&vri(V.day,e)===3,calPend=e=>!!(V.day&&S.p[V.day+'.'+e.id+'.t']);
 const calNew=e=>!e.lad&&!/^q_/.test(e.id)&&!S.cal[e.id]&&!S.h.some(h=>h.res.some(r=>r.id===e.id))&&(((S.pg&&S.pg[V.day]&&S.pg[V.day].a)||[]).some(k=>k.split('|')[0]===e.id));
 const calFmt=rm=>rm<=5?'Force : séries lourdes et courtes, repos longs':rm<=12?'Pyramide : montée puis descente des reps':'EMOM : petites séries à chaque minute';
-const calCard=e=>calNew(e)?`<div class="note w">🧪 Exercice ajouté : fais un test de niveau (1 min) pour choisir son format (EMOM, Force, Pyramide ou Objectif) et régler ta cible de départ.</div><button class=sec data-a=calgo>🧪 Faire le test de niveau</button>`:S.cal[e.id]?`<div class="note hlp">🧪 Test de niveau : max ${S.cal[e.id].rm}${S.cal[e.id].kg?' · charge max +'+S.cal[e.id].kg+' kg':''} → format : ${S.cal[e.id].fmt}</div>`:'';
+const calCard=e=>calPend(e)?`<div class="note w">🧪 Nouvelle variante : fais le test de ton max (une série à l’échec${isOA(e)?', un seul bras':''}) pour régler le nombre de reps idéal.</div><button class=sec data-a=calgo>🧪 Tester mon max</button>`:calNew(e)?`<div class="note w">🧪 Exercice ajouté : fais un test de niveau (1 min) pour choisir son format (EMOM, Force, Pyramide ou Objectif) et régler ta cible de départ.</div><button class=sec data-a=calgo>🧪 Faire le test de niveau</button>`:S.cal[e.id]?`<div class="note hlp">🧪 Test de niveau : max ${S.cal[e.id].rm}${S.cal[e.id].kg?' · charge max +'+S.cal[e.id].kg+' kg':''} → format : ${S.cal[e.id].fmt}</div>`:'';
 const pn=e=>Math.max(0,...(e.zn||[]).map(z=>SE.pn[z]||0));
 /* repos conseillé = repos de base × effort de la série qui vient d'être faite (entre 60 % et 150 % du repos de base) */
 function radv(){const{g,e,r,o}=cs(),b=restOf(e,g.si,r)||90,q=o?effv(o):null;let f=1;
@@ -650,7 +651,7 @@ function drv(e){const r=SE.ex[e.id],Ls=r.L.filter(Boolean);if(!Ls.length)return;
 function ef(){const g=SE&&SE.g;if(!g||g.ph!=='eff')return clearInterval(eI);const e=SQ()[g.ei],r=SE.ex[e.id],n=g.pz||Date.now(),b=$('#bt');if(!b)return;
  if(n<g.t0){b.textContent=Math.ceil((g.t0-n)/1000);$('#bm').textContent='Place-toi…';return}
  if(e.t==='hold'){const s=Math.floor((n-g.t0)/1000);b.textContent=s+' s';$('#bm').textContent='';$('#bb').style.width=Math.min(100,s/g.cur*100)+'%';if(s>=g.cur&&!g.hit){g.hit=1;beep(988,.3);buzz([200,100,200])}}
- else{const el=(n-g.t0)/1000,m=Math.floor(el/60);if(m>=r.x)return A.stop();if(m!==g.lm){g.lm=m;beep(880,.2);buzz(150)}b.textContent=Math.ceil(60-el%60)+' s';$('#bm').textContent='Minute '+(m+1)+'/'+r.x+' · '+r.tg+' reps'}}
+ else{const el=(n-g.t0)/1000,m=Math.floor(el/60);if(m>=r.x)return A.stop();if(m!==g.lm){g.lm=m;beep(880,.2);buzz(150)}b.textContent=Math.ceil(60-el%60)+' s';$('#bm').textContent='Minute '+(m+1)+'/'+r.x+' · '+r.tg+' reps'+(isOA(e)?' · bras '+(m%2?'droit':'gauche'):'')}}
 function startEff(){const g=SE.g,e=SQ()[g.ei];g.ph='eff';g.hit=0;g.lm=-1;g.pz=0;g.t0=Date.now()+(e.t==='hold'||e.t==='emom'?5000:0);clearInterval(eI);eI=setInterval(ef,200);sv();nav('ses');ef()}
 /* Sauvegarde : rappel d'export si pas de fichier récent */
 const bkDays=()=>S.bk?Math.floor((Date.now()-S.bk)/864e5):null,bkWarn=()=>S.h.length&&(bkDays()===null||bkDays()>=(UI.bkd||7));
@@ -661,7 +662,7 @@ const xd=e=>e.t==='emom'?10:e.t==='pyr'?90:e.t==='dp'?e.x0:0;
 const cur=(d,e)=>S.p[d+'.'+e.id]??e.v;
 const curx=(d,e)=>S.p[d+'.'+e.id+'.x']??xd(e);
 /* Variantes proposées quand un exercice plafonne (le nom de l'exercice est remplacé, le mode « · EMOM / Force / Pyramide » reste) */
-const VAR={po:['Pompes diamant','Pompes archer','Pompes pseudo planche'],di:['Dips tempo 3 s à la descente','Dips avec pause 2 s en bas'],tr:['Tractions prise large','Tractions L-sit','Tractions archer'],hb:['Hollow Body bras tendus','Hollow Body avec lest léger'],ah:['Arch Hang prise étroite','Arch Hang avec lest léger']};
+const VAR={po:['Pompes pseudo planche','Pompes archer','Pompes à 1 bras'],di:['Dips tempo 3 s à la descente','Dips avec pause 2 s en bas'],tr:['Tractions prise large','Tractions L-sit','Tractions archer'],hb:['Hollow Body bras tendus','Hollow Body avec lest léger'],ah:['Arch Hang prise étroite','Arch Hang avec lest léger']};
 VAR.tf=VAR.tr;
 const vri=(d,e)=>e.id==='pw'?pwStage():(S.vr&&S.vr[d+'.'+e.id])||0;
 const nm=e=>{const b=e.lad?L[e.lad][S.lv[e.lad]][0]:e.n,v=V.day&&VAR[e.id]?vri(V.day,e):0;return v?[VAR[e.id][v-1],...b.split(' · ').slice(1)].join(' · '):b};
@@ -669,13 +670,13 @@ const nm=e=>{const b=e.lad?L[e.lad][S.lv[e.lad]][0]:e.n,v=V.day&&VAR[e.id]?vri(V
 const plateau=(d,id)=>{const c=(S.vr&&S.vr[d+'.'+id])||0,p=prevRes(d,id,3);return p.length===3&&p.every(r=>(r.vr||0)===c&&!r.bl&&r.a!=='up')};
 const varUI=(d,e)=>{const vs=VAR[e.id];if(!vs)return'';const c=vri(d,e),pl=plateau(d,e.id)&&c<vs.length;
  return `${wvVar(d,e)}${pl?`<div class="note w">📉 Plateau : 3 séances sans progression. Essaie « ${vs[c]} » (les cibles sont réduites pour repartir proprement).</div><button class=sec data-a=vr data-id=${e.id} data-i=${c+1}>Passer à cette variante</button>`:''}<div class=lab>Variante</div><div>${['Standard',...vs].map((n,i)=>`<button class="sec${c===i?' on':''}" data-a=vr data-id=${e.id} data-i=${i}>${n}</button>`).join('')}</div>`};
-const pwUI=()=>{const st=pwStage();return `<div class=hlp><div class=lab>Parcours pompes · étape ${st<1?1:st<5?2:3}/3</div>${STG.map((g,i)=>`<div class=mu style="${i===st?'color:var(--s);font-weight:800':''}">${i<st?'✅':i===st?'▶':'⬜'} ${g.n}${g.t==='dp'?' → '+PWG+' kg':' → '+g.goal+' reps'}</div>`).join('')}<div style="margin-top:6px"><button class=sec data-a=pwst data-s=-1>◀ Étape précédente</button><button class=sec data-a=pwst data-s=1>Étape suivante ▶</button></div></div>`};
+const pwUI=()=>{const st=pwStage();return `<div class=hlp><div class=lab>Parcours pompes · étape ${st+1}/${STG.length}</div>${STG.map((g,i)=>`<div class=mu style="${i===st?'color:var(--s);font-weight:800':''}">${i<st?'✅':i===st?'▶':g.boss&&S.lv.pl<L.pl.length-1?'🔒':'⬜'} ${g.n}${g.t==='dp'?' → '+pwGl(g)+' kg':' → '+g.goal+' reps'}</div>`).join('')}<div style="margin-top:6px"><button class=sec data-a=pwst data-s=-1>◀ Étape précédente</button><button class=sec data-a=pwst data-s=1>Étape suivante ▶</button></div></div>`};
 const varHint=(d,e)=>{const vs=VAR[e.id];if(!vs)return'';const c=vri(d,e),pl=plateau(d,e.id)&&c<vs.length,w=wvVar(d,e);return pl||w?'<button class=sec data-a=vars>🔀 Variante conseillée</button>':''};
 const gl=e=>e.lad?`<div class=note>Palier : ${L[e.lad][S.lv[e.lad]][1]} s en bonne forme → ${(L[e.lad][S.lv[e.lad]+1]||[])[0]||'niveau max'}</div>`:'';
 function setLv(k,i,up){S.lv[k]=i;for(const d in P)P[d].forEach(e=>{if(e.lad===k)S.p[d+'.'+e.id]=up?Math.max(3,Math.round(e.v*.6)):e.v})}
 const lv=()=>Math.floor(S.xp/300)+1,rank=()=>R[Math.min(lv()-1,R.length-1)];
-const fmt=(e,v,x=xd(e))=>({hold:v+' s',reps:v+' reps',kg:'+'+v+' kg',pyr:'sommet '+v+((e.st||1)>1?' · par '+e.st:'')+' · repos '+mmss(x),emom:v+' reps/min × '+x+' min',dp:x+' reps'+(v?' · +'+v+' kg':' · poids du corps')})[e.t];
-const desc=(e,v,x=xd(e),n=e.sets)=>({hold:`${n} séries × ${v} s`,reps:`${n} séries × ${v} reps`,kg:`${n} séries × ${e.reps} reps`,pyr:`${seq(v,e.st||1).length} séries · ${e.st>1?e.st:1} → ${v} → ${e.st>1?e.st:1}${e.st>1?' (par '+e.st+')':''} · ${psum(v,e.st||1)} reps`,emom:`EMOM ${x} min · ${v} reps chaque minute`,dp:`${n} séries × ${x} reps${v?' · lest +'+v+' kg':' · poids du corps'}`})[e.t];
+const fmt=(e,v,x=xd(e))=>({hold:v+' s',reps:v+' reps',kg:'+'+v+' kg',pyr:'sommet '+v+((e.st||1)>1?' · par '+e.st:'')+' · repos '+mmss(x),emom:v+' reps/min × '+x+' min',dp:x+' reps'+(v?' · +'+v+' kg':' · poids du corps · fourchette '+Math.max(1,x-3)+'–'+x)})[e.t];
+const desc=(e,v,x=xd(e),n=e.sets)=>({hold:`${n} séries × ${v} s`,reps:`${n} séries × ${v} reps`,kg:`${n} séries × ${e.reps} reps`,pyr:`${seq(v,e.st||1).length} séries · ${e.st>1?e.st:1} → ${v} → ${e.st>1?e.st:1}${e.st>1?' (par '+e.st+')':''} · ${psum(v,e.st||1)} reps`,emom:`EMOM ${x} min · ${v} reps chaque minute${isOA(e)?' · un bras par minute (gauche / droite en alternance)':''}`,dp:`${n} séries × ${x} reps${v?' · lest +'+v+' kg':' · poids du corps (fourchette '+Math.max(1,x-3)+'–'+x+')'}`})[e.t];
 const badge=(e,v,x)=>{const dl=v-e.v;return `<span class="b b-${e.t==='dp'&&!v?'rep':T[e.t].c}">${fmt(e,v,x)}${dl?` <i class="${dl>0?'up':'dn'}">${dl>0?'▲+':'▼'}${Math.abs(dl)}</i>`:''}</span>`};
 const restBase=(d,e)=>S.p[d+'.'+e.id+'.r']??(e.rest||90);
 const restOf=(e,i,r)=>e.t==='pyr'?(seq(r.tg,r.st||1)[i]<=4?40:r.x):restBase(V.day,e);
@@ -683,6 +684,10 @@ const last=(day,id)=>{for(let i=S.h.length-1;i>=0;i--){const h=S.h[i];if(h.day!=
 const prevRes=(day,id,n)=>{const o=[];for(let i=S.h.length-1;i>=0&&o.length<n;i--){const h=S.h[i];if(h.day!==day)continue;const r=h.res.find(x=>x.id===id);if(r)o.push(r)}return o};
 const lvOf=r=>r.lv!=null?r.lv:r.f==='echec'?0:r.q==null?({facile:2,parfait:1,dur:0}[r.f]??1):r.q>=3?2:r.q>=1?1:0;
 const back=t=>`<button class=back data-a=bkk data-t=${t}>‹ Retour</button>`;
+const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const hdN=(k=dkey())=>S.hd.l[k]||0;
+const hdStreak=()=>{const d=new Date();if(hdN()<S.hd.t)d.setDate(d.getDate()-1);let n=0;for(;n<400;n++){if(hdN(dkey(d))<S.hd.t)break;d.setDate(d.getDate()-1)}return n};
+const hdCard=()=>{const n=hdN(),t=S.hd.t,st=hdStreak();return `<div class=card><div class=row><b>🤸 Lancés de handstand</b><span class=mu>${n}/${t}${n>=t?' ✅':''}</span></div><div class=xp><i style="width:${Math.min(100,n/t*100)}%"></i></div><div class=mu style="margin-top:6px">Objectif du jour : ${t} lancés${st?' · 🔥 '+st+' jour'+(st>1?'s':'')+' de suite':''}</div><div style="margin-top:8px"><button class=sec data-a=hdp data-s=-1>−1</button><button class=sec data-a=hdp data-s=1>+1</button><button class=sec data-a=hdp data-s=5>+5</button></div></div>`};
 const dfr=d=>new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'});
 const rd1=v=>Math.round(v*10)/10;
 
@@ -805,7 +810,7 @@ function dlEx(e,r){if(r.xs){r.d.pop();r.xs=0}if(e.t==='pyr'){r.tg=Math.max(3,r.b
 /* ---- Vues ---- */
 const VW={
 home:()=>{const td=new Date().getDay(),to=Object.keys(DOW).find(k=>DOW[k]===td),n=S.h.length,wk=S.h.filter(h=>Date.now()-new Date(h.d)<7*864e5).length,prs=S.h.reduce((a,h)=>a+h.res.filter(r=>r.pr&&r.pr.length).length,0);
- return `<h1>Carnet de séance</h1><p class="mu hlp">Calisthénie · surcharge progressive</p>${bkBan()}${remBan()}${wvOn()?wvCard():''}${sugg()}
+ return `<h1>Carnet de séance</h1><p class="mu hlp">Calisthénie · surcharge progressive</p>${bkBan()}${remBan()}${hdCard()}${wvOn()?wvCard():''}${sugg()}
 <div class="card tap" data-a=road data-k=lv><div class=row><b>Niv. ${lv()} · ${rank()}</b><span class=mu>${S.xp} XP</span></div><div class=xp><i style="width:${S.xp%300/3}%"></i></div>
 <div class="row mu" style="margin-top:12px"><span>Séances <b>${n}</b></span><span>7 derniers jours <b>${wk}</b></span><span>Records 🏆 <b>${prs}</b></span></div><div class=hint>Voir la route des trophées ›</div></div>
 ${RS?`<button class="big today" data-a=rsm>▶ Reprendre la séance<span class="mu keep">${DAYS[RS.day]} · exercice ${RS.SE.g.ei+1}</span></button>`:''}<h2>🏋️ Mes séances</h2>`+Object.keys(DAYS).map(k=>`<button class="big${k===to?' today':''}" data-a=day data-d=${k}>${DAYS[k]}<span class="mu keep">${P[k].length} exercices${k===to?' · aujourd’hui':''}${S.ms.some(m=>m.day===k&&new Date(m.d).toDateString()===new Date().toDateString())?' · sautée aujourd’hui':''}</span></button>`).join('')+`<h2>📊 Mon suivi</h2><button class=big data-a=go data-t=stats>📊 Progression<span class=mu>Graphiques, records, 1RM estimé</span></button>`+`<button class=big data-a=go data-t=goals>🎯 Objectifs<span class=mu>${S.go.length?S.go.length+' objectif'+(S.go.length>1?'s':'')+' · '+goalsDone()+' atteint'+(goalsDone()>1?'s':''):'Jalons chiffrés et date estimée'}</span></button><h2>🛠 Configuration</h2><button class=big data-a=go data-t=pg>🛠 Programme et vague<span class=mu>Modifier les exercices, séries, repos · périodisation</span></button><button class=big data-a=mus>🎵 Ambiance<span class=mu>Musique de fond de l’app, une piste par style</span></button><button class=big data-a=go data-t=set>⚙️ Réglages<span class=mu>Thème, rappels, sauvegarde, historique, réinitialisation</span></button>`},
@@ -850,11 +855,11 @@ ${g.msg?`<div class=note>${g.msg}</div>`:''}<button class=cta data-a=ok>${o.c?'�
  +(pj>=0?`<div class=card><div class=mu>Série ${pj+1} : effort pas renseigné</div><div class=lab>${hold?'Tu aurais pu tenir encore…':e.t==='emom'?'Les 3 dernières minutes étaient…':'RIR de cette série'}</div><div class=rir>${RO(hold).map(([v,l])=>`<button data-a=sqp data-j=${pj} data-v=${v}>${l}</button>`).join('')}</div></div>`:'')
  +(lst?(nx?`<div class=card><div class=mu>À suivre</div><h2>${nm(nx)}</h2><div class=mu>${desc(nx,cur(d,nx),curx(d,nx))}</div>${lt(d,nx)}</div>`:'')+`<button class="cta${wn?' warn':''}" data-a=nxt>${wn?'⚠️ Continuer sans répondre':nx?'Exercice suivant →':'🏁 Terminer la séance'}</button>`
  :`<div class=card><div class=mu>Prochaine série (${i+2}/${n})</div><b>${hold?(g.cur2||g.cur)+' s':tt(e,r,i+1)}</b>${beat(d,e,i+1,n)}</div><button class="cta${wn?' warn':''}" data-a=nxt>${wn?'⚠️ Continuer sans répondre':'▶ Série suivante'}</button>`)},
-cal:()=>{const e=SQ()[SE.g.ei],c=V.cal||(V.cal={rm:5,kg:0}),hd=e.t==='hold',sb=(a,s,l)=>`<button data-a=${a} data-s=${s}>${l}</button>`;
+cal:()=>{const e=SQ()[SE.g.ei],c=V.cal||(V.cal={rm:5,kg:0}),pd=calPend(e),hd=e.t==='hold'||pd,sb=(a,s,l)=>`<button data-a=${a} data-s=${s}>${l}</button>`;
  return `<button class=back data-a=calx>‹ Retour à l’exercice</button><h1>Test de niveau</h1><div class=card><h2>${nm(e)}</h2><div class="mu hlp">Deux mesures, chacune sur une seule série, propres et sans tricher. Repose-toi 3 minutes entre les deux. L’app règle ensuite ta cible de départ à environ 65–70 % de ton max et te conseille un format.</div></div>
-<div class=card><div class=lab>${hd?'Temps max tenu (secondes)':'Reps max propres (1 série jusqu’à l’échec)'}</div><div class=step>${sb('calm',-5,'−5')}${sb('calm',-1,'−')}<output>${c.rm}${hd?' s':' reps'}</output>${sb('calm',1,'+')}${sb('calm',5,'+5')}</div>
+<div class=card><div class=lab>${e.t==='hold'?'Temps max tenu (secondes)':pd?'Reps max propres'+(isOA(e)?' sur un seul bras':'')+' (1 série jusqu’à l’échec)':'Reps max propres (1 série jusqu’à l’échec)'}</div><div class=step>${sb('calm',-5,'−5')}${sb('calm',-1,'−')}<output>${c.rm}${hd?' s':' reps'}</output>${sb('calm',1,'+')}${sb('calm',5,'+5')}</div>
 ${hd?'':`<div class=lab>Charge max lestée sur 1 à 3 reps (kg, 0 = poids du corps seul)</div><div class=step>${sb('calk',-5,'−5')}${sb('calk',-1,'−')}<output>${c.kg} kg</output>${sb('calk',1,'+')}${sb('calk',5,'+5')}</div>`}</div>
-${hd?'':`<div class=card><div class=lab>Format de cet exercice (c’est toi qui décides)</div><div class=dys style="flex-wrap:wrap">${Object.keys(FMT).map(k=>`<button class="${c.f===k?'on':''}" data-a=calf data-v=${k}>${FMT[k]}</button>`).join('')}</div><div class="mu hlp">${{force:'Force : séries lourdes proches de l’échec, 3 → 6 reps, +2 kg dès 5–6 reps. Utilise ta charge max.',obj:'Objectif : reps au poids du corps jusqu’à 15 strictes, puis lest (comme les tractions).',pyr:'Pyramide : tu montes puis tu redescends en reps ; le sommet est proche de ton max (environ 80 %, plafonné à 8).',emom:'EMOM : environ 40 % de ton max de reps à chaque minute pendant 10 minutes.'}[c.f]||'Suggestion d’après ton max : '+calFmt(c.rm)}</div></div>`}<button class=cta data-a=calsave>✓ Appliquer ce niveau</button><button class=sec data-a=calx>Plus tard</button>`},
+${hd?'':`<div class=card><div class=lab>Format de cet exercice (c’est toi qui décides)</div><div class=dys style="flex-wrap:wrap">${Object.keys(FMT).map(k=>`<button class="${c.f===k?'on':''}" data-a=calf data-v=${k}>${FMT[k]}</button>`).join('')}</div><div class="mu hlp">${{force:'Force : séries lourdes proches de l’échec, 3 → 6 reps, +2 kg dès 5–6 reps. Utilise ta charge max.',obj:'Objectif : reps au poids du corps jusqu’à 15 strictes, puis lest (comme les tractions). Cible de départ : environ 80 % de ton max de reps.',pyr:'Pyramide : tu montes puis tu redescends en reps ; le sommet est à environ 70–80 % de ton max (plafonné à 8).',emom:'EMOM : environ 40 % de ton max de reps à chaque minute pendant 10 minutes.'}[c.f]||'Suggestion d’après ton max : '+calFmt(c.rm)}</div></div>`}<button class=cta data-a=calsave>✓ Appliquer ce niveau</button><button class=sec data-a=calx>Plus tard</button>`},
 res:()=>{const h=V.last;return `<h1>Séance terminée 🔥</h1><div class=card><div class=row><b>+${h.xp} XP</b><span class=mu>Niv. ${lv()} · ${rank()}</span></div>${h.res.some(r=>r.pr&&r.pr.length)?'<div class=recb>New record</div>':''}${h.sc!=null?`<div class=mu>Récupération du jour : ${h.sc}/100</div>`:''}${h.rd==='low'?'<div class=mu>🔋 Séance allégée</div>':''}${h.ex?'<div class=mu>⚡ Séance express</div>':''}${h.wk!=null?`<div class=mu>🌊 ${WVN[h.wk][0]}</div>`:''}</div>${h.ro?'<div class="card ban"><b>🌊 Vague terminée !</b><div class="mu hlp">Nouvelle vague : les cibles repartent un cran plus bas pour reconstruire plus haut. Pense à varier une variante (écran du jour).</div></div><div class=card><button class=sec data-a=exp>⬇ Sauvegarder maintenant (conseillé)</button></div>':''}${bkBan()}`
  +h.res.map(r=>`<div class=card><div class=row><h2>${r.n}</h2><span class="b ${r.a==='up'?'b-ok':r.a==='down'?'b-ko':'b-mu'}">${r.a==='up'?'▲ Progression':r.a==='down'?'▼ Décharge':'＝ Maintien'}</span></div>${r.pr&&r.pr.length?`<div style="margin:6px 0"><span class="b b-kg">🏅 Record : ${r.pr.join(' · ')}</span></div>`:''}<div class=mu>${r.msg}</div><div style="margin-top:8px">${r.ns?'Prochaine étape : <b>'+r.ns+'</b>':'Prochaine fois : '+badge(r,r.next,r.nx)}</div>${xt(h,r)}</div>`).join('')
  +`<button class=cta data-a=go data-t=home>Retour à l’accueil</button>`},
@@ -870,7 +875,7 @@ road:()=>{const t=V.rt||'lv',tb=`<div class=dys><button class="${t==='lv'?'on':'
  return back('home')+`<h1>Route des trophées</h1>${tb}${wvOn()?wvCard():'<div class=card><div class=mu>La vague est désactivée (Programme et vague).</div></div>'}<div class=card><div class=mu>Vagues terminées : <b>${S.wv.w}</b> · Tu es en semaine ${wvWk()+1}/${WL} (${WVN[ph][0]}), effort visé RIR ${WVN[ph][1]}.</div></div><div class=rd>${nodes}</div>`},
 goals:goalsView,
 pg:()=>{const lock=RS||SE,sm=(a,d,id,s,l)=>`<button class=sec data-a=${a} data-d=${d} data-id=${id} data-s=${s}>${l}</button>`;
- return back('home')+`<h1>Programme et vague</h1>${wvOn()?wvCard():''}<div class=card><h2>🌊 Périodisation en vague</h2><div class="mu hlp">Par défaut 4 semaines de 4 séances : accumulation (RIR 3) → intensification (RIR 2) → pic (RIR 1) → décharge (−40 % de volume, sans progression). La semaine avance au nombre de séances faites. En fin de vague, les cibles repartent un cran plus bas et l’app te propose de changer une variante.</div><button class="sec${wvOn()?' on':''}" data-a=wvt>${wvOn()?'Activée':'Désactivée'}</button>${wvOn()?`<div class=lab>Durée de la vague (décharge incluse)</div><div class=dys>${[3,4,5,6].map(l=>`<button class="${wvL()===l?'on':''}" data-a=wvl data-v=${l}>${l} sem.</button>`).join('')}</div><div class="mu hlp">4 semaines : réglage de départ. 5 à 6 semaines : montée plus progressive, conseillée si tu récupères plus lentement (âge, blessure, fatigue) ou en cas de gros volume. 3 semaines : cycles courts et intenses.</div>`:''}${wvOn()?'<button class=sec data-a=wvd>🛌 Décharge maintenant</button><button class=sec data-a=wv0>↺ Recommencer la vague</button>':''}</div>${lock?'<div class="note w">Une séance est en cours ou en pause : termine-la ou annule-la avant de modifier le programme.</div>':''}`
+ return back('home')+`<h1>Programme et vague</h1><div class=card><h2>🏋️ Lest maximum disponible</h2><div class="mu hlp">Ton poids maximum à ajouter (gilet, disques…). La charge ne dépasse jamais cette valeur : une fois atteinte, ce sont les reps qui montent, et les objectifs des étapes sont ramenés à cette valeur.</div><div class=step><button data-a=lmd data-s=-5>−5</button><button data-a=lmd data-s=-1>−</button><output>${S.lm} kg</output><button data-a=lmd data-s=1>+</button><button data-a=lmd data-s=5>+5</button></div></div>${wvOn()?wvCard():''}<div class=card><h2>🌊 Périodisation en vague</h2><div class="mu hlp">Par défaut 4 semaines de 4 séances : accumulation (RIR 3) → intensification (RIR 2) → pic (RIR 1) → décharge (−40 % de volume, sans progression). La semaine avance au nombre de séances faites. En fin de vague, les cibles repartent un cran plus bas et l’app te propose de changer une variante.</div><button class="sec${wvOn()?' on':''}" data-a=wvt>${wvOn()?'Activée':'Désactivée'}</button>${wvOn()?`<div class=lab>Durée de la vague (décharge incluse)</div><div class=dys>${[3,4,5,6].map(l=>`<button class="${wvL()===l?'on':''}" data-a=wvl data-v=${l}>${l} sem.</button>`).join('')}</div><div class="mu hlp">4 semaines : réglage de départ. 5 à 6 semaines : montée plus progressive, conseillée si tu récupères plus lentement (âge, blessure, fatigue) ou en cas de gros volume. 3 semaines : cycles courts et intenses.</div>`:''}${wvOn()?'<button class=sec data-a=wvd>🛌 Décharge maintenant</button><button class=sec data-a=wv0>↺ Recommencer la vague</button>':''}</div>${lock?'<div class="note w">Une séance est en cours ou en pause : termine-la ou annule-la avant de modifier le programme.</div>':''}`
  +Object.keys(DAYS).map(d=>{const g=S.pg[d]||{},rm=P0[d].filter(e=>(g.x||[]).includes(e.id)),ad=LIB.filter(e=>!P0[d].some(x=>x.id===e.id)&&!P[d].some(x=>x.id===e.id));
   return `<div class=card><div class=row><h2>${DAYS[d]}</h2><button class=sec data-a=pg0 data-d=${d}>↺ Défaut</button></div>`+P[d].map((e,i)=>`<div class=hr><div class=row><b>${e.n}</b><span class=mu>${e.t==='pyr'?'Pyramide':e.t==='emom'?'EMOM':e.sets+' séries'}${e.t!=='pyr'&&e.t!=='emom'?' · repos '+mmss(e.rest||90):''}</span></div><div class=mu>Cible actuelle : ${fmt(e,cur(d,e),curx(d,e))}</div><div>${HASSETS(e)?sm('pgv',d,e.id,-1,e.t==='hold'?'− 1 s':e.t==='reps'?'− 1 rep':'− 1 kg')+sm('pgv',d,e.id,1,e.t==='hold'?'+ 1 s':e.t==='reps'?'+ 1 rep':'+ 1 kg'):''}${sm('pgm',d,e.id,-1,'▲')}${sm('pgm',d,e.id,1,'▼')}${HASSETS(e)?sm('pgs',d,e.id,-1,'− série')+sm('pgs',d,e.id,1,'+ série'):''}${e.t!=='pyr'&&e.t!=='emom'?sm('pgr',d,e.id,-1,'− 15 s')+sm('pgr',d,e.id,1,'+ 15 s'):''}${sm('pgx',d,e.id,0,'✕ Retirer')}</div></div>`).join('')
   +(rm.length?`<div class=lab>Retirés (progression conservée)</div>${rm.map(e=>`<button class=sec data-a=pgy data-d=${d} data-id=${e.id}>↩ ${e.n}</button>`).join('')}`:'')
@@ -963,18 +968,21 @@ const pgc=d=>{if(RS||SE){alert('Termine ou annule la séance en cours avant de m
 const A={
 ask0:()=>{V.ask=null;render()},
 calgo:()=>{V.cal={rm:5,kg:0};nav('cal')},
+hdp:d=>{const k=dkey(),n=Math.max(0,Math.min(999,hdN()+ +d.s));if(n)S.hd.l[k]=n;else delete S.hd.l[k];save();render()},
+lmd:d=>{S.lm=Math.max(5,Math.min(300,S.lm+ +d.s));save();render()},
 calx:()=>{nav('ses')},
 calf:d=>{V.cal.f=d.v;render()},
 calm:d=>{const c=V.cal;c.rm=Math.max(0,Math.min(300,c.rm+ +d.s));render()},
 calk:d=>{const c=V.cal;c.kg=Math.max(0,Math.min(300,c.kg+ +d.s));render()},
 calsave:()=>{const g=SE.g,e0=SQ()[g.ei],c=V.cal,rm=c.rm,kg=c.kg,hd=e0.t==='hold';if(!(rm>0))return alert('Entre ton max avant d’appliquer.');
+ if(calPend(e0)){const key=V.day+'.'+e0.id,v=Math.max(2,Math.round(rm*.4));delete S.p[key+'.t'];S.p[key]=v;S.p[key+'.x']=10;SE.ex[e0.id]=Object.assign(SE.ex[e0.id],{d:Array(10).fill(false),a:v,tg:v,bv:v,x:10,bx:10,ax:10});save();sv();nav('ses');toast('Max enregistré : cible réglée à '+v+' reps par minute.');return}
  if(!hd&&!c.f)return alert('Choisis un format (EMOM, Force, Pyramide ou Objectif).');
  const d=V.day,id=e0.id,key=d+'.'+id;let v,x=0;
  if(hd){v=Math.max(3,Math.round(rm*.65))}
  else{const pc=S.pg[d]||(S.pg[d]={x:[],a:[],o:[],s:{},r:{},f:{}});(pc.f||(pc.f={}))[id]=c.f;buildP();
   if(c.f==='force'){v=kg>0?Math.max(0,Math.round(kg*.8/2)*2):0;x=3}
-  else if(c.f==='obj'){v=0;x=Math.max(1,Math.round(rm*.65))}
-  else if(c.f==='pyr'){v=Math.max(2,Math.min(8,Math.round(rm*.8)));x=90}
+  else if(c.f==='obj'){v=0;x=Math.max(1,Math.round(rm*.8))}
+  else if(c.f==='pyr'){v=Math.max(2,Math.min(8,Math.round(rm*.75)));x=90}
   else{v=Math.max(2,Math.round(rm*.4));x=10}
   for(const k of [key,key+'.x',key+'.st'])delete S.p[k]}
  const e=P[d].find(z=>z.id===id)||e0;S.p[key]=v;if(!hd&&e.t!=='reps')S.p[key+'.x']=x;
@@ -1033,8 +1041,8 @@ msk:()=>{const td=new Date().toDateString();if(S.ms.some(m=>m.day===V.day&&new D
 wvt:()=>{S.wv.on=wvOn()?0:1;save();render()},
 wvd:()=>{if(!cf('Passer directement en semaine de décharge ?'))return;backup('Avant décharge anticipée');S.wv.n=Math.max(S.wv.n,(wvL()-1)*SPW);save();render()},
 wv0:()=>{if(!cf('Recommencer la vague à la semaine 1 ? Les cibles ne changent pas.'))return;S.wv.n=0;save();render()},
-pwst:d=>{if(RS||SE)return alert('Termine ou annule la séance en cours avant de changer d’étape.');const n=pwStage()+ +d.s;if(n<0||n>=STG.length)return;if(!cf('Passer à l’étape « '+STG[n].n+' » ? La cible repart de son niveau de départ.'))return;backup('Avant changement d’étape pompes');
- S.p['pw.st']=n;for(const d2 in P)P[d2].forEach(x=>{if(x.id==='pw'){S.p[d2+'.pw']=STG[n].v0;S.p[d2+'.pw.x']=STG[n].t==='dp'?3:0;delete S.p[d2+'.pw.r']}});buildP();save();render()},
+pwst:d=>{if(RS||SE)return alert('Termine ou annule la séance en cours avant de changer d’étape.');const n=pwStage()+ +d.s;if(n<0||n>=STG.length)return;if(STG[n].boss&&S.lv.pl<L.pl.length-1)return alert('Boss final verrouillé : tiens d’abord la Full Planche (dernier palier de la planche).');if(!cf('Passer à l’étape « '+STG[n].n+' » ? La cible repart de son niveau de départ.'))return;backup('Avant changement d’étape pompes');
+ S.p['pw.s2']=n;for(const d2 in P)P[d2].forEach(x=>{if(x.id==='pw'){S.p[d2+'.pw']=STG[n].v0;S.p[d2+'.pw.x']=STG[n].t==='dp'?3:0;delete S.p[d2+'.pw.r']}});buildP();save();render()},
 pgv:d=>{const g=pgc(d.d);if(!g)return;const e=P[d.d].find(x=>x.id===d.id);if(!e||!HASSETS(e))return;S.p[d.d+'.'+e.id]=Math.max(e.t==='hold'?3:e.t==='reps'?1:0,cur(d.d,e)+ +d.s);save();render()},
 pgs:d=>{const g=pgc(d.d);if(!g)return;const e=P[d.d].find(x=>x.id===d.id);if(!e||!HASSETS(e))return;g.s[e.id]=Math.max(1,Math.min(10,e.sets+ +d.s));buildP();save();render()},
 pgr:d=>{const g=pgc(d.d);if(!g)return;const e=P[d.d].find(x=>x.id===d.id);if(!e||e.t==='pyr'||e.t==='emom')return;g.r[e.id]=Math.max(15,Math.min(600,(e.rest||90)+ +d.s*15));delete S.p[d.d+'.'+e.id+'.r'];delete S.p[d.d+'.'+e.id+'.rc'];buildP();save();render()},
@@ -1087,7 +1095,7 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
  for(const e of P[day]){const r=SE.ex[e.id];if(!r.L.some(Boolean))continue;
   const t=T[e.t],tg=r.tg,n=r.d.length,dn=r.d.filter(Boolean).length,st=r.st||1,tot=e.t==='pyr'?r.L.reduce((s,o,i)=>s+(o?Math.min(o.a,seq(tg,st)[i]||0):0),0):0,nom=e.t==='pyr'?psum(tg,st):0,need=Math.ceil(.95*nom),ok=(e.t==='pyr'?tot>=need:dn>=(r.xs?n-1:n))&&!r.nc&&(e.t==='pyr'||r.a>=tg)&&(e.t==='kg'?r.ax>=e.reps:(e.t!=='dp'||r.ax>=r.x)),fig=e.lad||e.fig,lad=e.lad,lv=lad&&S.lv[lad],key=day+'.'+e.id,p=last(day,e.id),name=nm(e),pain=pn(e);
   /* niveau d'effort de la séance (0 limite · 1 propre · 2 facile), puis tendance pondérée sur les 3 dernières séances */
-  const qq=r.q,l0=r.f==='echec'?0:qq==null?{facile:2,parfait:1,dur:0}[r.f]:qq>=3?2:qq>=1?1:0,lvl0=r.pa&&l0>1?1:l0,lvl=e.t==='dp'&&lvl0===0&&r.f!=='echec'?1:lvl0;
+  const qq=r.q,l0=r.f==='echec'?0:qq==null?{facile:2,parfait:1,dur:0}[r.f]:qq>=3?2:qq>=1?1:0,lvl0=r.pa&&l0>1?1:l0,lvl=e.t==='dp'&&lvl0===0&&r.f!=='echec'&&r.bv>0?1:lvl0;
   const ls=[lvl,...prevRes(day,e.id,2).map(lvOf)],wt=[3,2,1],trend=ls.reduce((s,v,i)=>s+v*wt[i],0)/ls.reduce((s,_,i)=>s+wt[i],0);
   let nv=r.bv,nx=r.bx,a='keep',msg;
   if(low)msg=SE.dl?'Semaine de décharge : volume réduit, les cibles ne bougent pas.':'Séance allégée : on ne touche pas à la progression aujourd’hui.';
@@ -1098,6 +1106,7 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
    if(tot<.85*nom||pb){let nt=tg-st;while(nt>Math.max(3,2*st)&&psum(nt,st)>tot)nt-=st;nt=Math.max(Math.max(3,2*st),nt);nv=nt;nx=90;a='down';msg='Sommet '+tg+' trop haut pour toi aujourd’hui : '+tot+' reps sur '+nom+'. Nouveau sommet '+nt+' ('+psum(nt,st)+' reps) : tu dois pouvoir le réussir ou presque.'}
    else msg='Presque : '+tot+' reps sur '+nom+' (il en faut au moins '+need+'). Même sommet la prochaine fois ; si ça se répète, il baissera.'}
   else if(r.f==='echec'){if(p&&p.f==='echec'){[nv,nx]=t.dn(tg,r.x);a='down';msg='Deux échecs d’affilée : déchargement léger.'}else msg='Échec : même difficulté la prochaine fois.'}
+  else if(!ok&&e.t==='dp'&&!tg&&!r.nc)msg='Dans la fourchette '+Math.max(1,r.x-3)+'–'+r.x+(r.ax>=Math.max(1,r.x-3)?'':' (tu es même en dessous)')+' : il faut '+r.x+' reps sur toutes les séries, avec 1–2 reps en réserve, pour monter. Même cible la prochaine fois.';
   else if(!ok)msg=r.nc?'Technique non propre sur '+r.nc+' série'+(r.nc>1?'s':'')+' : elle ne compte pas, même difficulté la prochaine fois.':'Séries incomplètes : même difficulté la prochaine fois.';
   else if(lvl===0){if(ls.length>=3&&ls.every(v=>v===0)){[nv,nx]=t.dn(tg,r.x);a='down';msg='3 séances de suite à la limite : décharge pour récupérer.'}else if(r.av>tg||(e.t==='dp'&&r.axv>r.x)){nv=Math.max(tg,r.av);if(e.t==='dp')nx=Math.max(r.x,r.ax);a='up';msg='Tu as dépassé la cible, même si c’était dur : la nouvelle cible, c’est ce que tu as réellement fait (sans +1).'}
    else msg='Validé mais à la limite : on consolide avant de monter.'}
@@ -1107,11 +1116,16 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
   if(!low&&a==='up'&&tg>0&&nv>tg*1.5+1&&!lad)msg+=' ⚠️ Grosse hausse de cible : si c’est une erreur de saisie, supprime cette séance dans l’Historique, la progression sera annulée.';
   if(e.t==='pyr'&&!low&&a==='up'&&((st===1&&nv>=11)||(st===2&&nv>=17))){const s2=st+1;nv=s2===2?12:18;nx=90;S.p[key+'.st']=s2;msg='Sommet très haut atteint : la pyramide passe par '+s2+' ('+seq(nv,s2).slice(0,4).join('-')+'…'+nv+'…).'}
   if(e.t==='pyr'&&!low&&tot>0&&a!=='down'&&!/Presque/.test(msg))msg+=' Total : '+tot+'/'+nom+' reps.';
+  if(e.id==='po'&&e.t==='emom'&&!low&&ok&&lvl>=2&&tg>=20&&r.x>=12&&pain<4){const c=vri(day,e),vs=VAR.po;
+   if(c<vs.length){S.vr[key]=c+1;S.p[key+'.t']=1;nv=6;nx=10;a='up';msg='🏆 20 reps × 12 min facilement, forme propre : on passe à « '+vs[c]+' ». À la prochaine séance, teste ton max sur cette variante : l’app règle alors le nombre de reps idéal (en attendant : '+nv+' reps par minute × '+nx+' min).'}
+   else msg+=' 🏆 20 reps × 12 min facilement avec la dernière variante : niveau maximum atteint.'}
   let ns=null;
-  if(e.id==='pw'&&!low&&ok&&lvl>=1&&pain<4){const st=pwStage(),g=STG[st],done=g.t==='dp'?Math.max(tg,r.a)>=PWG&&Math.max(r.x,r.ax)>=6:Math.max(tg,r.a)>=g.goal;
-   if(done&&st<STG.length-1){const g2=STG[st+1];S.p['pw.st']=st+1;nv=g2.v0;nx=g2.t==='dp'?3:0;ns=g2.n;a='up';msg='🏆 Étape validée ! Prochaine étape : '+g2.n+'. Les cibles repartent d’un niveau de départ confortable.'}
-   else if(done)msg+=' 🏆 Objectif final atteint : '+PWG+' kg en unilatéral !'}
+  if(e.id==='pw'&&!low&&ok&&lvl>=1&&pain<4){const st=pwStage(),g=STG[st],done=g.t==='dp'?Math.max(tg,r.a)>=pwGl(g)&&Math.max(r.x,r.ax)>=6:Math.max(tg,r.a)>=g.goal;
+   if(done&&st<STG.length-1&&STG[st+1].boss&&S.lv.pl<L.pl.length-1)msg+=' 🔒 Boss final verrouillé : il se débloque quand tu tiens la Full Planche (dernier palier de la planche).';
+   else if(done&&st<STG.length-1){const g2=STG[st+1];S.p['pw.s2']=st+1;nv=g2.v0;nx=g2.t==='dp'?3:0;ns=g2.n;a='up';msg='🏆 Étape validée ! Prochaine étape : '+g2.n+'. Les cibles repartent d’un niveau de départ confortable.'}
+   else if(done)msg+=' 🏆 Objectif final atteint : '+pwGl(g)+' kg '+(g.boss?' — boss final vaincu !':' en '+g.n.toLowerCase()+' !')}
   if(!low&&SE.wk!=null&&r.q!=null&&r.q>=0){const tq=WVN[SE.wk][1];if(r.q>=tq+2||(tq===3&&r.q>=4))msg+=' Plus facile que l’effort visé cette semaine (RIR '+tq+') : pousse plus fort.';else if(r.q<tq-1)msg+=' Plus dur que l’effort visé (RIR '+tq+') : garde plus de marge.'}
+  const vr0=vri(day,e);
   if(lad&&S.lv[lad]!==lv)nv=S.p[key];else{S.p[key]=nv;S.p[key+'.x']=nx}
   if(ns)for(const d2 in P)P[d2].forEach(x=>{if(x.id==='pw'&&d2!==day){S.p[d2+'.pw']=nv;S.p[d2+'.pw.x']=nx}});
   /* repos de base : monte si la séance est dure ; baisse peu à peu sur les accessoires (rl) quand tout va bien */
@@ -1124,7 +1138,7 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
   xp+=!ok||r.f==='echec'?10:[30,40,50][lvl];
   const ss=r.L.filter(Boolean).map(o=>{const q={a:o.a};if(e.t==='dp'||e.t==='kg')q.ax=o.ax;if(o.q!=null)q.q=o.q;if(o.pa)q.pa=o.pa;if(o.bad&&o.bad.length)q.bad=o.bad;if(o.fm)q.fm=o.fm;if(o.rt)q.rt=o.rt;if(o.rp)q.rp=o.rp;return q}),
    av=k=>{const v=ss.slice(0,-1).map(o=>o[k]).filter(x=>x>0);return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):null},
-   ent={id:e.id,n:name,t:e.t,tg,x:e.t==='dp'?r.ax:r.x,act:r.a,dn,sets:n,tot,st,f:r.f,q:r.q,rp:r.p,fm:r.fm,ok,next:nv,nx,a,msg,ss,lv:lvl,tr:Math.round(trend*100)/100,nc:r.nc||0,pa:r.pa||0,rpl:av('rp'),rpt:av('rt'),rn,pr:[],vr:vri(day,e),bl:low||pain>=4?1:0,...(ns?{ns}:{})};
+   ent={id:e.id,n:name,t:e.t,tg,x:e.t==='dp'?r.ax:r.x,act:r.a,dn,sets:n,tot,st,f:r.f,q:r.q,rp:r.p,fm:r.fm,ok,next:nv,nx,a,msg,ss,lv:lvl,tr:Math.round(trend*100)/100,nc:r.nc||0,pa:r.pa||0,rpl:av('rp'),rpt:av('rt'),rn,pr:[],vr:vr0,bl:low||pain>=4?1:0,...(ns?{ns}:{})};
   /* records : meilleure perf ou 1RM estimé jamais atteints sur cet exercice (séance propre et complète) */
   const prev=[];S.h.forEach(h=>h.res.forEach(x=>{if(x.id===e.id&&x.t===e.t&&(x.vr||0)===ent.vr)prev.push({h,r:x})}));
   if(ok&&prev.length){const ul=usesLoad(ent)||prev.some(x=>usesLoad(x.r)),mc=mets({day,d:iso},ent,ul),pm=prev.map(x=>mets(x.h,x.r,ul)),bst=k=>Math.max(0,...pm.map(m=>m[k]||0));
