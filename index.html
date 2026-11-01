@@ -511,6 +511,7 @@ function buildP(){for(const d in P0){const g=(S.pg&&S.pg[d])||{},x=g.x||[],o=g.o
  (g.a||[]).forEach(k=>{const b=LIB.find(e=>e.id+'|'+e.n===k);if(b&&!l.some(e=>e.id===b.id))l.push({...b})});
  if(o.length)l.sort((a,b)=>{const i=o.indexOf(a.id),j=o.indexOf(b.id);return(i<0?99:i)-(j<0?99:j)});
  l.forEach((e,i)=>{if(g.f&&g.f[e.id]&&FMT[g.f[e.id]])l[i]=fmtApply(e,g.f[e.id])});
+ l.forEach(e=>{if(e.t==='pyr')e.st=S.p[d+'.'+e.id+'.st']||1});
  l.forEach(e=>{if(e.id==='pw')Object.assign(e,pwEntry());if(HASSETS(e)&&sS[e.id])e.sets=sS[e.id];if(rR[e.id]&&e.t!=='pyr'&&e.t!=='emom')e.rest=rR[e.id]});
  P[d]=l.length?l:P0[d].map(e=>({...e}))}}
 /* Paliers des figures : [nom, secondes à tenir en bonne forme pour passer au niveau suivant] */
@@ -595,15 +596,15 @@ const wake=async()=>{try{WL=await navigator.wakeLock.request('screen')}catch(e){
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&SE&&SE.g)wake()});
 const SQ=()=>SE&&SE.ids?P[V.day].filter(e=>SE.ids.includes(e.id)):P[V.day];
 const cs=()=>{const g=SE.g,e=SQ()[g.ei],r=SE.ex[e.id];return{g,e,r,o:r.L[g.si]}};
-const seq=n=>{const a=[];for(let i=1;i<=n;i++)a.push(i);for(let i=n-1;i>0;i--)a.push(i);return a};
+const seq=(n,s=1)=>{const a=[];for(let i=s;i<=n;i+=s)a.push(i);for(let i=n-s;i>0;i-=s)a.push(i);return a},psum=(n,s=1)=>seq(n,s).reduce((a,b)=>a+b,0);
 const mmss=s=>Math.floor(s/60)+':'+String(Math.round(s)%60).padStart(2,'0');
-const tt=(e,r,i)=>e.t==='pyr'?seq(r.tg)[i]+' reps':e.t==='kg'?e.reps+' reps · '+fmt(e,r.tg):fmt(e,r.tg,r.x);
+const tt=(e,r,i)=>e.t==='pyr'?seq(r.tg,r.st||1)[i]+' reps':e.t==='kg'?e.reps+' reps · '+fmt(e,r.tg):fmt(e,r.tg,r.x);
 const setStr=(e,o)=>e.t==='hold'?o.a+' s':e.t==='kg'?'+'+o.a+' kg'+(o.ax!=null?' × '+o.ax:''):e.t==='dp'?o.ax+' reps'+(o.a?' · +'+o.a+' kg':''):e.t==='emom'?o.a+' reps/min':o.a+' reps';
 const lastSets=(d,e)=>{const p=last(d,e.id);return p&&p.ss&&p.ss.length&&p.t===e.t&&(e.id!=='pw'||(p.vr||0)===pwStage())?p.ss:null};
 const lt=(d,e)=>{const p=last(d,e.id);if(!p)return'';const s=p.ss&&p.ss.length>1?`<div class=mu>Série par série : ${p.ss.map(o=>setStr(p.t?{t:p.t}:e,o)).join(' · ')}</div>`:'';return `<div class=mu>La dernière fois : ${fmt(p,p.act,p.x)}${p.q!=null?' · RIR '+p.q:''}${p.a==='up'?' ▲':''}</div>${s}`};
 const beat=(d,e,i,n)=>{const s=lastSets(d,e);return s&&s[i]&&(e.t!=='pyr'||s.length===n)?`<div class=mu>À battre (dernière fois) : <b>${setStr(e,s[i])}</b></div>`:''};
 const effv=o=>{const a=[o.q,o.p==null?null:10-o.p].filter(v=>v!=null);return a.length?Math.min(...a):null};
-const topSet=(e,r,i)=>e.t!=='pyr'||seq(r.tg)[i]>=r.tg-1;
+const topSet=(e,r,i)=>e.t!=='pyr'||seq(r.tg,r.st||1)[i]>=r.tg-(r.st||1);
 /* test de niveau : proposé la 1re fois qu'un exercice apparaît (rep max / temps max, charge max, format conseillé) */
 const calNew=e=>!e.lad&&!/^q_/.test(e.id)&&!S.cal[e.id]&&!S.h.some(h=>h.res.some(r=>r.id===e.id))&&(((S.pg&&S.pg[V.day]&&S.pg[V.day].a)||[]).some(k=>k.split('|')[0]===e.id));
 const calFmt=rm=>rm<=5?'Force : séries lourdes et courtes, repos longs':rm<=12?'Pyramide : montée puis descente des reps':'EMOM : petites séries à chaque minute';
@@ -633,8 +634,8 @@ function adj(){const{g,e,o,r}=cs();g.cur2=g.cur;const m=[];
  g.msg=m.join(' ')}
 /* convertit les séries saisies en résumé d'exercice pour le moteur de progression (A.fin) */
 function drv(e){const r=SE.ex[e.id],Ls=r.L.filter(Boolean);if(!Ls.length)return;
- if(e.t!=='emom')r.L.forEach((o,i)=>{if(o)r.d[i]=e.t==='pyr'?o.a>=seq(r.tg)[i]:true});
- if(e.t==='pyr'){let pk=0;r.L.forEach((o,i)=>{if(o&&o.a>=seq(r.tg)[i])pk=Math.max(pk,seq(r.tg)[i])});r.a=pk}
+ if(e.t!=='emom')r.L.forEach((o,i)=>{if(o)r.d[i]=e.t==='pyr'?o.a>=seq(r.tg,r.st||1)[i]:true});
+ if(e.t==='pyr'){let pk=0;r.L.forEach((o,i)=>{if(o&&o.a>=seq(r.tg,r.st||1)[i])pk=Math.max(pk,seq(r.tg,r.st||1)[i])});r.a=pk}
  const mn=a=>Math.floor(a.reduce((x,y)=>x+y,0)/a.length),ldd=e.t==='kg'||e.t==='dp',Ws=ldd?Ls.filter(o=>!o.hv):Ls,W=Ws.length?Ws:Ls,axo=o=>o.ax==null?(e.t==='kg'?e.reps:r.x):o.ax;
  if(e.t!=='pyr'){r.a=Math.min(...W.map(o=>o.a));r.av=mn(W.map(o=>o.a))}else r.av=r.a;
  if(ldd){r.ax=Math.min(...W.map(axo));r.axv=mn(W.map(axo))}
@@ -673,11 +674,11 @@ const varHint=(d,e)=>{const vs=VAR[e.id];if(!vs)return'';const c=vri(d,e),pl=pla
 const gl=e=>e.lad?`<div class=note>Palier : ${L[e.lad][S.lv[e.lad]][1]} s en bonne forme → ${(L[e.lad][S.lv[e.lad]+1]||[])[0]||'niveau max'}</div>`:'';
 function setLv(k,i,up){S.lv[k]=i;for(const d in P)P[d].forEach(e=>{if(e.lad===k)S.p[d+'.'+e.id]=up?Math.max(3,Math.round(e.v*.6)):e.v})}
 const lv=()=>Math.floor(S.xp/300)+1,rank=()=>R[Math.min(lv()-1,R.length-1)];
-const fmt=(e,v,x=xd(e))=>({hold:v+' s',reps:v+' reps',kg:'+'+v+' kg',pyr:v+' sommet'+(v>1?'s':'')+' · repos '+mmss(x),emom:v+' reps/min × '+x+' min',dp:x+' reps'+(v?' · +'+v+' kg':' · poids du corps')})[e.t];
-const desc=(e,v,x=xd(e),n=e.sets)=>({hold:`${n} séries × ${v} s`,reps:`${n} séries × ${v} reps`,kg:`${n} séries × ${e.reps} reps`,pyr:`${2*v-1} séries · 1 → ${v} → 1`,emom:`EMOM ${x} min · ${v} reps chaque minute`,dp:`${n} séries × ${x} reps${v?' · lest +'+v+' kg':' · poids du corps'}`})[e.t];
+const fmt=(e,v,x=xd(e))=>({hold:v+' s',reps:v+' reps',kg:'+'+v+' kg',pyr:'sommet '+v+((e.st||1)>1?' · par '+e.st:'')+' · repos '+mmss(x),emom:v+' reps/min × '+x+' min',dp:x+' reps'+(v?' · +'+v+' kg':' · poids du corps')})[e.t];
+const desc=(e,v,x=xd(e),n=e.sets)=>({hold:`${n} séries × ${v} s`,reps:`${n} séries × ${v} reps`,kg:`${n} séries × ${e.reps} reps`,pyr:`${seq(v,e.st||1).length} séries · ${e.st>1?e.st:1} → ${v} → ${e.st>1?e.st:1}${e.st>1?' (par '+e.st+')':''} · ${psum(v,e.st||1)} reps`,emom:`EMOM ${x} min · ${v} reps chaque minute`,dp:`${n} séries × ${x} reps${v?' · lest +'+v+' kg':' · poids du corps'}`})[e.t];
 const badge=(e,v,x)=>{const dl=v-e.v;return `<span class="b b-${e.t==='dp'&&!v?'rep':T[e.t].c}">${fmt(e,v,x)}${dl?` <i class="${dl>0?'up':'dn'}">${dl>0?'▲+':'▼'}${Math.abs(dl)}</i>`:''}</span>`};
 const restBase=(d,e)=>S.p[d+'.'+e.id+'.r']??(e.rest||90);
-const restOf=(e,i,r)=>e.t==='pyr'?(seq(r.tg)[i]<=4?40:r.x):restBase(V.day,e);
+const restOf=(e,i,r)=>e.t==='pyr'?(seq(r.tg,r.st||1)[i]<=4?40:r.x):restBase(V.day,e);
 const last=(day,id)=>{for(let i=S.h.length-1;i>=0;i--){const h=S.h[i];if(h.day!==day)continue;const r=h.res.find(x=>x.id===id);if(r)return r}return null};
 const prevRes=(day,id,n)=>{const o=[];for(let i=S.h.length-1;i>=0&&o.length<n;i--){const h=S.h[i];if(h.day!==day)continue;const r=h.res.find(x=>x.id===id);if(r)o.push(r)}return o};
 const lvOf=r=>r.lv!=null?r.lv:r.f==='echec'?0:r.q==null?({facile:2,parfait:1,dur:0}[r.f]??1):r.q>=3?2:r.q>=1?1:0;
@@ -746,7 +747,7 @@ const scInfo=s=>s>=70?['Feu vert : séance normale','var(--ok)']:s>=55?['Correct
 const scCard=()=>{const s=rscore(),[t,c]=scInfo(s),ds=daysSince();return `<div class=card><div class=row><b>Score de récupération</b><b style="color:${c};font-size:26px">${s}<span class=mu>/100</span></b></div><div class=sc><i style="width:${s}%;background:${c}"></i></div><div class=mu style="margin-top:6px">${t}${S.h.length?' · dernière séance : '+(ds<=0?'aujourd’hui':'il y a '+ds+' j'):''}</div></div>`};
 /* Équilibre poussée / traction : progression de la perf sur 6 semaines ; si l'écart dépasse 25 points, 1 série bonus facultative côté retard */
 const recCard=()=>{const l=S.h.filter(h=>h.sc!=null);return l.length>1?`<div class=card><h2>Récupération au démarrage</h2>${chart(l.map(h=>({d:h.d,v:h.sc})))}</div>`:''};
-function adjEx(e,r){if(r.xs){r.d.pop();r.xs=0}if(e.t==='pyr'){r.tg=Math.max(3,r.bv-1);r.d=Array(2*r.tg-1).fill(false)}else if(e.t==='emom'){r.x=Math.max(6,r.bx-2);r.d=Array(r.x).fill(false)}else r.d=Array(Math.max(2,r.d.length-1)).fill(false)}
+function adjEx(e,r){if(r.xs){r.d.pop();r.xs=0}if(e.t==='pyr'){r.tg=Math.max(3,r.bv-(r.st||1));r.d=Array(seq(r.tg,r.st||1).length).fill(false)}else if(e.t==='emom'){r.x=Math.max(6,r.bx-2);r.d=Array(r.x).fill(false)}else r.d=Array(Math.max(2,r.d.length-1)).fill(false)}
 function vPre(g){const top=t=>`<div class=row><span class=mu>Avant la séance</span><button class=back data-a=cancel>🗑 Annuler</button></div><h1>${t}</h1>`;
  if(g.ph==='wu'){const it=WU(V.day),dn=SE.wu.filter(Boolean).length;
   return top('Échauffement')+`<p class="mu hlp">Coche ce que tu as fait : 5 minutes qui protègent poignets, coudes et épaules.</p>`+it.map(([t,s],i)=>`<button class="wui${SE.wu[i]?' on':''}" data-a=wt data-i=${i}><span style="font-size:22px">${SE.wu[i]?'✅':'⬜'}</span><span><b>${t}</b><br><span class=mu>${s}</span></span></button>`).join('')+`<button class=cta data-a=wugo>${dn===it.length?'▶ Échauffé, on commence':dn?'▶ Commencer ('+dn+'/'+it.length+' fait)':'▶ Commencer sans échauffement'}</button>`}
@@ -799,7 +800,7 @@ const lowRun=()=>{const l=S.h.slice(-2);return l.length===2&&l.every(h=>h.rd==='
 const wvCard=()=>{const ph=wvPh(),[nme,,tx]=WVN[ph];return `<div class="card tap" data-a=road data-k=wv><div class=row><b>🌊 Vague ${S.wv.w+1} · Semaine ${wvWk()+1}/${wvL()}</b><span class=mu>${nme}</span></div><div class=xp><i style="width:${S.wv.n/wvLn()*100}%"></i></div><div class=mu style="margin-top:6px">${S.wv.n}/${wvLn()} séances · ${tx}</div><div class=hint>Voir la route ›</div>${ph<3&&lowRun()?'<div class="note w">Deux séances de suite avec une récupération basse : une décharge anticipée est conseillée.</div><button class=sec data-a=wvd>🛌 Passer en décharge maintenant</button>':''}</div>`};
 const wvVar=(d,e)=>{const vs=VAR[e.id];if(!vs||!wvOn()||S.wv.w<1||wvPh()>0)return'';const fd=Object.keys(P).find(k=>P[k].some(x=>x.id===e.id));if(fd!==d)return'';const c=vri(d,e);if(c>=vs.length)return'';
  return `<div class="note w">🌊 Nouvelle vague : bon moment pour varier. Essaie « ${vs[c]} » sur ce jour (les autres jours gardent leur variante comme référence).</div><button class=sec data-a=vr data-id=${e.id} data-i=${c+1}>Passer à cette variante</button>`};
-function dlEx(e,r){if(r.xs){r.d.pop();r.xs=0}if(e.t==='pyr'){r.tg=Math.max(3,r.bv-2);r.d=Array(2*r.tg-1).fill(false)}else if(e.t==='emom'){r.x=Math.max(6,Math.round(r.bx*.6));r.d=Array(r.x).fill(false)}else r.d=Array(Math.max(2,Math.ceil(r.d.length*.6))).fill(false)}
+function dlEx(e,r){if(r.xs){r.d.pop();r.xs=0}if(e.t==='pyr'){r.tg=Math.max(3,r.bv-2*(r.st||1));r.d=Array(seq(r.tg,r.st||1).length).fill(false)}else if(e.t==='emom'){r.x=Math.max(6,Math.round(r.bx*.6));r.d=Array(r.x).fill(false)}else r.d=Array(Math.max(2,Math.ceil(r.d.length*.6))).fill(false)}
 
 /* ---- Vues ---- */
 const VW={
@@ -975,10 +976,10 @@ calsave:()=>{const g=SE.g,e0=SQ()[g.ei],c=V.cal,rm=c.rm,kg=c.kg,hd=e0.t==='hold'
   else if(c.f==='obj'){v=0;x=Math.max(1,Math.round(rm*.65))}
   else if(c.f==='pyr'){v=Math.max(2,Math.min(8,Math.round(rm*.8)));x=90}
   else{v=Math.max(2,Math.round(rm*.4));x=10}
-  for(const k of [key,key+'.x'])delete S.p[k]}
+  for(const k of [key,key+'.x',key+'.st'])delete S.p[k]}
  const e=P[d].find(z=>z.id===id)||e0;S.p[key]=v;if(!hd&&e.t!=='reps')S.p[key+'.x']=x;
- const n=e.t==='pyr'?2*v-1:e.t==='emom'?x:e.sets;
- SE.ex[id]={d:Array(n).fill(false),a:v,f:null,tg:v,x,ax:x,q:null,p:null,fm:null,L:[],bv:v,bx:x,nc:0,pa:0};
+ const n=e.t==='pyr'?seq(v,1).length:e.t==='emom'?x:e.sets;
+ SE.ex[id]={st:1,d:Array(n).fill(false),a:v,f:null,tg:v,x,ax:x,q:null,p:null,fm:null,L:[],bv:v,bx:x,nc:0,pa:0};
  S.cal[id]={rm,kg,fmt:hd?'tenues en séries':FMT[c.f],d:new Date().toISOString()};
  save();sv();nav('ses');toast('Niveau enregistré : '+(hd?'cible de départ réglée.':'format '+FMT[c.f]+', cible de départ réglée.'))},
 gadd:d=>{const g=GP[+d.i];if(!g)return;if(S.go.length>=40)return alert('Trop d’objectifs.');S.go.push({id:Date.now().toString(36),...g,d:new Date().toISOString()});save();render()},
@@ -1000,7 +1001,7 @@ prog:()=>nav('prog'),
 ses:d=>{const day=V.day,xr=d&&d.x==='1';if(RS&&!(d&&d.ok==='1')){V.ask={x:d&&d.x==='1'?'1':'0'};render();scrollTo(0,0);return}RS=null;V.ask=null;buildP();const eq=!!(d&&d.eq==='1'&&EQP);if(eq)P[day]=EQP.map(e=>({...e}));
  SE={ex:{},g:{ei:0,si:0,ph:'pre'},pre:{sl:null,en:null,so:null},pn:{c:0,p:0,e:0,k:0,h:0},rd:'ok',wu:WU(day).map(()=>false),ids:xr?P[day].filter(e=>!e.acc&&!['hb','ah','sp','sd','ml'].includes(e.id)).map(e=>e.id):null,expr:xr?1:0,wk:wvOn()?wvPh():null};
  if(SE.ids&&!SE.ids.length)SE.ids=null;if(eq){SE.eq=1;SE.eqp=P[day].map(e=>({...e}))}
- P[day].forEach(e=>{const v=cur(day,e),x=curx(day,e),n=e.t==='pyr'?2*v-1:e.t==='emom'?x:e.sets;SE.ex[e.id]={d:Array(n).fill(false),a:v,f:null,tg:v,x,ax:x,q:null,p:null,fm:null,L:[],bv:v,bx:x,nc:0,pa:0}});
+ P[day].forEach(e=>{const v=cur(day,e),x=curx(day,e),n=e.t==='pyr'?seq(v,e.st||1).length:e.t==='emom'?x:e.sets;SE.ex[e.id]={st:e.st||1,d:Array(n).fill(false),a:v,f:null,tg:v,x,ax:x,q:null,p:null,fm:null,L:[],bv:v,bx:x,nc:0,pa:0}});
  if(eq)P[day].forEach(e=>{if(e.up&&SE.ex[e.id])SE.ex[e.id].xs=1});
  if(SE.wk===3){SE.dl=1;P[day].forEach(e=>dlEx(e,SE.ex[e.id]))}
  beep(1,.01);wake();sv();nav('ses');muSess()},
@@ -1055,7 +1056,7 @@ skip:()=>{const g=SE.g;if(g.ei<SQ().length-1){g.ei++;g.si=0;g.ph='prep';sv();nav
 stop:()=>{const{g,e,r}=cs(),i=g.si,n=g.pz||Date.now();clearInterval(eI);
  const o={a:r.tg,ax:e.t==='kg'?e.reps:r.x,fm:null,q:null,p:null,c:0};
  if(e.t==='hold')o.a=Math.max(0,Math.floor((n-g.t0)/1000));
- if(e.t==='pyr')o.a=seq(r.tg)[i];
+ if(e.t==='pyr')o.a=seq(r.tg,r.st||1)[i];
  if(e.t==='emom'){const m=Math.max(0,Math.min(r.x,Math.floor((n-g.t0)/60000)));r.d.fill(false);r.d.fill(true,0,m)}
  r.L[i]=o;adj();g.ph='rest';g.rstart=Date.now();g.rman=0;g.rbase=restOf(e,i,r)||90;const s=radv();g.radv=s;tEnd=Date.now()+s*1000;tP=0;nav('ses');rest(s);g.rend=tEnd;g.tp=0;sv()},
 la:d=>{const c=cs();c.o.a=Math.max(0,c.o.a+ +d.s);c.o.c=1;adj();reRest();sv();render()},
@@ -1084,7 +1085,7 @@ lvl:d=>{const k=d.k,n=Math.max(0,Math.min(L[k].length-1,S.lv[k]+ +d.s));if(n!==S
 tx:()=>{tP=0;clearInterval(tI);$('#tm').style.display='none';const r=$('#rt');if(r)r.textContent='Go ! 💪'},
 fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOString(),low=SE.rd==='low'||!!SE.dl;let xp=0;
  for(const e of P[day]){const r=SE.ex[e.id];if(!r.L.some(Boolean))continue;
-  const t=T[e.t],tg=r.tg,n=r.d.length,dn=r.d.filter(Boolean).length,ok=dn>=(r.xs?n-1:n)&&!r.nc&&(e.t==='pyr'||r.a>=tg)&&(e.t==='kg'?r.ax>=e.reps:(e.t!=='dp'||r.ax>=r.x)),fig=e.lad||e.fig,lad=e.lad,lv=lad&&S.lv[lad],key=day+'.'+e.id,p=last(day,e.id),name=nm(e),pain=pn(e);
+  const t=T[e.t],tg=r.tg,n=r.d.length,dn=r.d.filter(Boolean).length,st=r.st||1,tot=e.t==='pyr'?r.L.reduce((s,o,i)=>s+(o?Math.min(o.a,seq(tg,st)[i]||0):0),0):0,nom=e.t==='pyr'?psum(tg,st):0,need=Math.ceil(.95*nom),ok=(e.t==='pyr'?tot>=need:dn>=(r.xs?n-1:n))&&!r.nc&&(e.t==='pyr'||r.a>=tg)&&(e.t==='kg'?r.ax>=e.reps:(e.t!=='dp'||r.ax>=r.x)),fig=e.lad||e.fig,lad=e.lad,lv=lad&&S.lv[lad],key=day+'.'+e.id,p=last(day,e.id),name=nm(e),pain=pn(e);
   /* niveau d'effort de la séance (0 limite · 1 propre · 2 facile), puis tendance pondérée sur les 3 dernières séances */
   const qq=r.q,l0=r.f==='echec'?0:qq==null?{facile:2,parfait:1,dur:0}[r.f]:qq>=3?2:qq>=1?1:0,lvl0=r.pa&&l0>1?1:l0,lvl=e.t==='dp'&&lvl0===0&&r.f!=='echec'?1:lvl0;
   const ls=[lvl,...prevRes(day,e.id,2).map(lvOf)],wt=[3,2,1],trend=ls.reduce((s,v,i)=>s+v*wt[i],0)/ls.reduce((s,_,i)=>s+wt[i],0);
@@ -1093,6 +1094,9 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
   else if(fig&&r.fm==='bad'){
    if(p&&p.fm==='bad'&&lad&&lv>0){a='down';msg='Forme dégradée deux séances de suite : retour à '+L[lad][lv-1][0]+'.';setLv(lad,lv-1,0)}
    else msg='Forme moyenne : même difficulté. Si ça se répète, on redescend d’un niveau.'}
+  else if(e.t==='pyr'&&tot<need&&!r.nc){const pb=p&&p.t==='pyr'&&p.tg===tg&&(p.st||1)===st&&p.tot!=null&&p.tot<Math.ceil(.95*psum(tg,st));
+   if(tot<.85*nom||pb){let nt=tg-st;while(nt>Math.max(3,2*st)&&psum(nt,st)>tot)nt-=st;nt=Math.max(Math.max(3,2*st),nt);nv=nt;nx=90;a='down';msg='Sommet '+tg+' trop haut pour toi aujourd’hui : '+tot+' reps sur '+nom+'. Nouveau sommet '+nt+' ('+psum(nt,st)+' reps) : tu dois pouvoir le réussir ou presque.'}
+   else msg='Presque : '+tot+' reps sur '+nom+' (il en faut au moins '+need+'). Même sommet la prochaine fois ; si ça se répète, il baissera.'}
   else if(r.f==='echec'){if(p&&p.f==='echec'){[nv,nx]=t.dn(tg,r.x);a='down';msg='Deux échecs d’affilée : déchargement léger.'}else msg='Échec : même difficulté la prochaine fois.'}
   else if(!ok)msg=r.nc?'Technique non propre sur '+r.nc+' série'+(r.nc>1?'s':'')+' : elle ne compte pas, même difficulté la prochaine fois.':'Séries incomplètes : même difficulté la prochaine fois.';
   else if(lvl===0){if(ls.length>=3&&ls.every(v=>v===0)){[nv,nx]=t.dn(tg,r.x);a='down';msg='3 séances de suite à la limite : décharge pour récupérer.'}else if(r.av>tg||(e.t==='dp'&&r.axv>r.x)){nv=Math.max(tg,r.av);if(e.t==='dp')nx=Math.max(r.x,r.ax);a='up';msg='Tu as dépassé la cible, même si c’était dur : la nouvelle cible, c’est ce que tu as réellement fait (sans +1).'}
@@ -1101,6 +1105,8 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
   else if(lad&&r.fm==='good'&&r.a>=L[lad][lv][1]&&lv<L[lad].length-1){a='up';msg='Palier atteint : passage à '+L[lad][lv+1][0]+' !';setLv(lad,lv+1,1)}
   else{nv=Math.max(tg,r.av==null?r.a:r.av);if(e.t==='dp')nx=Math.max(r.x,r.ax);const st=lvl>=2&&trend>=1.5?Math.min(SE.wk===0?1:2,t.mx):1;for(let i=0;i<st;i++)[nv,nx]=t.up(nv,nx);a='up';msg=st>1?'Facile sur plusieurs séances de suite : grosse progression.':lvl>1?'Facile : progression normale (la tendance doit se confirmer pour aller plus vite).':'Séance maîtrisée : la difficulté augmente.';if(e.t==='dp'&&nx===3&&nv>Math.max(tg,r.a))msg='Fourchette terminée : charge à +'+nv+' kg, on repart à 3 reps.'}
   if(!low&&a==='up'&&tg>0&&nv>tg*1.5+1&&!lad)msg+=' ⚠️ Grosse hausse de cible : si c’est une erreur de saisie, supprime cette séance dans l’Historique, la progression sera annulée.';
+  if(e.t==='pyr'&&!low&&a==='up'&&((st===1&&nv>=11)||(st===2&&nv>=17))){const s2=st+1;nv=s2===2?12:18;nx=90;S.p[key+'.st']=s2;msg='Sommet très haut atteint : la pyramide passe par '+s2+' ('+seq(nv,s2).slice(0,4).join('-')+'…'+nv+'…).'}
+  if(e.t==='pyr'&&!low&&tot>0&&a!=='down'&&!/Presque/.test(msg))msg+=' Total : '+tot+'/'+nom+' reps.';
   let ns=null;
   if(e.id==='pw'&&!low&&ok&&lvl>=1&&pain<4){const st=pwStage(),g=STG[st],done=g.t==='dp'?Math.max(tg,r.a)>=PWG&&Math.max(r.x,r.ax)>=6:Math.max(tg,r.a)>=g.goal;
    if(done&&st<STG.length-1){const g2=STG[st+1];S.p['pw.st']=st+1;nv=g2.v0;nx=g2.t==='dp'?3:0;ns=g2.n;a='up';msg='🏆 Étape validée ! Prochaine étape : '+g2.n+'. Les cibles repartent d’un niveau de départ confortable.'}
@@ -1118,7 +1124,7 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
   xp+=!ok||r.f==='echec'?10:[30,40,50][lvl];
   const ss=r.L.filter(Boolean).map(o=>{const q={a:o.a};if(e.t==='dp'||e.t==='kg')q.ax=o.ax;if(o.q!=null)q.q=o.q;if(o.pa)q.pa=o.pa;if(o.bad&&o.bad.length)q.bad=o.bad;if(o.fm)q.fm=o.fm;if(o.rt)q.rt=o.rt;if(o.rp)q.rp=o.rp;return q}),
    av=k=>{const v=ss.slice(0,-1).map(o=>o[k]).filter(x=>x>0);return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):null},
-   ent={id:e.id,n:name,t:e.t,tg,x:e.t==='dp'?r.ax:r.x,act:r.a,dn,sets:n,f:r.f,q:r.q,rp:r.p,fm:r.fm,ok,next:nv,nx,a,msg,ss,lv:lvl,tr:Math.round(trend*100)/100,nc:r.nc||0,pa:r.pa||0,rpl:av('rp'),rpt:av('rt'),rn,pr:[],vr:vri(day,e),bl:low||pain>=4?1:0,...(ns?{ns}:{})};
+   ent={id:e.id,n:name,t:e.t,tg,x:e.t==='dp'?r.ax:r.x,act:r.a,dn,sets:n,tot,st,f:r.f,q:r.q,rp:r.p,fm:r.fm,ok,next:nv,nx,a,msg,ss,lv:lvl,tr:Math.round(trend*100)/100,nc:r.nc||0,pa:r.pa||0,rpl:av('rp'),rpt:av('rt'),rn,pr:[],vr:vri(day,e),bl:low||pain>=4?1:0,...(ns?{ns}:{})};
   /* records : meilleure perf ou 1RM estimé jamais atteints sur cet exercice (séance propre et complète) */
   const prev=[];S.h.forEach(h=>h.res.forEach(x=>{if(x.id===e.id&&x.t===e.t&&(x.vr||0)===ent.vr)prev.push({h,r:x})}));
   if(ok&&prev.length){const ul=usesLoad(ent)||prev.some(x=>usesLoad(x.r)),mc=mets({day,d:iso},ent,ul),pm=prev.map(x=>mets(x.h,x.r,ul)),bst=k=>Math.max(0,...pm.map(m=>m[k]||0));
