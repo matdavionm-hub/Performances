@@ -396,7 +396,7 @@ input[type=range]{width:100%;accent-color:var(--s);height:32px}
 <script>
 const VER=2,KEY='calisthenie_v1',SKEY='calisthenie_se',PKEY='calisthenie_prev',DAYS={mardi:'Mardi',mercredi:'Mercredi',jeudi:'Jeudi · Jambes',samedi:'Samedi',dimanche:'Dimanche'},DOW={mardi:2,mercredi:3,jeudi:4,samedi:6,dimanche:0};
 const $=s=>document.querySelector(s);
-const D=()=>({h:[],p:{},xp:0,lv:{pl:0,fl:1},bk:0,bw:[],vr:{},pg:{},pf:{n:'Principal',l:{}},go:[],wv:{n:0,w:0,on:1,len:4},wb:[],ms:[],t:0,ver:VER});
+const D=()=>({h:[],p:{},xp:0,lv:{pl:0,fl:1},bk:0,bw:[],vr:{},pg:{},pf:{n:'Principal',l:{}},go:[],wv:{n:0,w:0,on:0,len:4,wm:1},cal:{},wb:[],ms:[],t:0,ver:VER});
 
 /* ---- Programme (v = variable qui progresse ; rl = le repos de base baisse peu à peu ; zn = zones sollicitées ; bw = poids de corps ajouté au calcul du 1RM) ---- */
 const HB={id:'hb',n:'Hollow Body',t:'hold',sets:3,v:45,rl:1};
@@ -429,6 +429,7 @@ const P={
   {id:'fl',n:'Front Lever',lad:'fl',t:'hold',sets:3,v:9,rest:90},
   {id:'tr',n:'Tractions · Force',t:'reps',sets:3,v:6,note:'Nombre de reps variable selon la forme du jour.'},
   {id:'di',n:'Dips · Force',t:'kg',sets:3,reps:3,v:20},
+  {id:'da',n:'Dips aux anneaux',t:'reps',sets:3,v:5,rest:150,note:'Anneaux stables et collés au corps, descente contrôlée, épaules en arrière. Pas de balancement.'},
   {id:'po',n:'Pompes · EMOM',t:'emom',m:10,v:8},
   {id:'sp',n:'Scapula Pull-up',t:'kg',sets:4,reps:8,v:5,note:'Pause de 3 s en haut de chaque rep.'}]
 };
@@ -440,11 +441,11 @@ const T={
  emom:{c:'rep',l:'Reps par minute réalisées',mx:1,up:(v,x)=>x<12?[v,x+2]:[v+1,10],dn:(v,x)=>x>10?[v,x-2]:[Math.max(2,v-1),12]}
 };
 /* Séances Force : double progression (reps puis charge) + repos 5 min. v = charge (kg, 0 = poids du corps), x = reps par série */
-T.dp={c:'kg',l:'Lest utilisé',mx:1,up:(v,x)=>v?(x<6?[v,x+1]:[v+2,3]):(x<15?[v,x+1]:[10,3]),dn:(v,x)=>v?(x>3?[v,x-1]:[Math.max(0,v-2),6]):[v,Math.max(3,x-1)]};
-for(const d in P)P[d]=P[d].map(e=>/Force/.test(e.n)?e.id==='di'?{...e,t:'dp',x0:3,rest:300,note:'3 → 6 reps ; quand 3×6 devient facile : +2 kg et retour à 3 reps.'}:e.id==='tr'?{id:'tf',n:'Tractions · Force',t:'dp',sets:3,x0:6,v:0,rest:300,note:'Poids du corps jusqu’à 15 strictes, puis lestées : 3 → 6 reps, puis +2 kg.'}:{...e,rest:300}:e);
+T.dp={c:'kg',l:'Lest utilisé',mx:1,up:(v,x)=>v?(x<5?[v,x+1]:[v+2,3]):(x<15?[v,x+1]:[10,3]),dn:(v,x)=>v?(x>3?[v,x-1]:[Math.max(0,v-2),6]):[v,Math.max(3,x-1)]};
+for(const d in P)P[d]=P[d].map(e=>/Force/.test(e.n)?e.id==='di'?{...e,t:'dp',x0:3,rest:300,note:'Chaque série proche de l’échec (RIR 1–2). Fourchette 3 → 6 reps : dès que tu fais 5–6 reps sur toutes les séries, +2 kg et retour à 3–4 reps.'}:e.id==='tr'?{id:'tf',n:'Tractions · Force',t:'dp',sets:3,x0:6,v:0,rest:300,note:'Poids du corps jusqu’à 15 strictes, puis lestées : fourchette 3 → 6 reps proche de l’échec, dès 5–6 reps : +2 kg.'}:{...e,rest:300}:e);
 /* Technique à contrôler par série, zones sollicitées (c = coudes, p = poignets, e = épaules) */
-const TK={tr:['amp','elan'],tf:['amp','elan'],di:['amp','elan'],po:['amp','elan'],sp:['amp','pause'],pw:['amp','elan'],sb:['amp','elan'],ic:['amp','pause'],pf:['amp','pause'],ml:['amp','pause'],},TKL={amp:'Amplitude complète',elan:'Sans élan',pause:'Pause 3 s respectée'};
-const ZN={tr:['c','e'],tf:['c','e'],di:['c','e'],po:['p','e','c'],pw:['p','e','c'],pl:['p','e','c'],tp:['p','e','c'],fl:['e','c'],ng:['e','c'],sp:['e'],ah:['e'],sd:['k','h'],sb:['k','h'],ic:['k','h'],pf:['h'],ml:['k'],},ZL={c:'Coudes',p:'Poignets',e:'Épaules',k:'Genoux',h:'Hanches / bas du dos'};
+const TK={tr:['amp','elan'],tf:['amp','elan'],di:['amp','elan'],da:['amp','elan'],po:['amp','elan'],sp:['amp','pause'],pw:['amp','elan'],sb:['amp','elan'],ic:['amp','pause'],pf:['amp','pause'],ml:['amp','pause'],},TKL={amp:'Amplitude complète',elan:'Sans élan',pause:'Pause 3 s respectée'};
+const ZN={tr:['c','e'],tf:['c','e'],di:['c','e'],da:['c','e'],po:['p','e','c'],pw:['p','e','c'],pl:['p','e','c'],tp:['p','e','c'],fl:['e','c'],ng:['e','c'],sp:['e'],ah:['e'],sd:['k','h'],sb:['k','h'],ic:['k','h'],pf:['h'],ml:['k'],},ZL={c:'Coudes',p:'Poignets',e:'Épaules',k:'Genoux',h:'Hanches / bas du dos'};
 for(const d in P)P[d]=P[d].map(e=>({...e,tk:TK[e.id],zn:ZN[e.id]||[],bw:e.id==='di'||e.id==='tf'?1:0}));
 /* Programme de base (copie) + exercices disponibles ; le programme réellement utilisé (P) est reconstruit depuis S.pg (modifications de l'utilisateur) */
 const P0={};for(const d in P)P0[d]=P[d].map(e=>({...e}));
@@ -498,10 +499,18 @@ const pwEntry=()=>{const g=STG[pwStage()];return g.t==='dp'?{n:g.n,t:'dp',sets:3
 const HASSETS=e=>['hold','reps','kg','dp'].includes(e.t),SPW=4;
 /* Vague : 4 semaines de 4 séances (nom, RIR visé, explication) */
 const WVN=[['Accumulation',3,'Volume normal, exécution propre : garde environ 3 reps en réserve.'],['Intensification',2,'Plus dur : garde environ 2 reps en réserve.'],['Pic',1,'Semaine de records : vise environ 1 rep en réserve, en restant propre.'],['Décharge',4,'Volume réduit d’environ 40 %, aucune progression : le corps récupère et se renforce.']];
+const FMT={force:'Force',obj:'Objectif',pyr:'Pyramide',emom:'EMOM'};
+function fmtApply(e,f){const b=e.n.split(' · ')[0],o={...e,n:b+' · '+FMT[f]};
+ if(f==='force'){Object.assign(o,{t:'dp',sets:e.sets||3,x0:3,v:0,rest:300,note:'Force : chaque série proche de l’échec (RIR 1–2), fourchette 3 → 6 reps ; dès 5–6 reps sur toutes les séries : +2 kg.'})}
+ else if(f==='obj'){Object.assign(o,{t:'dp',sets:e.sets||3,x0:6,v:0,rest:300,note:'Objectif : tu montes en reps au poids du corps jusqu’à 15 strictes, puis le lest démarre.'})}
+ else if(f==='pyr'){Object.assign(o,{t:'pyr',v:6});delete o.sets}
+ else{Object.assign(o,{t:'emom',m:10,v:6});delete o.sets}
+ return o}
 function buildP(){for(const d in P0){const g=(S.pg&&S.pg[d])||{},x=g.x||[],o=g.o||[],sS=g.s||{},rR=g.r||{};
  const l=P0[d].filter(e=>!x.includes(e.id)).map(e=>({...e}));
  (g.a||[]).forEach(k=>{const b=LIB.find(e=>e.id+'|'+e.n===k);if(b&&!l.some(e=>e.id===b.id))l.push({...b})});
  if(o.length)l.sort((a,b)=>{const i=o.indexOf(a.id),j=o.indexOf(b.id);return(i<0?99:i)-(j<0?99:j)});
+ l.forEach((e,i)=>{if(g.f&&g.f[e.id]&&FMT[g.f[e.id]])l[i]=fmtApply(e,g.f[e.id])});
  l.forEach(e=>{if(e.id==='pw')Object.assign(e,pwEntry());if(HASSETS(e)&&sS[e.id])e.sets=sS[e.id];if(rR[e.id]&&e.t!=='pyr'&&e.t!=='emom')e.rest=rR[e.id]});
  P[d]=l.length?l:P0[d].map(e=>({...e}))}}
 /* Paliers des figures : [nom, secondes à tenir en bonne forme pour passer au niveau suivant] */
@@ -514,7 +523,7 @@ const KEEPH=120;
 function compactH(h){const n=h.length-KEEPH;for(let i=0;i<n;i++){const e=h[i];if(!e||e.c)continue;e.c=1;delete e.u;delete e.pn;delete e.wu;
  e.res=e.res.map(r=>{const o={id:r.id,n:r.n,t:r.t,tg:r.tg,x:r.x,act:r.act,dn:r.dn,sets:r.sets,f:r.f,q:r.q,fm:r.fm,ok:r.ok,next:r.next,nx:r.nx,a:r.a,lv:r.lv,vr:r.vr,bl:r.bl,pr:r.pr};if(r.ss)o.ss=r.ss.map(x=>{const q={a:x.a};if(x.ax!=null)q.ax=x.ax;return q});return o})}}
 function cleanPg(pg){const r={};if(!pg||typeof pg!=='object')return r;for(const d in P0){const g=pg[d];if(!g||typeof g!=='object')continue;const ids=a=>Array.isArray(a)?a.filter(v=>typeof v==='string').slice(0,30):[],c={};
-  c.x=ids(g.x).filter(id=>P0[d].some(e=>e.id===id));c.a=ids(g.a).filter(k=>LIB.some(e=>e.id+'|'+e.n===k)&&!P0[d].some(e=>k.split('|')[0]===e.id));c.o=ids(g.o);c.s={};c.r={};
+  c.x=ids(g.x).filter(id=>P0[d].some(e=>e.id===id));c.a=ids(g.a).filter(k=>LIB.some(e=>e.id+'|'+e.n===k)&&!P0[d].some(e=>k.split('|')[0]===e.id));c.o=ids(g.o);c.s={};c.r={};c.f={};if(g.f&&typeof g.f==='object')for(const k of Object.keys(g.f)){if(FMT[g.f[k]]&&c.a.some(a=>a.split('|')[0]===k))c.f[k]=g.f[k]}
   if(g.s&&typeof g.s==='object')for(const k in g.s){const v=+g.s[k];if(v>=1&&v<=10)c.s[k]=v|0}
   if(g.r&&typeof g.r==='object')for(const k in g.r){const v=+g.r[k];if(v>=15&&v<=600)c.r[k]=Math.round(v)}
   r[d]=c}return r}
@@ -530,7 +539,8 @@ function norm(o){const d=D();if(!o||typeof o!=='object'||Array.isArray(o))return
  const pf=o.pf&&typeof o.pf==='object'?o.pf:{};s.pf={n:typeof pf.n==='string'&&pf.n.trim()?pf.n.trim().slice(0,30):'Principal',l:{}};
  if(pf.l&&typeof pf.l==='object')for(const k of Object.keys(pf.l).slice(0,12)){if(['__proto__','constructor','prototype'].includes(k)||k===s.pf.n)continue;s.pf.l[k]=cleanPg(pf.l[k])}
  s.go=(Array.isArray(o.go)?o.go:[]).filter(g=>g&&typeof g.n==='string'&&(g.kind==='lad'?['pl','fl'].includes(g.k):typeof g.ex==='string'&&['reps','load','hold','rm'].includes(g.m)&&+g.tg>0)).slice(0,40).map(g=>g.kind==='lad'?{id:String(g.id||'').slice(0,12),n:g.n.slice(0,60),kind:'lad',k:g.k,d:String(g.d||'')}:{id:String(g.id||'').slice(0,12),n:g.n.slice(0,60),ex:g.ex.slice(0,8),m:g.m,tg:+g.tg,d:String(g.d||'')});
- const w=o.wv&&typeof o.wv==='object'?o.wv:{};const wl=[3,4,5,6].includes(+w.len)?+w.len:4;s.wv={n:Math.max(0,Math.min(wl*SPW-1,+w.n|0)),w:Math.max(0,+w.w|0),on:w.on===0||w.on===false?0:1,len:wl};
+ const w=o.wv&&typeof o.wv==='object'?o.wv:{};const wl=[3,4,5,6].includes(+w.len)?+w.len:4;s.wv={n:Math.max(0,Math.min(wl*SPW-1,+w.n|0)),w:Math.max(0,+w.w|0),on:w.wm&&!(w.on===0||w.on===false)?1:0,len:wl,wm:1};
+ s.cal={};if(o.cal&&typeof o.cal==='object')for(const k of Object.keys(o.cal).slice(0,80)){const c=o.cal[k];if(['__proto__','constructor','prototype'].includes(k)||!c||typeof c!=='object')continue;s.cal[k]={rm:Math.max(0,Math.min(500,+c.rm||0)),kg:Math.max(0,Math.min(500,+c.kg||0)),fmt:String(c.fmt||'').slice(0,60),d:String(c.d||'').slice(0,30)}}
  s.wb=(Array.isArray(o.wb)?o.wb:[]).filter(b=>b&&typeof b.d==='string'&&isFinite(b.n)).slice(-120).map(b=>({w:+b.w||0,d:b.d,n:+b.n||0,pr:+b.pr||0,xp:+b.xp||0,mv:(Array.isArray(b.mv)?b.mv:[]).filter(m=>m&&typeof m.n==='string'&&isFinite(m.from)&&isFinite(m.to)).slice(0,5).map(m=>({n:m.n,from:+m.from,to:+m.to,p:+m.p||0}))}));
  s.ms=(Array.isArray(o.ms)?o.ms:[]).filter(m=>m&&typeof m.d==='string'&&P0[m.day]).map(m=>({d:m.d,day:m.day})).slice(-200);
  compactH(s.h);s.ver=VER;delete s.max;return s}
@@ -588,25 +598,36 @@ const cs=()=>{const g=SE.g,e=SQ()[g.ei],r=SE.ex[e.id];return{g,e,r,o:r.L[g.si]}}
 const seq=n=>{const a=[];for(let i=1;i<=n;i++)a.push(i);for(let i=n-1;i>0;i--)a.push(i);return a};
 const mmss=s=>Math.floor(s/60)+':'+String(Math.round(s)%60).padStart(2,'0');
 const tt=(e,r,i)=>e.t==='pyr'?seq(r.tg)[i]+' reps':e.t==='kg'?e.reps+' reps · '+fmt(e,r.tg):fmt(e,r.tg,r.x);
-const setStr=(e,o)=>e.t==='hold'?o.a+' s':e.t==='kg'?'+'+o.a+' kg':e.t==='dp'?o.ax+' reps'+(o.a?' · +'+o.a+' kg':''):e.t==='emom'?o.a+' reps/min':o.a+' reps';
+const setStr=(e,o)=>e.t==='hold'?o.a+' s':e.t==='kg'?'+'+o.a+' kg'+(o.ax!=null?' × '+o.ax:''):e.t==='dp'?o.ax+' reps'+(o.a?' · +'+o.a+' kg':''):e.t==='emom'?o.a+' reps/min':o.a+' reps';
 const lastSets=(d,e)=>{const p=last(d,e.id);return p&&p.ss&&p.ss.length&&p.t===e.t&&(e.id!=='pw'||(p.vr||0)===pwStage())?p.ss:null};
 const lt=(d,e)=>{const p=last(d,e.id);if(!p)return'';const s=p.ss&&p.ss.length>1?`<div class=mu>Série par série : ${p.ss.map(o=>setStr(p.t?{t:p.t}:e,o)).join(' · ')}</div>`:'';return `<div class=mu>La dernière fois : ${fmt(p,p.act,p.x)}${p.q!=null?' · RIR '+p.q:''}${p.a==='up'?' ▲':''}</div>${s}`};
 const beat=(d,e,i,n)=>{const s=lastSets(d,e);return s&&s[i]&&(e.t!=='pyr'||s.length===n)?`<div class=mu>À battre (dernière fois) : <b>${setStr(e,s[i])}</b></div>`:''};
 const effv=o=>{const a=[o.q,o.p==null?null:10-o.p].filter(v=>v!=null);return a.length?Math.min(...a):null};
+const topSet=(e,r,i)=>e.t!=='pyr'||seq(r.tg)[i]>=r.tg-1;
+/* test de niveau : proposé la 1re fois qu'un exercice apparaît (rep max / temps max, charge max, format conseillé) */
+const calNew=e=>!e.lad&&!/^q_/.test(e.id)&&!S.cal[e.id]&&!S.h.some(h=>h.res.some(r=>r.id===e.id))&&(((S.pg&&S.pg[V.day]&&S.pg[V.day].a)||[]).some(k=>k.split('|')[0]===e.id));
+const calFmt=rm=>rm<=5?'Force : séries lourdes et courtes, repos longs':rm<=12?'Pyramide : montée puis descente des reps':'EMOM : petites séries à chaque minute';
+const calCard=e=>calNew(e)?`<div class="note w">🧪 Exercice ajouté : fais un test de niveau (1 min) pour choisir son format (EMOM, Force, Pyramide ou Objectif) et régler ta cible de départ.</div><button class=sec data-a=calgo>🧪 Faire le test de niveau</button>`:S.cal[e.id]?`<div class="note hlp">🧪 Test de niveau : max ${S.cal[e.id].rm}${S.cal[e.id].kg?' · charge max +'+S.cal[e.id].kg+' kg':''} → format : ${S.cal[e.id].fmt}</div>`:'';
 const pn=e=>Math.max(0,...(e.zn||[]).map(z=>SE.pn[z]||0));
 /* repos conseillé = repos de base × effort de la série qui vient d'être faite (entre 60 % et 150 % du repos de base) */
 function radv(){const{g,e,r,o}=cs(),b=restOf(e,g.si,r)||90,q=o?effv(o):null;let f=1;
+ if(o&&o.hv)return Math.round(Math.min(240,Math.max(Math.min(b,150),b*.7))/5)*5;
  if(q!=null)f=q<0?1.3:q===0?1.25:q===1?1.1:q>=3?.85:1;
  if(o&&((o.bad&&o.bad.length)||o.pa))f*=1.1;
  return Math.round(Math.min(b*1.5,Math.max(30,b*.6,b*f))/5)*5}
 /* le chrono de repos suit automatiquement les réponses de l'utilisateur, tant qu'il ne l'a pas réglé à la main */
 function reRest(){const g=SE.g;if(g.ph!=='rest'||g.rman)return;const s=radv();g.radv=s;if(tP)return;tEnd=g.rstart+s*1000;g.rend=tEnd;clearInterval(tI);if(tEnd>Date.now()){tI=setInterval(tick,250);tick()}}
 /* ajuste la cible de la série suivante et affiche des conseils d'après la série qui vient d'être saisie */
-function adj(){const{g,e,o}=cs();g.cur2=g.cur;const m=[];
+function adj(){const{g,e,o,r}=cs();g.cur2=g.cur;const m=[];
+ o.hv=(e.t==='kg'||e.t==='dp')&&o.ax!=null&&o.ax<=2&&o.ax<(e.t==='kg'?e.reps:r.x)&&(o.q==null||o.q<=2)?1:0;
+ if(o.hv){m.push('Charge max imprévue ('+o.ax+' rep'+(o.ax>1?'s':'')+') : série courte, le muscle n’est pas épuisé. Repos modéré, puis baisse la charge d’environ 10 % sur la série suivante. Cette série ne compte pas dans ta progression.');g.msg=m.join(' ');return}
+ {const ld=e.t==='kg'||e.t==='dp',ref=r.tg,over=e.t==='hold'?o.a>g.cur:e.t==='pyr'?false:o.a>ref||(e.t==='dp'&&o.ax>r.x)||(e.t==='kg'&&o.ax>e.reps);
+  if(ld&&ref>0&&o.a>ref*1.5+1)m.push('⚠️ Charge très au-dessus de la cible ('+o.a+' kg au lieu de '+ref+') : si c’est une erreur de saisie, corrige avec − avant de continuer.');
+  else if(over&&o.q!==-1)m.push('📈 Au-dessus de la cible : la prochaine cible partira de ce que tu fais, pas de l’ancienne.')}
  if(e.t==='hold'&&(o.a<.8*g.cur||o.fm==='bad')){g.cur2=Math.max(3,g.cur-1);m.push('Cible −1 s sur la prochaine série ('+(o.fm==='bad'?'forme moyenne':'tenue courte')+').')}
  else if(o.q>=3&&(e.t==='dp'||e.t==='kg'))m.push('RIR '+(o.q>=4?'4+':o.q)+' : tu peux ajouter +2 kg sur la série suivante.');
  else if(o.q===0)m.push('Limite atteinte : le repos conseillé est allongé.');
- if(o.q===-1&&e.t!=='hold')m.push('Rep d’échec : n°'+((e.t==='dp'?o.ax:o.a)+1)+' (non comptée).');
+ if(o.q===-1&&e.t!=='hold')m.push('Rep d’échec : n°'+((e.t==='dp'||e.t==='kg'?o.ax:o.a)+1)+' (non comptée).');
  if(o.bad&&o.bad.length)m.push('Technique non propre : cette série ne comptera pas pour la progression.');
  if(o.pa)m.push(o.pa+' rep'+(o.pa>1?'s':'')+' partielle'+(o.pa>1?'s':'')+' : elles ne sont pas comptées.');
  g.msg=m.join(' ')}
@@ -614,11 +635,13 @@ function adj(){const{g,e,o}=cs();g.cur2=g.cur;const m=[];
 function drv(e){const r=SE.ex[e.id],Ls=r.L.filter(Boolean);if(!Ls.length)return;
  if(e.t!=='emom')r.L.forEach((o,i)=>{if(o)r.d[i]=e.t==='pyr'?o.a>=seq(r.tg)[i]:true});
  if(e.t==='pyr'){let pk=0;r.L.forEach((o,i)=>{if(o&&o.a>=seq(r.tg)[i])pk=Math.max(pk,seq(r.tg)[i])});r.a=pk}
- else r.a=Math.min(...Ls.map(o=>o.a));
- if(e.t==='dp')r.ax=Math.min(...Ls.map(o=>o.ax));
- r.nc=Ls.filter(o=>o.bad&&o.bad.length).length;r.pa=Ls.reduce((s,o)=>s+(o.pa||0),0);
- const es=Ls.map(effv).filter(v=>v!=null),ps=Ls.map(o=>o.p).filter(v=>v!=null);
- if(es.length){const la=es[es.length-1],me=es.reduce((a,b)=>a+b,0)/es.length;r.q=es.some(v=>v<0)?-1:Math.max(0,Math.round((la*2+me)/3))}else r.q=null;
+ const mn=a=>Math.floor(a.reduce((x,y)=>x+y,0)/a.length),ldd=e.t==='kg'||e.t==='dp',Ws=ldd?Ls.filter(o=>!o.hv):Ls,W=Ws.length?Ws:Ls,axo=o=>o.ax==null?(e.t==='kg'?e.reps:r.x):o.ax;
+ if(e.t!=='pyr'){r.a=Math.min(...W.map(o=>o.a));r.av=mn(W.map(o=>o.a))}else r.av=r.a;
+ if(ldd){r.ax=Math.min(...W.map(axo));r.axv=mn(W.map(axo))}
+ r.nc=Ls.filter( o=>o.bad&&o.bad.length).length;r.pa=Ls.reduce((s,o)=>s+(o.pa||0),0);
+ let Es=e.t==='pyr'?r.L.map((o,i)=>o&&topSet(e,r,i)?o:null).filter(Boolean):W;if(!Es.length)Es=W;
+ const es=Es.map(effv).filter(v=>v!=null),ps=Es.map(o=>o.p).filter(v=>v!=null);
+ if(es.length){const me=es.reduce((a,b)=>a+b,0)/es.length,la=e.t==='pyr'?me:es[es.length-1];r.q=es.some(v=>v<0)?-1:Math.max(0,Math.round((la*2+me)/3))}else r.q=null;
  r.p=ps.length?Math.round(ps.reduce((a,b)=>a+b,0)/ps.length*2)/2:null;
  const bad=Ls.filter(o=>o.fm==='bad').length,gd=Ls.filter(o=>o.fm==='good').length;
  r.fm=bad*2>=Ls.length?'bad':gd?'good':'ok0';
@@ -722,14 +745,6 @@ const rdy=()=>rscore()<55||daysSince()>=10?'low':'ok';
 const scInfo=s=>s>=70?['Feu vert : séance normale','var(--ok)']:s>=55?['Correct : séance normale, reste attentif','var(--s)']:s>=35?['Récupération moyenne : séance allégée (−1 série, pas de progression)','var(--kg)']:['Récupération basse : repousse la séance si tu peux, sinon fais-la très légère','var(--ko)'];
 const scCard=()=>{const s=rscore(),[t,c]=scInfo(s),ds=daysSince();return `<div class=card><div class=row><b>Score de récupération</b><b style="color:${c};font-size:26px">${s}<span class=mu>/100</span></b></div><div class=sc><i style="width:${s}%;background:${c}"></i></div><div class=mu style="margin-top:6px">${t}${S.h.length?' · dernière séance : '+(ds<=0?'aujourd’hui':'il y a '+ds+' j'):''}</div></div>`};
 /* Équilibre poussée / traction : progression de la perf sur 6 semaines ; si l'écart dépasse 25 points, 1 série bonus facultative côté retard */
-const GRP={push:['di','po','pw','pp','hs'],pull:['tr','tf','sp','mu','oa','fr']};
-function imbalance(){const now=Date.now(),g={push:[],pull:[]};
- for(const s of series()){const id=s.k.split('.')[0],gk=GRP.push.includes(id)?'push':GRP.pull.includes(id)?'pull':null;if(!gk)continue;
-  const pf=tabsOf(s).find(x=>x.m==='pf');if(!pf)continue;const pts=pf.pts.filter(p=>now-new Date(p.d)<=42*864e5);if(pts.length<2||!(pts[0].v>0))continue;g[gk].push((pts[pts.length-1].v-pts[0].v)/pts[0].v)}
- const m=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:null,pu=m(g.push),pl=m(g.pull);
- return{pu,pl,lag:pu==null||pl==null||Math.abs(pu-pl)<.25?null:pu>pl?'pull':'push'}}
-const balCard=()=>{const b=imbalance(),f=v=>v==null?'—':(v>=0?'+':'')+Math.round(v*100)+' %';
- return `<div class=card><h2>⚖️ Équilibre poussée / traction</h2><div class="mu hlp">Progression sur 6 semaines (dips, pompes · tractions, scapula pull-ups)</div><div class=row style="margin-top:8px"><span>Poussée <b>${f(b.pu)}</b></span><span>Traction <b>${f(b.pl)}</b></span></div>${b.lag?`<div class="note w">${b.lag==='pull'?'La traction':'La poussée'} prend du retard : une série bonus (facultative) est ajoutée à un de ses exercices à chaque séance, jusqu’à ce que l’écart se réduise.</div>`:b.pu==null||b.pl==null?'<div class="note hlp">Pas encore assez de données : il faut au moins 2 séances par exercice sur 6 semaines.</div>':'<div class="note hlp">Équilibré : rien à corriger.</div>'}</div>`};
 const recCard=()=>{const l=S.h.filter(h=>h.sc!=null);return l.length>1?`<div class=card><h2>Récupération au démarrage</h2>${chart(l.map(h=>({d:h.d,v:h.sc})))}</div>`:''};
 function adjEx(e,r){if(r.xs){r.d.pop();r.xs=0}if(e.t==='pyr'){r.tg=Math.max(3,r.bv-1);r.d=Array(2*r.tg-1).fill(false)}else if(e.t==='emom'){r.x=Math.max(6,r.bx-2);r.d=Array(r.x).fill(false)}else r.d=Array(Math.max(2,r.d.length-1)).fill(false)}
 function vPre(g){const top=t=>`<div class=row><span class=mu>Avant la séance</span><button class=back data-a=cancel>🗑 Annuler</button></div><h1>${t}</h1>`;
@@ -750,12 +765,6 @@ const remBan=()=>{const n=new Date(),to=Object.keys(DOW).find(k=>DOW[k]===n.getD
  if(!to||!UI.rd[to]||RS||S.h.some(h=>new Date(h.d).toDateString()===n.toDateString())||n.getHours()*60+n.getMinutes()<hh*60+mm)return'';
  return `<div class="card ban"><b>🏋️ Séance de ${DAYS[to]} aujourd’hui</b><div class=mu>Pas encore faite · rappel prévu à ${UI.rt}</div></div>`};
 
-/* ---- Bilans ---- */
-function bestPf(hs){const m={};hs.forEach(h=>h.res.forEach(r=>{const k=r.id+'|'+r.t+'|'+(r.vr||0),v=metsC(h,r,usesLoad(r)).pf;if(v!=null&&(!m[k]||v>m[k].v))m[k]={v,n:r.n}}));return m}
-function movers(cur,prev){const a=bestPf(cur),b=bestPf(prev),mv=[];for(const k in a)if(b[k]&&b[k].v>0)mv.push({n:a[k].n,from:rd1(b[k].v),to:rd1(a[k].v),p:Math.round((a[k].v/b[k].v-1)*100)});return mv.sort((x,y)=>y.p-x.p)}
-const prOf=a=>a.reduce((s,h)=>s+h.res.reduce((t,r)=>t+(r.pr?r.pr.length:0),0),0);
-function mkBilan(w){const L=wvLn(),cur=S.h.slice(-L),prev=S.h.slice(-2*L,-L);return{w,d:new Date().toISOString(),n:cur.length,pr:prOf(cur),xp:cur.reduce((s,h)=>s+(h.xp||0),0),mv:movers(cur,prev).slice(0,5)}}
-const mvRows=mv=>mv.length?mv.map(m=>`<div class="row hr"><span>${m.n}</span><span class=mu>${m.from} → <b style="color:${m.p>=0?'var(--ok)':'var(--ko)'}">${m.to}</b> (${m.p>=0?'+':''}${m.p} %)</span></div>`).join(''):'<div class=mu>Pas assez de données pour comparer.</div>';
 const sugg=()=>{const has=id=>Object.keys(P).some(d=>P[d].some(e=>e.id===id)),n=[];
  if(S.lv.pl>=L.pl.length-1&&!has('pp'))n.push('Tu travailles le dernier palier de la planche. Quand tu tiens la Full Planche 10 s en bonne forme, ajoute « Planche Push-up » (Programme et vague) pour continuer à progresser.');
  if(S.lv.fl>=L.fl.length-1&&!has('fr'))n.push('Tu travailles le dernier palier du front lever. Quand tu tiens le Full Front Lever 10 s en bonne forme, ajoute « Front Lever Raises » (Programme et vague).');
@@ -823,25 +832,29 @@ prog:()=>{const d=V.day;return back('home')+`<h1>${DAYS[d]}</h1>${V.ask&&RS?`<di
 ses:()=>{const g=SE.g,d=V.day,E=SQ();if(g.ph==='pre'||g.ph==='wu')return vPre(g);
  const e=E[g.ei],r=SE.ex[e.id],i=g.si,n=e.t==='emom'?1:r.d.length,lst=i===n-1,nx=E[g.ei+1],hold=e.t==='hold',em=e.t==='emom',
  top=`<div class=row><span class=mu>Exercice ${g.ei+1}/${E.length}</span><span><button class=back data-a=abt>✓ Terminer</button><button class=back data-a=cancel>🗑 Annuler</button></span></div><h1>${nm(e)}</h1>`;
- if(g.ph==='prep'){const pw=pn(e);return top+`<div class=card><div class=row><b>${n} série${n>1?'s':''}</b>${badge(e,r.tg,r.x)}</div><div class=mu>${desc(e,r.tg,r.x,n)}${e.t!=='pyr'&&e.t!=='emom'?' · repos '+mmss(restBase(d,e)):''}</div>${lt(d,e)}${e.note?`<div class="note${e.id==='pw'?' hlp':''}">${e.note}</div>`:''}${gl(e)}${r.xs&&SE.ib?`<div class="note w">⚖️ ${SE.ib.lag==='pull'?'Traction':'Poussée'} en retard : 1 série bonus (facultative) sur cet exercice.</div>`:''}${SE.dl?'<div class="note w">🌊 Semaine de décharge : volume réduit, pas de progression. Reste léger et propre.</div>':SE.rd==="low"?'<div class="note w">🔋 Séance allégée aujourd’hui : une série en moins, pas de progression.</div>':''}${SE.wk!=null&&!SE.dl?`<div class=note>🌊 ${WVN[SE.wk][0]} · effort visé : RIR ${WVN[SE.wk][1]}</div>`:''}${pw>=7?`<div class="note d">⚠️ Douleur ${pw}/10 sur une zone sollicitée : saute cet exercice ou fais une version très légère.</div>`:pw>=4?`<div class="note w">⚠️ Gêne ${pw}/10 : pas de montée de difficulté aujourd’hui, reste propre et contrôlé.</div>`:''}</div><button class=cta data-a=go1>▶ Démarrer la série 1</button><button class=sec data-a=skip>Passer cet exercice</button>`}
+ if(g.ph==='prep'){const pw=pn(e);return top+`<div class=card><div class=row><b>${n} série${n>1?'s':''}</b>${badge(e,r.tg,r.x)}</div><div class=mu>${desc(e,r.tg,r.x,n)}${e.t!=='pyr'&&e.t!=='emom'?' · repos '+mmss(restBase(d,e)):''}</div>${lt(d,e)}${calCard(e)}${e.note?`<div class="note${e.id==='pw'?' hlp':''}">${e.note}</div>`:''}${gl(e)}${SE.dl?'<div class="note w">🌊 Semaine de décharge : volume réduit, pas de progression. Reste léger et propre.</div>':SE.rd==="low"?'<div class="note w">🔋 Séance allégée aujourd’hui : une série en moins, pas de progression.</div>':''}${SE.wk!=null&&!SE.dl?`<div class=note>🌊 ${WVN[SE.wk][0]} · effort visé : RIR ${WVN[SE.wk][1]}</div>`:''}${pw>=7?`<div class="note d">⚠️ Douleur ${pw}/10 sur une zone sollicitée : saute cet exercice ou fais une version très légère.</div>`:pw>=4?`<div class="note w">⚠️ Gêne ${pw}/10 : pas de montée de difficulté aujourd’hui, reste propre et contrôlé.</div>`:''}</div><button class=cta data-a=go1>▶ Démarrer la série 1</button><button class=sec data-a=skip>Passer cet exercice</button>`}
  if(g.ph==='eff')return top+`<div class=card style="text-align:center"><div class=mu>Série ${i+1}/${n} · cible ${hold?g.cur+' s':tt(e,r,i)}</div>${beat(d,e,i,n)}${hold||em?`<div id=bt style="font-size:88px;font-weight:900;line-height:1.1">…</div><div id=bm class=mu></div>${hold?'<div class=xp><i id=bb style="width:0"></i></div>':''}`:`<div style="font-size:44px;font-weight:900;margin:18px 0">${tt(e,r,i)}</div>`}</div><button class=cta data-a=stop>${hold?'🖐 J’ai lâché':em?'⏹ Arrêter':'✅ J’ai terminé ma série'}</button>${em?`<button class=sec data-a=epz>${g.pz?'▶ Reprendre':'⏸ Pause'}</button>`:''}`;
- const o=r.L[i],fg=e.lad||e.fig,rp=e.t!=='hold',bd=o.bad||[],wn=g.warn&&o.q==null&&o.p==null,
- pj=(()=>{for(let j=i-1;j>=0;j--){const x=r.L[j];if(x&&x.q==null&&x.p==null&&!(e.t==='pyr'&&seq(r.tg)[j]<=4))return j}return -1})(),
- RO=h=>h?[[3,'+3 s ou +'],[1,'+1–2 s'],[0,'Limite'],[-1,'✕']]:[[0,'0'],[1,'1'],[2,'2'],[3,'3'],[4,'4+'],[-1,'✕']],
+ const o=r.L[i],fg=e.lad||e.fig,rp=e.t!=='hold',bd=o.bad||[],wn=g.warn&&o.q==null&&o.p==null&&topSet(e,r,i),
+ pj=(()=>{for(let j=i-1;j>=0;j--){const x=r.L[j];if(x&&x.q==null&&x.p==null&&topSet(e,r,j))return j}return -1})(),
+ RO=h=>e.t==='emom'?[[3,'Facile'],[1,'Dur mais propre'],[0,'À la limite'],[-1,'✕ Plus tenu']]:h?[[3,'+3 s ou +'],[1,'+1–2 s'],[0,'Limite'],[-1,'✕']]:[[0,'0'],[1,'1'],[2,'2'],[3,'3'],[4,'4+'],[-1,'✕']],
  lb={hold:['Temps tenu',v=>v+' s'],reps:['Reps réalisées',v=>v+' reps'],kg:['Lest utilisé',v=>'+'+v+' kg'],pyr:['Reps faites',v=>v+' reps'],emom:['Reps par minute',v=>v+' reps'],dp:['Lest utilisé',v=>v?'+'+v+' kg':'poids du corps']}[e.t],
  stp=(a,v)=>`<div class=step><button data-a=${a} data-s=-1>−</button><output>${v}</output><button data-a=${a} data-s=1>+</button></div>`;
  return top+`<div class=card style="text-align:center"><div class=mu>${lst&&nx?'Pause avant : '+nm(nx):lst?'Dernière série':'Repos'}</div><div id=rt style="font-size:68px;font-weight:900">${mmss(Math.max(0,Math.ceil((tEnd-(tP||Date.now()))/1000)))}</div>${g.radv?`<div class=mu>Repos conseillé ${mmss(g.radv)}${g.rbase&&g.rbase!==g.radv?' · prévu '+mmss(g.rbase):''}${g.rman?' · réglé à la main':' · s’adapte à ton effort'}</div>`:''}<button class=sec data-a=t->−15 s</button><button class=sec data-a=tp>${tP?'▶ Reprendre':'⏸ Pause'}</button><button class=sec data-a=t+>+15 s</button><button class=sec data-a=tx>Passer</button></div>
-<div class=card><h2>Série ${i+1} faite</h2><div class=lab>${lb[0]}</div>${stp('la',lb[1](o.a))}${e.t==='dp'?`<div class=lab>Reps réalisées</div>${stp('lx',o.ax+' reps')}`:''}
+<div class=card><h2>Série ${i+1} faite</h2><div class=lab>${lb[0]}</div>${stp('la',lb[1](o.a))}${e.t==='dp'||e.t==='kg'?`<div class=lab>Reps réalisées</div>${stp('lx',o.ax+' reps')}`:''}
 ${rp?`<div class=lab>Reps partielles (non comptées)</div>${stp('lp',(o.pa||0)+' partielle'+((o.pa||0)>1?'s':''))}`:''}
 ${fg?`<div class=lab>Forme</div><div class=feels><button class="${o.fm==='good'?'on':''}" data-k=facile data-a=sf data-v=good>✅ Bonne</button><button class="${o.fm==='bad'?'on':''}" data-k=echec data-a=sf data-v=bad>⚠️ Mauvaise</button></div>`:''}
 ${e.tk?`<div class=lab>Technique · décoche ce qui n’était pas propre</div><div class=feels>${e.tk.map(k=>`<button class=on data-k=${bd.includes(k)?'echec':'parfait'} data-a=st data-v=${k}>${bd.includes(k)?'✕':'✓'} ${TKL[k]}</button>`).join('')}</div>`:''}
-<div class=lab id=qs${wn?' style="color:var(--kg);font-weight:800"':''}>${wn?'⚠️ À renseigner : ':''}${hold?'Tu aurais pu tenir encore…':'RIR : reps en réserve (✕ = échec)'}</div><div class=rir>${RO(hold).map(([v,l])=>`<button class="${o.q===v?'on':''}" data-a=sq data-v=${v}>${l}</button>`).join('')}</div>
-<div class=lab>RPE : effort ressenti (10 = maximum)</div><div class=rir>${[6,7,8,9,9.5,10].map(v=>`<button class="${o.p===v?'on':''}" data-a=sr data-v=${v}>${v<7?'≤6':v}</button>`).join('')}</div>
+<div class=lab id=qs${wn?' style="color:var(--kg);font-weight:800"':''}>${wn?'⚠️ À renseigner : ':''}${hold?'Tu aurais pu tenir encore…':e.t==='emom'?'Les 3 dernières minutes étaient… (juge la fin, pas le total)':(e.t==='dp'?'RIR : reps en réserve (visé : 1–2 · ✕ = échec)':'RIR : reps en réserve (✕ = échec)')}</div><div class=rir>${RO(hold).map(([v,l])=>`<button class="${o.q===v?'on':''}" data-a=sq data-v=${v}>${l}</button>`).join('')}</div>
 ${g.msg?`<div class=note>${g.msg}</div>`:''}<button class=cta data-a=ok>${o.c?'✓ Enregistré':'Comme prévu ✓'}</button></div>`
- +(pj>=0?`<div class=card><div class=mu>Série ${pj+1} : effort pas renseigné</div><div class=lab>${hold?'Tu aurais pu tenir encore…':'RIR de cette série'}</div><div class=rir>${RO(hold).map(([v,l])=>`<button data-a=sqp data-j=${pj} data-v=${v}>${l}</button>`).join('')}</div></div>`:'')
+ +(pj>=0?`<div class=card><div class=mu>Série ${pj+1} : effort pas renseigné</div><div class=lab>${hold?'Tu aurais pu tenir encore…':e.t==='emom'?'Les 3 dernières minutes étaient…':'RIR de cette série'}</div><div class=rir>${RO(hold).map(([v,l])=>`<button data-a=sqp data-j=${pj} data-v=${v}>${l}</button>`).join('')}</div></div>`:'')
  +(lst?(nx?`<div class=card><div class=mu>À suivre</div><h2>${nm(nx)}</h2><div class=mu>${desc(nx,cur(d,nx),curx(d,nx))}</div>${lt(d,nx)}</div>`:'')+`<button class="cta${wn?' warn':''}" data-a=nxt>${wn?'⚠️ Continuer sans répondre':nx?'Exercice suivant →':'🏁 Terminer la séance'}</button>`
  :`<div class=card><div class=mu>Prochaine série (${i+2}/${n})</div><b>${hold?(g.cur2||g.cur)+' s':tt(e,r,i+1)}</b>${beat(d,e,i+1,n)}</div><button class="cta${wn?' warn':''}" data-a=nxt>${wn?'⚠️ Continuer sans répondre':'▶ Série suivante'}</button>`)},
-res:()=>{const h=V.last;return `<h1>Séance terminée 🔥</h1><div class=card><div class=row><b>+${h.xp} XP</b><span class=mu>Niv. ${lv()} · ${rank()}</span></div>${h.res.some(r=>r.pr&&r.pr.length)?'<div class=recb>New record</div>':''}${h.sc!=null?`<div class=mu>Récupération du jour : ${h.sc}/100</div>`:''}${h.rd==='low'?'<div class=mu>🔋 Séance allégée</div>':''}${h.ex?'<div class=mu>⚡ Séance express</div>':''}${h.wk!=null?`<div class=mu>🌊 ${WVN[h.wk][0]}</div>`:''}</div>${h.ro?'<div class="card ban"><b>🌊 Vague terminée !</b><div class="mu hlp">Nouvelle vague : les cibles repartent un cran plus bas pour reconstruire plus haut. Pense à varier une variante (écran du jour).</div></div><div class=card><h2>📅 Bilan de la vague</h2>'+(S.wb.length?`<div class=mu>${S.wb[S.wb.length-1].n} séances · ${S.wb[S.wb.length-1].pr} record${S.wb[S.wb.length-1].pr>1?'s':''} · ${S.wb[S.wb.length-1].xp} XP</div>${mvRows(S.wb[S.wb.length-1].mv)}`:'')+'<button class=sec data-a=go data-t=bil>Tous les bilans</button><button class=sec data-a=exp>⬇ Sauvegarder maintenant (conseillé)</button></div>':''}${bkBan()}`
+cal:()=>{const e=SQ()[SE.g.ei],c=V.cal||(V.cal={rm:5,kg:0}),hd=e.t==='hold',sb=(a,s,l)=>`<button data-a=${a} data-s=${s}>${l}</button>`;
+ return `<button class=back data-a=calx>‹ Retour à l’exercice</button><h1>Test de niveau</h1><div class=card><h2>${nm(e)}</h2><div class="mu hlp">Deux mesures, chacune sur une seule série, propres et sans tricher. Repose-toi 3 minutes entre les deux. L’app règle ensuite ta cible de départ à environ 65–70 % de ton max et te conseille un format.</div></div>
+<div class=card><div class=lab>${hd?'Temps max tenu (secondes)':'Reps max propres (1 série jusqu’à l’échec)'}</div><div class=step>${sb('calm',-5,'−5')}${sb('calm',-1,'−')}<output>${c.rm}${hd?' s':' reps'}</output>${sb('calm',1,'+')}${sb('calm',5,'+5')}</div>
+${hd?'':`<div class=lab>Charge max lestée sur 1 à 3 reps (kg, 0 = poids du corps seul)</div><div class=step>${sb('calk',-5,'−5')}${sb('calk',-1,'−')}<output>${c.kg} kg</output>${sb('calk',1,'+')}${sb('calk',5,'+5')}</div>`}</div>
+${hd?'':`<div class=card><div class=lab>Format de cet exercice (c’est toi qui décides)</div><div class=dys style="flex-wrap:wrap">${Object.keys(FMT).map(k=>`<button class="${c.f===k?'on':''}" data-a=calf data-v=${k}>${FMT[k]}</button>`).join('')}</div><div class="mu hlp">${{force:'Force : séries lourdes proches de l’échec, 3 → 6 reps, +2 kg dès 5–6 reps. Utilise ta charge max.',obj:'Objectif : reps au poids du corps jusqu’à 15 strictes, puis lest (comme les tractions).',pyr:'Pyramide : tu montes puis tu redescends en reps ; le sommet est proche de ton max (environ 80 %, plafonné à 8).',emom:'EMOM : environ 40 % de ton max de reps à chaque minute pendant 10 minutes.'}[c.f]||'Suggestion d’après ton max : '+calFmt(c.rm)}</div></div>`}<button class=cta data-a=calsave>✓ Appliquer ce niveau</button><button class=sec data-a=calx>Plus tard</button>`},
+res:()=>{const h=V.last;return `<h1>Séance terminée 🔥</h1><div class=card><div class=row><b>+${h.xp} XP</b><span class=mu>Niv. ${lv()} · ${rank()}</span></div>${h.res.some(r=>r.pr&&r.pr.length)?'<div class=recb>New record</div>':''}${h.sc!=null?`<div class=mu>Récupération du jour : ${h.sc}/100</div>`:''}${h.rd==='low'?'<div class=mu>🔋 Séance allégée</div>':''}${h.ex?'<div class=mu>⚡ Séance express</div>':''}${h.wk!=null?`<div class=mu>🌊 ${WVN[h.wk][0]}</div>`:''}</div>${h.ro?'<div class="card ban"><b>🌊 Vague terminée !</b><div class="mu hlp">Nouvelle vague : les cibles repartent un cran plus bas pour reconstruire plus haut. Pense à varier une variante (écran du jour).</div></div><div class=card><button class=sec data-a=exp>⬇ Sauvegarder maintenant (conseillé)</button></div>':''}${bkBan()}`
  +h.res.map(r=>`<div class=card><div class=row><h2>${r.n}</h2><span class="b ${r.a==='up'?'b-ok':r.a==='down'?'b-ko':'b-mu'}">${r.a==='up'?'▲ Progression':r.a==='down'?'▼ Décharge':'＝ Maintien'}</span></div>${r.pr&&r.pr.length?`<div style="margin:6px 0"><span class="b b-kg">🏅 Record : ${r.pr.join(' · ')}</span></div>`:''}<div class=mu>${r.msg}</div><div style="margin-top:8px">${r.ns?'Prochaine étape : <b>'+r.ns+'</b>':'Prochaine fois : '+badge(r,r.next,r.nx)}</div>${xt(h,r)}</div>`).join('')
  +`<button class=cta data-a=go data-t=home>Retour à l’accueil</button>`},
 vars:()=>back('prog')+`<h1>Variantes · ${DAYS[V.day]}</h1><p class="mu hlp">Une variante change légèrement l’exercice pour relancer la progression. Les cibles sont réduites quand tu en changes.</p>`+(P[V.day].filter(e=>VAR[e.id]).map(e=>`<div class=card><h2>${nm(e)}</h2>${varUI(V.day,e)}</div>`).join('')||'<div class=card><div class=mu>Aucun exercice de ce jour n’a de variante.</div></div>'),
@@ -854,25 +867,17 @@ road:()=>{const t=V.rt||'lv',tb=`<div class=dys><button class="${t==='lv'?'on':'
  for(let i=1;i<=wvLn();i++){const w=Math.ceil(i/SPW)-1,pw=WVS[WL][w],end=i%SPW===0,st=i<=n?'dn':i===n+1?'cu':'';
   nodes+=`<div class=nr><div class="nc ${st}${end?' ms':''}">${end?(i<=n?'🏆':i===wvLn()?'👑':'🎁'):i}</div><div class=nl><b>${end?'Fin semaine '+(w+1)+' · '+WVN[pw][0]:'Séance '+i}</b>${end?(w===WL-1?'Vague terminée : les cibles repartent un cran plus bas':'Effort visé RIR '+WVN[pw][1]):'Semaine '+(w+1)+' · '+WVN[pw][0]}</div></div>`}
  return back('home')+`<h1>Route des trophées</h1>${tb}${wvOn()?wvCard():'<div class=card><div class=mu>La vague est désactivée (Programme et vague).</div></div>'}<div class=card><div class=mu>Vagues terminées : <b>${S.wv.w}</b> · Tu es en semaine ${wvWk()+1}/${WL} (${WVN[ph][0]}), effort visé RIR ${WVN[ph][1]}.</div></div><div class=rd>${nodes}</div>`},
-bil:()=>{const t=V.bt||'wv',tb=`<div class=dys><button class="${t==='wv'?'on':''}" data-a=bt data-v=wv>🌊 Vagues</button><button class="${t==='yr'?'on':''}" data-a=bt data-v=yr>📆 Années</button></div>`;
- if(t==='wv')return back('home')+`<h1>Bilans</h1>${tb}`+(S.wb.length?S.wb.slice().reverse().map(b=>`<div class=card><div class=row><b>Vague ${b.w+1}</b><span class=mu>${dfr(b.d)}</span></div><div class=mu>${b.n} séances · ${b.pr} record${b.pr>1?'s':''} · ${b.xp} XP</div><div class=lab>Meilleures performances vs la vague d’avant</div>${mvRows(b.mv)}</div>`).join(''):'<div class=card><div class=mu>Le premier bilan arrive à la fin de ta première vague.</div></div>');
- const ys=[...new Set(S.h.map(h=>new Date(h.d).getFullYear()))].sort((a,b)=>b-a);if(!ys.length)return back('home')+`<h1>Bilans</h1>${tb}<div class=card><div class=mu>Pas encore de séance.</div></div>`;
- const y=ys.includes(V.by)?V.by:ys[0],hs=S.h.filter(h=>new Date(h.d).getFullYear()===y),pv=S.h.filter(h=>new Date(h.d).getFullYear()===y-1),now=new Date(),wks=y===now.getFullYear()?Math.max(1,Math.ceil((now-new Date(y,0,1))/6048e5)):52,
-  mv=movers(hs,pv.length?pv:hs.slice(0,Math.min(8,Math.max(1,hs.length>>2)))),bw=S.bw.filter(b=>new Date(b.d).getFullYear()===y);
- return back('home')+`<h1>Bilans</h1>${tb}<div class=dys style="flex-wrap:wrap">${ys.map(a=>`<button class="${a===y?'on':''}" data-a=by data-v=${a}>${a}</button>`).join('')}</div>
-<div class=card><h2>Année ${y}</h2><div class="row mu"><span>Séances <b>${hs.length}</b></span><span>≈ <b>${rd1(hs.length/wks)}</b>/sem.</span><span>Records <b>${prOf(hs)}</b></span></div><div class="row mu" style="margin-top:8px"><span>Vagues terminées <b>${S.wb.filter(b=>new Date(b.d).getFullYear()===y).length}</b></span><span>Manquées <b>${S.ms.filter(m=>new Date(m.d).getFullYear()===y).length}</b></span><span>XP <b>${hs.reduce((s,h)=>s+(h.xp||0),0)}</b></span></div>${bw.length>1?`<div class=mu style="margin-top:8px">Poids de corps : ${bw[0].kg} → ${bw[bw.length-1].kg} kg</div>`:''}</div>
-<div class=card><h2>Évolution</h2><div class=mu>${pv.length?'Meilleures performances vs '+(y-1):'Début d’année vs meilleure perf. de l’année'}</div>${mvRows(mv.slice(0,10))}</div>`},
 goals:goalsView,
 pg:()=>{const lock=RS||SE,sm=(a,d,id,s,l)=>`<button class=sec data-a=${a} data-d=${d} data-id=${id} data-s=${s}>${l}</button>`;
- return back('home')+`<h1>Programme et vague</h1>${wvOn()?wvCard():''}<div class=card><h2>🌊 Périodisation en vague</h2><div class="mu hlp">Par défaut 4 semaines de 4 séances : accumulation (RIR 3) → intensification (RIR 2) → pic (RIR 1) → décharge (−40 % de volume, sans progression). La semaine avance au nombre de séances faites. En fin de vague, les cibles repartent un cran plus bas et l’app te propose de changer une variante.</div><button class="sec${wvOn()?' on':''}" data-a=wvt>${wvOn()?'Activée':'Désactivée'}</button>${wvOn()?`<div class=lab>Durée de la vague (décharge incluse)</div><div class=dys>${[3,4,5,6].map(l=>`<button class="${wvL()===l?'on':''}" data-a=wvl data-v=${l}>${l} sem.</button>`).join('')}</div><div class="mu hlp">4 semaines : réglage de départ. 5 à 6 semaines : montée plus progressive, conseillée si tu récupères plus lentement (âge, blessure, fatigue) ou en cas de gros volume. 3 semaines : cycles courts et intenses.</div>`:''}${wvOn()?'<button class=sec data-a=wvd>🛌 Décharge maintenant</button><button class=sec data-a=wv0>↺ Recommencer la vague</button>':''}</div><div class=card><h2>📚 Mes programmes</h2><div class=mu>Programme actif : <b>${esc(S.pf.n)}</b>.<span class=hlp> Crée des variantes de ton programme (bloc force, bloc figures…) et change quand tu veux : ta progression est conservée par exercice, rien n’est perdu.</span></div>${Object.keys(S.pf.l).map((k,i)=>`<div class="row hr"><span>${esc(k)}</span><span><button class=sec data-a=pfgo data-i=${i}>Activer</button><button class=sec data-a=pfdel data-i=${i}>🗑</button></span></div>`).join('')}<div class=lab>Nouveau programme</div><input id=pfn class=sel maxlength=30 placeholder="Nom (ex. Bloc figures)"><button class=sec data-a=pfnew data-m=copy>Copier le programme actuel</button><button class=sec data-a=pfnew data-m=def>Partir du programme de base</button></div>${lock?'<div class="note w">Une séance est en cours ou en pause : termine-la ou annule-la avant de modifier le programme.</div>':''}`
+ return back('home')+`<h1>Programme et vague</h1>${wvOn()?wvCard():''}<div class=card><h2>🌊 Périodisation en vague</h2><div class="mu hlp">Par défaut 4 semaines de 4 séances : accumulation (RIR 3) → intensification (RIR 2) → pic (RIR 1) → décharge (−40 % de volume, sans progression). La semaine avance au nombre de séances faites. En fin de vague, les cibles repartent un cran plus bas et l’app te propose de changer une variante.</div><button class="sec${wvOn()?' on':''}" data-a=wvt>${wvOn()?'Activée':'Désactivée'}</button>${wvOn()?`<div class=lab>Durée de la vague (décharge incluse)</div><div class=dys>${[3,4,5,6].map(l=>`<button class="${wvL()===l?'on':''}" data-a=wvl data-v=${l}>${l} sem.</button>`).join('')}</div><div class="mu hlp">4 semaines : réglage de départ. 5 à 6 semaines : montée plus progressive, conseillée si tu récupères plus lentement (âge, blessure, fatigue) ou en cas de gros volume. 3 semaines : cycles courts et intenses.</div>`:''}${wvOn()?'<button class=sec data-a=wvd>🛌 Décharge maintenant</button><button class=sec data-a=wv0>↺ Recommencer la vague</button>':''}</div>${lock?'<div class="note w">Une séance est en cours ou en pause : termine-la ou annule-la avant de modifier le programme.</div>':''}`
  +Object.keys(DAYS).map(d=>{const g=S.pg[d]||{},rm=P0[d].filter(e=>(g.x||[]).includes(e.id)),ad=LIB.filter(e=>!P0[d].some(x=>x.id===e.id)&&!P[d].some(x=>x.id===e.id));
   return `<div class=card><div class=row><h2>${DAYS[d]}</h2><button class=sec data-a=pg0 data-d=${d}>↺ Défaut</button></div>`+P[d].map((e,i)=>`<div class=hr><div class=row><b>${e.n}</b><span class=mu>${e.t==='pyr'?'Pyramide':e.t==='emom'?'EMOM':e.sets+' séries'}${e.t!=='pyr'&&e.t!=='emom'?' · repos '+mmss(e.rest||90):''}</span></div><div class=mu>Cible actuelle : ${fmt(e,cur(d,e),curx(d,e))}</div><div>${HASSETS(e)?sm('pgv',d,e.id,-1,e.t==='hold'?'− 1 s':e.t==='reps'?'− 1 rep':'− 1 kg')+sm('pgv',d,e.id,1,e.t==='hold'?'+ 1 s':e.t==='reps'?'+ 1 rep':'+ 1 kg'):''}${sm('pgm',d,e.id,-1,'▲')}${sm('pgm',d,e.id,1,'▼')}${HASSETS(e)?sm('pgs',d,e.id,-1,'− série')+sm('pgs',d,e.id,1,'+ série'):''}${e.t!=='pyr'&&e.t!=='emom'?sm('pgr',d,e.id,-1,'− 15 s')+sm('pgr',d,e.id,1,'+ 15 s'):''}${sm('pgx',d,e.id,0,'✕ Retirer')}</div></div>`).join('')
   +(rm.length?`<div class=lab>Retirés (progression conservée)</div>${rm.map(e=>`<button class=sec data-a=pgy data-d=${d} data-id=${e.id}>↩ ${e.n}</button>`).join('')}`:'')
-  +(ad.length?`<div class=lab>Ajouter un exercice</div>${ad.map(e=>`<button class=sec data-a=pga data-d=${d} data-i=${LIB.indexOf(e)}>+ ${e.n}</button>`).join('')}`:'')+'</div>'}).join('')
+  +(ad.length?`<div class=lab>Ajouter un exercice</div><select class=sel id=pgp_${d}><option value="${P[d].length}">À la fin de la séance</option><option value=0>En premier</option>${P[d].map((x,i)=>`<option value=${i+1}>Après : ${esc(x.n)}</option>`).join('')}</select>${ad.map(e=>`<button class=sec data-a=pga data-d=${d} data-i=${LIB.indexOf(e)}>+ ${e.n}</button>`).join('')}`:'')+'</div>'}).join('')
  +'<div class=card><div class="mu hlp">Un exercice ajouté démarre à sa valeur de départ. Les exercices retirés gardent leur progression et leur historique.</div></div>'},
 sav:()=>back('home')+`<h1>Sauvegarde</h1><div class=card><h2>Copies automatiques</h2><div class="mu hlp">Gardées dans ce navigateur : après chaque séance, avant un import, une suppression ou un effacement.</div>${V.snaps==null?'<div class=mu>Chargement…</div>':V.snaps.length?V.snaps.map(s=>`<div class="row hr"><span class=mu>${s.label} · ${dfr(s.t)} · ${s.n} séance${s.n>1?'s':''}</span><button class=sec data-a=rsn data-t=${s.t}>Restaurer</button></div>`).join(''):'<div class=mu>Aucune pour l’instant.</div>'}</div>
 <div class=card><h2>Par texte</h2><p class="mu hlp">Fonctionne partout, même dans l’appli Android. Copie tes données dans une note ; pour restaurer, colle-les ici.</p><textarea id=ta placeholder="Colle ici tes données, puis appuie sur Restaurer"></textarea><button class=sec data-a=cpy>📋 Copier mes données</button><button class=sec data-a=pst>✅ Restaurer depuis le texte</button></div>`,
-stats:()=>{const ss=series();return back('home')+`<h1>Progression</h1><button class=big data-a=go data-t=bil>📅 Bilans<span class=mu>Fin de vague et bilan annuel</span></button><p class="mu hlp">Performance, volume, volume-charge et 1RM estimé (formule d’Epley, poids de corps inclus pour tractions et dips quand il est renseigné).</p>${bwCard()}${balCard()}`+(S.bw.length>1?`<div class=card><h2>Poids de corps</h2>${chart(S.bw.map(b=>({d:b.d,v:b.kg})))}</div>`:'')+recCard()+(ss.length?ss.map(statCard).join(''):'<p class="mu hlp">Les graphiques apparaissent après tes premières séances.</p>')},
+stats:()=>{const ss=series();return back('home')+`<h1>Progression</h1><p class="mu hlp">Performance, volume, volume-charge et 1RM estimé (formule d’Epley, poids de corps inclus pour tractions et dips quand il est renseigné).</p>${bwCard()}`+(S.bw.length>1?`<div class=card><h2>Poids de corps</h2>${chart(S.bw.map(b=>({d:b.d,v:b.kg})))}</div>`:'')+recCard()+(ss.length?ss.map(statCard).join(''):'<p class="mu hlp">Les graphiques apparaissent après tes premières séances.</p>')},
 set:()=>back('home')+`<h1>Réglages</h1>
 <div class=card><h2>🎨 Apparence</h2><div class=thg>${THM.map(([k,n,d,c])=>`<button class="thc${(UI.sk||'classic')===k?' on':''}" data-a=ui data-k=sk data-v=${k}><div class=sw>${c.map(x=>`<i style="background:${x}"></i>`).join('')}</div><b>${n}</b><span>${d}</span></button>`).join('')}</div>
 ${SKF[UI.sk]?'<div class="mu hlp" style="margin-top:8px">Ce style est toujours sombre. Il s’applique à toute l’app, y compris pendant la séance.</div>':`<div class=lab style="margin-top:12px">Mode du style Classique</div><div class=dys>${[['dark','🌙 Sombre'],['light','☀️ Clair'],['auto','📱 Auto']].map(([k,l])=>`<button class="${UI.th===k?'on':''}" data-a=ui data-k=th data-v=${k}>${l}</button>`).join('')}</div>`}</div>
@@ -956,18 +961,31 @@ function showAsk(m,fn){const old=$('#mdl');if(old)old.remove();const o=document.
 const pgc=d=>{if(RS||SE){alert('Termine ou annule la séance en cours avant de modifier le programme.');return null}return S.pg[d]||(S.pg[d]={x:[],a:[],o:[],s:{},r:{}})};
 const A={
 ask0:()=>{V.ask=null;render()},
-pfnew:d=>{if(RS||SE)return alert('Termine ou annule la séance en cours avant de changer de programme.');const nme=($('#pfn').value||'').trim().slice(0,30);if(!nme)return alert('Donne un nom au programme.');
- if(nme===S.pf.n||S.pf.l[nme]!==undefined||['__proto__','constructor','prototype'].includes(nme))return alert('Ce nom existe déjà ou n’est pas valide.');
- S.pf.l[S.pf.n]=JSON.parse(JSON.stringify(S.pg));if(d.m==='def')S.pg={};S.pf.n=nme;buildP();save();render()},
-pfgo:d=>{if(RS||SE)return alert('Termine ou annule la séance en cours avant de changer de programme.');const k=Object.keys(S.pf.l)[+d.i];if(k===undefined)return;
- S.pf.l[S.pf.n]=JSON.parse(JSON.stringify(S.pg));S.pg=S.pf.l[k];delete S.pf.l[k];S.pf.n=k;buildP();save();render()},
-pfdel:d=>{const k=Object.keys(S.pf.l)[+d.i];if(k===undefined||!cf('Supprimer le programme « '+k+' » ? (Ta progression et ton historique ne sont pas touchés.)'))return;delete S.pf.l[k];save();render()},
+calgo:()=>{V.cal={rm:5,kg:0};nav('cal')},
+calx:()=>{nav('ses')},
+calf:d=>{V.cal.f=d.v;render()},
+calm:d=>{const c=V.cal;c.rm=Math.max(0,Math.min(300,c.rm+ +d.s));render()},
+calk:d=>{const c=V.cal;c.kg=Math.max(0,Math.min(300,c.kg+ +d.s));render()},
+calsave:()=>{const g=SE.g,e0=SQ()[g.ei],c=V.cal,rm=c.rm,kg=c.kg,hd=e0.t==='hold';if(!(rm>0))return alert('Entre ton max avant d’appliquer.');
+ if(!hd&&!c.f)return alert('Choisis un format (EMOM, Force, Pyramide ou Objectif).');
+ const d=V.day,id=e0.id,key=d+'.'+id;let v,x=0;
+ if(hd){v=Math.max(3,Math.round(rm*.65))}
+ else{const pc=S.pg[d]||(S.pg[d]={x:[],a:[],o:[],s:{},r:{},f:{}});(pc.f||(pc.f={}))[id]=c.f;buildP();
+  if(c.f==='force'){v=kg>0?Math.max(0,Math.round(kg*.8/2)*2):0;x=3}
+  else if(c.f==='obj'){v=0;x=Math.max(1,Math.round(rm*.65))}
+  else if(c.f==='pyr'){v=Math.max(2,Math.min(8,Math.round(rm*.8)));x=90}
+  else{v=Math.max(2,Math.round(rm*.4));x=10}
+  for(const k of [key,key+'.x'])delete S.p[k]}
+ const e=P[d].find(z=>z.id===id)||e0;S.p[key]=v;if(!hd&&e.t!=='reps')S.p[key+'.x']=x;
+ const n=e.t==='pyr'?2*v-1:e.t==='emom'?x:e.sets;
+ SE.ex[id]={d:Array(n).fill(false),a:v,f:null,tg:v,x,ax:x,q:null,p:null,fm:null,L:[],bv:v,bx:x,nc:0,pa:0};
+ S.cal[id]={rm,kg,fmt:hd?'tenues en séries':FMT[c.f],d:new Date().toISOString()};
+ save();sv();nav('ses');toast('Niveau enregistré : '+(hd?'cible de départ réglée.':'format '+FMT[c.f]+', cible de départ réglée.'))},
 gadd:d=>{const g=GP[+d.i];if(!g)return;if(S.go.length>=40)return alert('Trop d’objectifs.');S.go.push({id:Date.now().toString(36),...g,d:new Date().toISOString()});save();render()},
 gnew:()=>{const ex=$('#gx').value,m=$('#gm').value,tg=+$('#gtg').value,e=LIB.find(x=>x.id===ex);if(!e||!(tg>0))return alert('Choisis un exercice et une valeur à atteindre.');
  const ok=LIB.filter(x=>x.id===ex).some(x=>(GTY[x.t]||[]).includes(m));if(!ok)return alert('Cette mesure n’existe pas pour cet exercice.');
  if(S.go.length>=40)return alert('Trop d’objectifs.');S.go.push({id:Date.now().toString(36),n:e.n.split(' · ')[0]+' · '+GML[m]+' '+tg,ex,m,tg,d:new Date().toISOString()});save();render()},
 gdel:d=>{const g=S.go[+d.i];if(!g||!cf('Supprimer l’objectif « '+g.n+' » ?'))return;S.go.splice(+d.i,1);save();render()},
-bt:d=>{V.bt=d.v;render()},by:d=>{V.by=+d.v;render()},
 wvl:d=>{const l=+d.v;if(![3,4,5,6].includes(l))return;S.wv.len=l;S.wv.n=Math.min(S.wv.n,l*SPW-1);save();render()},
 bkd:d=>{UI.bkd=+d.v;saveUI();render()},
 hmore:()=>{V.hn=(V.hn||30)+30;render()},
@@ -985,7 +1003,6 @@ ses:d=>{const day=V.day,xr=d&&d.x==='1';if(RS&&!(d&&d.ok==='1')){V.ask={x:d&&d.x
  P[day].forEach(e=>{const v=cur(day,e),x=curx(day,e),n=e.t==='pyr'?2*v-1:e.t==='emom'?x:e.sets;SE.ex[e.id]={d:Array(n).fill(false),a:v,f:null,tg:v,x,ax:x,q:null,p:null,fm:null,L:[],bv:v,bx:x,nc:0,pa:0}});
  if(eq)P[day].forEach(e=>{if(e.up&&SE.ex[e.id])SE.ex[e.id].xs=1});
  if(SE.wk===3){SE.dl=1;P[day].forEach(e=>dlEx(e,SE.ex[e.id]))}
- SE.ib=imbalance();if(SE.ib.lag&&!SE.dl){const be=SQ().find(e=>GRP[SE.ib.lag].includes(e.id)&&['dp','reps','kg'].includes(e.t));if(be){const br=SE.ex[be.id];br.d.push(false);br.xs=1}}
  beep(1,.01);wake();sv();nav('ses');muSess()},
 rsm:()=>{SE=RS.SE;V.day=RS.day;RS=null;if(SE.eqp)P[V.day]=SE.eqp.map(e=>({...e}));const g=SE.g;
  SE.pre=SE.pre||{sl:null,en:null,so:null};SE.pn=SE.pn||{c:0,p:0,e:0,k:0,h:0};SE.rd=SE.rd||'ok';SE.wu=SE.wu||[];for(const id in SE.ex){const r=SE.ex[id];if(r.bv==null){r.bv=r.tg;r.bx=r.x}r.nc=r.nc||0;r.pa=r.pa||0}
@@ -1024,7 +1041,7 @@ pgm:d=>{const g=pgc(d.d);if(!g)return;const ids=P[d.d].map(e=>e.id),i=ids.indexO
 pgx:d=>{if(RS||SE)return alert('Termine ou annule la séance en cours avant de modifier le programme.');if(P[d.d].length<=1)return alert('Garde au moins un exercice dans la journée.');const e=P[d.d].find(x=>x.id===d.id);if(!e||!cf('Retirer « '+e.n+' » de ce jour ? Sa progression est conservée.'))return;
  const g=pgc(d.d),k=g.a.find(k=>k.split('|')[0]===d.id);if(k)g.a=g.a.filter(v=>v!==k);else if(!g.x.includes(d.id))g.x.push(d.id);buildP();save();render()},
 pgy:d=>{const g=pgc(d.d);if(!g)return;g.x=g.x.filter(v=>v!==d.id);buildP();save();render()},
-pga:d=>{const g=pgc(d.d);if(!g)return;const e=LIB[+d.i];if(!e||P[d.d].some(x=>x.id===e.id))return;g.a.push(e.id+'|'+e.n);buildP();save();render()},
+pga:d=>{const g=pgc(d.d);if(!g)return;const e=LIB[+d.i];if(!e||P[d.d].some(x=>x.id===e.id))return;g.a.push(e.id+'|'+e.n);buildP();const sl=$('#pgp_'+d.d),pos=sl?Math.max(0,Math.min(P[d.d].length-1,+sl.value)):P[d.d].length-1,ids=P[d.d].map(x=>x.id).filter(x=>x!==e.id);ids.splice(pos,0,e.id);g.o=ids;buildP();save();render()},
 pg0:d=>{if(RS||SE)return alert('Termine ou annule la séance en cours avant de modifier le programme.');if(!cf('Remettre le programme de '+DAYS[d.d]+' par défaut ?'))return;backup('Avant réinitialisation du programme');delete S.pg[d.d];buildP();save();render()},
 pq:d=>{SE.pre[d.k]=SE.pre[d.k]===+d.v?null:+d.v;sv();render()},
 pn:d=>{SE.pn[d.k]=Math.max(0,Math.min(10,(SE.pn[d.k]||0)+ +d.s));sv();render()},
@@ -1036,26 +1053,25 @@ skip:()=>{const g=SE.g;if(g.ei<SQ().length-1){g.ei++;g.si=0;g.ph='prep';sv();nav
  if(!Object.values(SE.ex).some(r=>r.L&&r.L.some(Boolean))){if(!cf('Tu as passé tous les exercices sans valider une seule série. Quitter la séance sans rien enregistrer ?'))return;clearInterval(eI);A.tx();SE=null;buildP();sv();try{WL&&WL.release()}catch(x){}nav('home');toast('Séance abandonnée : rien n’a été enregistré.');return}
  A.done()},
 stop:()=>{const{g,e,r}=cs(),i=g.si,n=g.pz||Date.now();clearInterval(eI);
- const o={a:r.tg,ax:r.x,fm:null,q:null,p:null,c:0};
+ const o={a:r.tg,ax:e.t==='kg'?e.reps:r.x,fm:null,q:null,p:null,c:0};
  if(e.t==='hold')o.a=Math.max(0,Math.floor((n-g.t0)/1000));
  if(e.t==='pyr')o.a=seq(r.tg)[i];
  if(e.t==='emom'){const m=Math.max(0,Math.min(r.x,Math.floor((n-g.t0)/60000)));r.d.fill(false);r.d.fill(true,0,m)}
  r.L[i]=o;adj();g.ph='rest';g.rstart=Date.now();g.rman=0;g.rbase=restOf(e,i,r)||90;const s=radv();g.radv=s;tEnd=Date.now()+s*1000;tP=0;nav('ses');rest(s);g.rend=tEnd;g.tp=0;sv()},
-la:d=>{const c=cs();c.o.a=Math.max(0,c.o.a+ +d.s);c.o.c=1;adj();sv();render()},
-lx:d=>{const c=cs();c.o.ax=Math.max(0,c.o.ax+ +d.s);c.o.c=1;adj();sv();render()},
+la:d=>{const c=cs();c.o.a=Math.max(0,c.o.a+ +d.s);c.o.c=1;adj();reRest();sv();render()},
+lx:d=>{const c=cs();c.o.ax=Math.max(0,c.o.ax+ +d.s);c.o.c=1;adj();reRest();sv();render()},
 lp:d=>{const c=cs();c.o.pa=Math.max(0,(c.o.pa||0)+ +d.s);c.o.c=1;adj();reRest();sv();render()},
 sf:d=>{const c=cs();c.o.fm=d.v;c.o.c=1;adj();sv();render()},
 sq:d=>{const c=cs();c.o.q=c.o.q===+d.v?null:+d.v;c.o.c=1;adj();reRest();sv();render()},
 sqp:d=>{const c=cs(),x=c.r.L[+d.j];if(x){x.q=+d.v;x.c=1}sv();render()},
-sr:d=>{const c=cs();c.o.p=c.o.p===+d.v?null:+d.v;c.o.c=1;adj();reRest();sv();render()},
 st:d=>{const c=cs(),b=c.o.bad||(c.o.bad=[]),i=b.indexOf(d.v);if(i>=0)b.splice(i,1);else b.push(d.v);c.o.c=1;adj();reRest();sv();render()},
 ok:()=>{const c=cs();c.o.c=1;sv();render()},
 't-':()=>{SE.g.rman=1;tEnd-=15000;SE.g.rend=tEnd;tick();render()},
 tp:()=>{const g=SE&&SE.g;if(tP){tEnd+=Date.now()-tP;tP=0;clearInterval(tI);tI=setInterval(tick,250);tick()}else{clearInterval(tI);tP=Date.now()}if(g){g.rend=tEnd;g.tp=tP;sv()}render()},
 epz:()=>{const g=SE.g;if(g.pz){g.t0+=Date.now()-g.pz;g.pz=0}else g.pz=Date.now();sv();render();ef()},
 nxt:()=>{const g=SE.g,E=SQ(),e=E[g.ei],r=SE.ex[e.id],o=r.L[g.si];
- /* garde-fou : RIR et RPE oubliés → on prévient une fois (sauf séries d'échauffement de la pyramide) ; un 2e appui continue quand même */
- if(o&&o.q==null&&o.p==null&&!g.warn&&!(e.t==='pyr'&&seq(r.tg)[g.si]<=4)){g.warn=1;render();const q=$('#qs');if(q)q.scrollIntoView({block:'center',behavior:'smooth'});return}
+ /* garde-fou : RIR oublié → on prévient une fois (sauf séries d'échauffement de la pyramide) ; un 2e appui continue quand même */
+ if(o&&o.q==null&&o.p==null&&!g.warn&&topSet(e,r,g.si)){g.warn=1;render();const q=$('#qs');if(q)q.scrollIntoView({block:'center',behavior:'smooth'});return}
  g.warn=0;
  if(o&&g.rstart){o.rt=Math.min(1200,Math.round((Date.now()-g.rstart)/1000));if(g.radv)o.rp=g.radv}A.tx();
  if(g.si<(e.t==='emom'?1:r.d.length)-1){g.si++;if(e.t==='hold'&&g.cur2)g.cur=g.cur2;startEff();return}
@@ -1068,9 +1084,9 @@ lvl:d=>{const k=d.k,n=Math.max(0,Math.min(L[k].length-1,S.lv[k]+ +d.s));if(n!==S
 tx:()=>{tP=0;clearInterval(tI);$('#tm').style.display='none';const r=$('#rt');if(r)r.textContent='Go ! 💪'},
 fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOString(),low=SE.rd==='low'||!!SE.dl;let xp=0;
  for(const e of P[day]){const r=SE.ex[e.id];if(!r.L.some(Boolean))continue;
-  const t=T[e.t],tg=r.tg,n=r.d.length,dn=r.d.filter(Boolean).length,ok=dn>=(r.xs?n-1:n)&&!r.nc&&(e.t==='pyr'||r.a>=tg)&&(e.t!=='dp'||r.ax>=r.x),fig=e.lad||e.fig,lad=e.lad,lv=lad&&S.lv[lad],key=day+'.'+e.id,p=last(day,e.id),name=nm(e),pain=pn(e);
+  const t=T[e.t],tg=r.tg,n=r.d.length,dn=r.d.filter(Boolean).length,ok=dn>=(r.xs?n-1:n)&&!r.nc&&(e.t==='pyr'||r.a>=tg)&&(e.t==='kg'?r.ax>=e.reps:(e.t!=='dp'||r.ax>=r.x)),fig=e.lad||e.fig,lad=e.lad,lv=lad&&S.lv[lad],key=day+'.'+e.id,p=last(day,e.id),name=nm(e),pain=pn(e);
   /* niveau d'effort de la séance (0 limite · 1 propre · 2 facile), puis tendance pondérée sur les 3 dernières séances */
-  const qq=r.q,l0=r.f==='echec'?0:qq==null?{facile:2,parfait:1,dur:0}[r.f]:qq>=3?2:qq>=1?1:0,lvl=r.pa&&l0>1?1:l0;
+  const qq=r.q,l0=r.f==='echec'?0:qq==null?{facile:2,parfait:1,dur:0}[r.f]:qq>=3?2:qq>=1?1:0,lvl0=r.pa&&l0>1?1:l0,lvl=e.t==='dp'&&lvl0===0&&r.f!=='echec'?1:lvl0;
   const ls=[lvl,...prevRes(day,e.id,2).map(lvOf)],wt=[3,2,1],trend=ls.reduce((s,v,i)=>s+v*wt[i],0)/ls.reduce((s,_,i)=>s+wt[i],0);
   let nv=r.bv,nx=r.bx,a='keep',msg;
   if(low)msg=SE.dl?'Semaine de décharge : volume réduit, les cibles ne bougent pas.':'Séance allégée : on ne touche pas à la progression aujourd’hui.';
@@ -1079,11 +1095,12 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
    else msg='Forme moyenne : même difficulté. Si ça se répète, on redescend d’un niveau.'}
   else if(r.f==='echec'){if(p&&p.f==='echec'){[nv,nx]=t.dn(tg,r.x);a='down';msg='Deux échecs d’affilée : déchargement léger.'}else msg='Échec : même difficulté la prochaine fois.'}
   else if(!ok)msg=r.nc?'Technique non propre sur '+r.nc+' série'+(r.nc>1?'s':'')+' : elle ne compte pas, même difficulté la prochaine fois.':'Séries incomplètes : même difficulté la prochaine fois.';
-  else if(lvl===0){if(ls.length>=3&&ls.every(v=>v===0)){[nv,nx]=t.dn(tg,r.x);a='down';msg='3 séances de suite à la limite : décharge pour récupérer.'}else msg='Validé mais à la limite : on consolide avant de monter.'}
+  else if(lvl===0){if(ls.length>=3&&ls.every(v=>v===0)){[nv,nx]=t.dn(tg,r.x);a='down';msg='3 séances de suite à la limite : décharge pour récupérer.'}else if(r.av>tg||(e.t==='dp'&&r.axv>r.x)){nv=Math.max(tg,r.av);if(e.t==='dp')nx=Math.max(r.x,r.ax);a='up';msg='Tu as dépassé la cible, même si c’était dur : la nouvelle cible, c’est ce que tu as réellement fait (sans +1).'}
+   else msg='Validé mais à la limite : on consolide avant de monter.'}
   else if(pain>=4)msg='Douleur '+pain+'/10 dans une zone sollicitée : pas de montée de difficulté.';
   else if(lad&&r.fm==='good'&&r.a>=L[lad][lv][1]&&lv<L[lad].length-1){a='up';msg='Palier atteint : passage à '+L[lad][lv+1][0]+' !';setLv(lad,lv+1,1)}
-  else if(e.t==='dp'&&lvl<2&&trend<1.5&&Math.max(tg,r.a)>0&&Math.max(r.x,r.ax)>=6)msg='Haut de la fourchette atteint : encore une séance facile (RIR 3+ ou RPE ≤ 7) avant d’augmenter la charge.';
-  else{nv=Math.max(tg,r.a);if(e.t==='dp')nx=Math.max(r.x,r.ax);const st=lvl>=2&&trend>=1.5?Math.min(SE.wk===0?1:2,t.mx):1;for(let i=0;i<st;i++)[nv,nx]=t.up(nv,nx);a='up';msg=st>1?'Facile sur plusieurs séances de suite : grosse progression.':lvl>1?'Facile : progression normale (la tendance doit se confirmer pour aller plus vite).':'Séance maîtrisée : la difficulté augmente.';if(e.t==='dp'&&nx===3&&nv>Math.max(tg,r.a))msg='Fourchette terminée : charge à +'+nv+' kg, on repart à 3 reps.'}
+  else{nv=Math.max(tg,r.av==null?r.a:r.av);if(e.t==='dp')nx=Math.max(r.x,r.ax);const st=lvl>=2&&trend>=1.5?Math.min(SE.wk===0?1:2,t.mx):1;for(let i=0;i<st;i++)[nv,nx]=t.up(nv,nx);a='up';msg=st>1?'Facile sur plusieurs séances de suite : grosse progression.':lvl>1?'Facile : progression normale (la tendance doit se confirmer pour aller plus vite).':'Séance maîtrisée : la difficulté augmente.';if(e.t==='dp'&&nx===3&&nv>Math.max(tg,r.a))msg='Fourchette terminée : charge à +'+nv+' kg, on repart à 3 reps.'}
+  if(!low&&a==='up'&&tg>0&&nv>tg*1.5+1&&!lad)msg+=' ⚠️ Grosse hausse de cible : si c’est une erreur de saisie, supprime cette séance dans l’Historique, la progression sera annulée.';
   let ns=null;
   if(e.id==='pw'&&!low&&ok&&lvl>=1&&pain<4){const st=pwStage(),g=STG[st],done=g.t==='dp'?Math.max(tg,r.a)>=PWG&&Math.max(r.x,r.ax)>=6:Math.max(tg,r.a)>=g.goal;
    if(done&&st<STG.length-1){const g2=STG[st+1];S.p['pw.st']=st+1;nv=g2.v0;nx=g2.t==='dp'?3:0;ns=g2.n;a='up';msg='🏆 Étape validée ! Prochaine étape : '+g2.n+'. Les cibles repartent d’un niveau de départ confortable.'}
@@ -1099,7 +1116,7 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
    else if(rb>b0)nr=Math.max(b0,rb-15);
    if(nr!==rb){S.p[rk]=nr;rn=nr}}
   xp+=!ok||r.f==='echec'?10:[30,40,50][lvl];
-  const ss=r.L.filter(Boolean).map(o=>{const q={a:o.a};if(e.t==='dp')q.ax=o.ax;if(o.q!=null)q.q=o.q;if(o.p!=null)q.p=o.p;if(o.pa)q.pa=o.pa;if(o.bad&&o.bad.length)q.bad=o.bad;if(o.fm)q.fm=o.fm;if(o.rt)q.rt=o.rt;if(o.rp)q.rp=o.rp;return q}),
+  const ss=r.L.filter(Boolean).map(o=>{const q={a:o.a};if(e.t==='dp'||e.t==='kg')q.ax=o.ax;if(o.q!=null)q.q=o.q;if(o.pa)q.pa=o.pa;if(o.bad&&o.bad.length)q.bad=o.bad;if(o.fm)q.fm=o.fm;if(o.rt)q.rt=o.rt;if(o.rp)q.rp=o.rp;return q}),
    av=k=>{const v=ss.slice(0,-1).map(o=>o[k]).filter(x=>x>0);return v.length?Math.round(v.reduce((a,b)=>a+b,0)/v.length):null},
    ent={id:e.id,n:name,t:e.t,tg,x:e.t==='dp'?r.ax:r.x,act:r.a,dn,sets:n,f:r.f,q:r.q,rp:r.p,fm:r.fm,ok,next:nv,nx,a,msg,ss,lv:lvl,tr:Math.round(trend*100)/100,nc:r.nc||0,pa:r.pa||0,rpl:av('rp'),rpt:av('rt'),rn,pr:[],vr:vri(day,e),bl:low||pain>=4?1:0,...(ns?{ns}:{})};
   /* records : meilleure perf ou 1RM estimé jamais atteints sur cet exercice (séance propre et complète) */
@@ -1111,16 +1128,16 @@ fin:()=>{const day=V.day,res=[],p0={...S.p},lv0={...S.lv},iso=new Date().toISOSt
  xp+=60;
  const wv0={n:S.wv.n,w:S.wv.w};let roll=0;
  if(wvOn()&&day!=='jeudi'){S.wv.n++;if(S.wv.n>=wvLn()){S.wv.n=0;S.wv.w++;roll=1;for(const d in P)P[d].forEach(e=>{const k=d+'.'+e.id,v=cur(d,e),x=curx(d,e),[nv,nx]=T[e.t].dn(v,x);if(nv!==v)S.p[k]=nv;if(nx!==x)S.p[k+'.x']=nx})}}
- const u={p:{},lv:{}};if(wv0.n!==S.wv.n||wv0.w!==S.wv.w)u.wv=[[wv0.n,wv0.w],[S.wv.n,S.wv.w]];if(roll)u.wb=1;for(const k of new Set([...Object.keys(p0),...Object.keys(S.p)]))if(p0[k]!==S.p[k])u.p[k]=[p0[k]??null,S.p[k]??null];
+ const u={p:{},lv:{}};if(wv0.n!==S.wv.n||wv0.w!==S.wv.w)u.wv=[[wv0.n,wv0.w],[S.wv.n,S.wv.w]];for(const k of new Set([...Object.keys(p0),...Object.keys(S.p)]))if(p0[k]!==S.p[k])u.p[k]=[p0[k]??null,S.p[k]??null];
  for(const k in S.lv)if(lv0[k]!==S.lv[k])u.lv[k]=[lv0[k],S.lv[k]];
  const h={d:iso,day,xp,res,rd:SE.rd,sc:SE.sc??null,pn:{...SE.pn},wu:SE.wu.length?SE.wu.filter(Boolean).length+'/'+SE.wu.length:null,ex:SE.expr?1:0,eq:SE.eq?1:0,wk:SE.wk??null,ro:roll,u};
- S.h.push(h);compactH(S.h);if(roll)S.wb.push(mkBilan(S.wv.w-1));S.xp+=xp;buildP();save();backup('Après séance');V.last=h;nav('res')},
+ S.h.push(h);compactH(S.h);S.xp+=xp;buildP();save();backup('Après séance');V.last=h;nav('res')},
 delh:d=>{const i=+d.i,h=S.h[i];if(!h)return;
  if(!cf('Supprimer la séance du '+dfr(h.d)+' ?\n'+(h.u?'La progression qu’elle a déclenchée est annulée (sauf si une séance plus récente l’a déjà modifiée).':'Séance ancienne : sa progression ne peut pas être annulée automatiquement.')+'\nUne copie de secours est conservée.'))return;
  backup('Avant suppression');const u=h.u||{p:{},lv:{}};
  for(const k in u.p){const[o,n]=u.p[k];if(S.p[k]===n){if(o===null)delete S.p[k];else S.p[k]=o}}
  for(const k in u.lv){const[o,n]=u.lv[k];if(S.lv[k]===n)S.lv[k]=o}
- if(u.wv){const[o,n]=u.wv;if(S.wv.n===n[0]&&S.wv.w===n[1]){S.wv.n=o[0];S.wv.w=o[1];if(u.wb)S.wb.pop()}}
+ if(u.wv){const[o,n]=u.wv;if(S.wv.n===n[0]&&S.wv.w===n[1]){S.wv.n=o[0];S.wv.w=o[1];}}
  S.xp=Math.max(0,S.xp-(h.xp||0));S.h.splice(i,1);buildP();save();render()},
 sm:d=>{V.sm[d.k]=d.m;render()},
 ui:d=>{UI[d.k]=d.k==='z'||d.k==='cl'?+d.v:d.v;saveUI();applyUI();render();if(d.k==='sk')muTheme()},
