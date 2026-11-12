@@ -460,7 +460,7 @@ function eqMk(e,code,n,t,sets,v,rest,note,zn,lvl){return{id:'q_'+code,n,t,sets,v
 function eqSub(e,q){const h=k=>q.has(k),id=e.id,hang=h('bar')||h('ring'),m=(...a)=>eqMk(e,...a);
  if(id==='ah'&&!h('bar'))return m('sup','Superman · extensions dorsales','reps',3,10,90,'Au sol : lève bras et jambes, serre le haut du dos 2 s.',['e'],0);
  if(id==='sp'&&!h('bar'))return h('ring')?m('spr','Scapula pull-up aux anneaux','reps',4,8,150,'Pause de 3 s en haut de chaque rep.',['e'],0):m('spp','Scapula push-up','reps',4,12,90,'En position de pompe, bras tendus : écarte et rapproche les omoplates.',['e'],1);
- if((id==='tr'||id==='tf')&&!h('bar'))return h('ring')?m('rwr','Rowing aux anneaux · pieds en avant','reps',4,8,150,'Plus ton corps est incliné, plus c’est dur. Pieds surélevés quand 4 × 10 devient facile.',['c','e'],1):h('tab')?m('rwt','Rowing inversé sous table','reps',4,8,150,'Corps gainé, poitrine vers le bord de la table. Pieds surélevés (chaise) quand c’est facile.',['c','e'],1):m('ytw','Tirage au sol Y-T-W','reps',4,10,90,'Aucun point d’accroche : travail du dos sans traction, bien moins intense.',['e'],2);
+ if((id==='tr'||id==='tf'||id==='te')&&!h('bar'))return h('ring')?m('rwr','Rowing aux anneaux · pieds en avant','reps',4,8,150,'Plus ton corps est incliné, plus c’est dur. Pieds surélevés quand 4 × 10 devient facile.',['c','e'],1):h('tab')?m('rwt','Rowing inversé sous table','reps',4,8,150,'Corps gainé, poitrine vers le bord de la table. Pieds surélevés (chaise) quand c’est facile.',['c','e'],1):m('ytw','Tirage au sol Y-T-W','reps',4,10,90,'Aucun point d’accroche : travail du dos sans traction, bien moins intense.',['e'],2);
  if(id==='di'&&!h('dip'))return h('par')?m('pdp','Pompes sur parallettes · grande amplitude','reps',4,8,150,'Descends le plus bas possible, coudes serrés : proche des dips pour les triceps.',['p','e','c'],1):h('wt')?m('pdl','Pompes diamant lestées','reps',4,8,150,'Sac à dos chargé sur le dos, mains en diamant.',['p','e','c'],1):m('pdi','Pompes diamant','reps',4,10,120,'Mains en diamant, coudes serrés, pieds surélevés si c’est facile.',['p','e','c'],1);
  if(id==='pw'&&!h('wt')){const s=pwStage();return h('band')?m('pwb','Pompes avec élastique dans le dos','reps',3,8,240,'Passe l’élastique dans le dos et sous les mains : la résistance remplace le lest.',['p','e','c'],1):s===0?m('pwa','Pompes pseudo planche','reps',3,6,240,'Sans lest : mains à hauteur des hanches, corps penché vers l’avant. Échauffe les poignets.',['p','e','c'],1):s===1?m('pwa','Pompes diamant · pieds surélevés','reps',3,8,240,'Sans lest : mains en diamant, pieds surélevés pour compenser.',['p','e','c'],1):s===2?m('pwa','Pompes archer','reps',3,6,240,'Sans lest : un bras travaille, l’autre est tendu sur le côté (deux côtés, saisis le plus faible).',['p','e','c'],1):m('pwu','Pompes pseudo planche · pieds surélevés','reps',3,5,240,'Sans lest : mains à hauteur des hanches, pieds surélevés, corps penché vers l’avant.',['p','e','c'],1)}
  if(['fl','ng','fr'].includes(id)&&!hang)return h('box')?m('dfn','Dragon flag négatif · banc','hold',4,3,150,'Allongé sur le banc, tiens-le derrière la tête, descends tout gainé en 3 s.',['e','c'],1):m('hbl','Hollow Body · hold long','hold',4,25,90,'Bas du dos plaqué, bras tendus derrière la tête.',['e'],2);
@@ -484,7 +484,9 @@ const XT=[{id:'po',n:'Pompes surélevées · Force',t:'reps',sets:3,v:8,rest:300
  {id:'mu',n:'Muscle-up',t:'reps',sets:5,v:2,rest:180,zn:['c','e'],tk:['amp','elan']},
  {id:'hs',n:'Handstand Push-up',t:'reps',sets:4,v:3,rest:180,zn:['p','e','c'],tk:['amp','elan']},
  {id:'ls',n:'L-sit',t:'hold',sets:4,v:10,rest:90,zn:['p','e']},
- {id:'oa',n:'One Arm Pull-up · Négatives',t:'hold',sets:4,v:3,rest:180,zn:['c','e'],note:'Temps de la descente contrôlée, un bras.'}].map(e=>({...e,bw:0}));
+ {id:'oa',n:'One Arm Pull-up · Négatives',t:'hold',sets:4,v:3,rest:180,zn:['c','e'],note:'Temps de la descente contrôlée, un bras.'},
+ /* EMOM : v = reps par minute, 10 min au départ (progression T.emom : +2 min jusqu'à 12, puis +1 rep/min). Id propre « te » : suivi séparé de tr (pyramide) et tf (force). */
+ {id:'te',n:'Tractions · EMOM',t:'emom',m:10,v:4,zn:['c','e'],tk:['amp','elan'],note:'Dès le top de chaque minute, enchaîne tes reps : bras tendus en bas, menton au-dessus de la barre, sans élan. Le temps qui reste est ton repos. Touche « Arrêter » dès que tu ne peux plus finir tes reps dans la minute.'}].map(e=>({...e,bw:0}));
 XT.forEach(e=>LIB.push(e));
 /* Parcours pompes : étape 1 pompes lestées (objectif 35 kg) → étapes 2 à 5 pseudo planche puis tuck planche, sans lest → étape 6 pseudo planche lestée (objectif 20 kg) */
 const PWG=35,pwGl=g=>Math.min(g.goal||PWG,S.lm||35);
@@ -692,7 +694,7 @@ const cur=(d,e)=>S.p[d+'.'+e.id]??e.v;
 const curx=(d,e)=>S.p[d+'.'+e.id+'.x']??xd(e);
 /* Variantes proposées quand un exercice plafonne (le nom de l'exercice est remplacé, le mode « · EMOM / Force / Pyramide » reste) */
 const VAR={po:['Pompes pseudo planche','Pompes archer','Pompes à 1 bras'],di:['Dips tempo 3 s à la descente','Dips avec pause 2 s en bas'],tr:['Tractions prise large','Tractions L-sit','Tractions archer'],hb:['Hollow Body bras tendus','Hollow Body avec lest léger'],ah:['Arch Hang prise étroite','Arch Hang avec lest léger']};
-VAR.tf=VAR.tr;
+VAR.tf=VAR.tr;VAR.te=VAR.tr;
 const vri=(d,e)=>e.id==='pw'?pwStage():(S.vr&&S.vr[d+'.'+e.id])||0;
 const nm=e=>{const b=e.lad?L[e.lad][S.lv[e.lad]][0]:e.n,v=V.day&&VAR[e.id]?vri(V.day,e):0;return v?[VAR[e.id][v-1],...b.split(' · ').slice(1)].join(' · '):b};
 /* plateau = 3 dernières séances de cet exercice, même variante, sans progression, hors séances allégées ou bloquées par une douleur */
